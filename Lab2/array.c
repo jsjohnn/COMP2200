@@ -115,11 +115,7 @@ int insert(int numbers[], const size_t element_count, const int num, const size_
             numbers[i] = num;
             return TRUE;
         }
-		numbers[i] = numbers[i - 1];
-/*
-        temp = numbers[i - 1];
-        numbers[i] = temp;
-*/
+        numbers[i] = numbers[i - 1];
         --i;
     }
 
@@ -137,10 +133,6 @@ int remove_at(int numbers[], const size_t element_count, const size_t index)
 
     for (i = index; i < element_count - 1; ++i) {
         numbers[i] = numbers[i + 1];
-/*
-        temp = numbers[i + 1];
-        numbers[i] = temp;
-*/
     }
 	
     numbers[element_count - 1] = INT_MIN;
