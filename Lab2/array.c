@@ -4,8 +4,8 @@
 
 int get_index_of(const int numbers[], const size_t element_count, const int num)
 {
-    int i;
-    for (i = 0; i < (int)element_count; ++i) {
+    size_t i;
+    for (i = 0; i < element_count; ++i) {
         if (num == numbers[i]) {
             return i;
         }
@@ -114,7 +114,7 @@ int insert(int numbers[], const size_t element_count, const int num, const size_
         return FALSE;
     }
 
-    while(TRUE) {
+    while (TRUE) {
         if (i == (int)pos) {
             numbers[i] = num;
             return TRUE;
