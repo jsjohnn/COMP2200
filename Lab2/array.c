@@ -4,27 +4,27 @@
 
 int get_index_of(const int numbers[], const size_t element_count, const int num)
 {
-	int i;
-	for (i = 0; i < (int)element_count; ++i) {
-		if (num == numbers[i]) {
-			return i;
-		}
-	}
+    int i;
+    for (i = 0; i < (int)element_count; ++i) {
+        if (num == numbers[i]) {
+            return i;
+        }
+    }
 
-	return -1;
+    return -1;
 }
 
 int get_last_index_of(const int numbers[], const size_t element_count, const int num)
 {
-	int i;
+    int i;
 
-	for (i = element_count; i >= 0; --i) {
-		if (num == numbers[i]) {			
-			return i;
-		}
-	}
+    for (i = element_count; i >= 0; --i) {
+        if (num == numbers[i]) {			
+            return i;
+        }
+    }
 
-	return -1;
+    return -1;
 }
 
 int get_max_index(const int numbers[], const size_t element_count)
@@ -145,4 +145,5 @@ int remove_at(int numbers[], const size_t element_count, const size_t index)
 
 	return TRUE;
 }
+
 
