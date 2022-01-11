@@ -110,7 +110,7 @@ int insert(int numbers[], const size_t element_count, const int num, const size_
     int i = element_count;
     int temp;
 	
-    if (element_count < pos ) {
+    if (element_count < pos) {
         return FALSE;
     }
 
