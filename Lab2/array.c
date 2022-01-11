@@ -104,7 +104,6 @@ int has_even(const int numbers[], const size_t element_count)
 int insert(int numbers[], const size_t element_count, const int num, const size_t pos)
 {
     size_t i = element_count;
-    int temp;
 	
     if (element_count < pos) {
         return FALSE;
@@ -125,7 +124,6 @@ int insert(int numbers[], const size_t element_count, const int num, const size_
 int remove_at(int numbers[], const size_t element_count, const size_t index)
 {
     size_t i;
-    int temp;
 	
     if (element_count <= index || element_count == 0) {
         return FALSE;
