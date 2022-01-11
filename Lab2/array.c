@@ -40,7 +40,7 @@ int get_max_index(const int numbers[], const size_t element_count)
     max_value = numbers[0];
 	
     for (i = 1; i < (int)element_count; ++i) {
-    if (numbers[i] > max_value) {
+        if (numbers[i] > max_value) {
             max_value = numbers[i];
             max_index = i;
         }
