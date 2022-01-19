@@ -1,6 +1,4 @@
-#include <stdio.h>
 #include <assert.h>
-
 #include "cyber_spaceship.h"
 
 
@@ -31,8 +29,7 @@ const char* get_longest_safe_zone_or_null(
 
     for (; current_location < last_location; ++current_location) {
         for (i = 0; i < cluster_count; ++i) {
-            if (current_location >= cluster_start_locations[i]
-            && current_location < cluster_start_locations[i] + cluster_lengths[i]) {
+            if (current_location >= cluster_start_locations[i] && current_location < cluster_start_locations[i] + cluster_lengths[i]) {
                 overlab_count += 1;
             }
         }
@@ -45,19 +42,18 @@ const char* get_longest_safe_zone_or_null(
                 bool_continous_flag = 1;
             }
         } else {
-            if (bool_continous_flag != 0 && safe_area_length > *out_longest_safe_area_length) {
+            if (bool_continous_flag != 0 && safe_area_length >= *out_longest_safe_area_length) {
                 *out_longest_safe_area_length = safe_area_length;
                 if (temp_longest_address > longest_address) {
                     longest_address = temp_longest_address;
                 }
-                temp_longest_address = 0;
-                safe_area_length = 0;
-                bool_continous_flag = 0;
             }
+            temp_longest_address = 0;
+            safe_area_length = 0;
+            bool_continous_flag = 0;
         }
         
-        if (current_location == last_location - 1
-        && bool_continous_flag != 0 && safe_area_length > *out_longest_safe_area_length) {
+        if (current_location == last_location - 1 && bool_continous_flag != 0 && safe_area_length >= *out_longest_safe_area_length) {
             *out_longest_safe_area_length = safe_area_length;
             if (temp_longest_address > longest_address) {
                 longest_address = temp_longest_address;
@@ -92,8 +88,7 @@ int get_travel_time(
 
     for (; current_location < last_location; ++current_location) {
         for (i = 0; i < cluster_count; ++i) {
-            if (current_location >= cluster_start_locations[i]
-            && current_location < cluster_start_locations[i] + cluster_lengths[i]) {
+            if (current_location >= cluster_start_locations[i] && current_location < cluster_start_locations[i] + cluster_lengths[i]) {
                 overlab_count += 1;
             }
         }
