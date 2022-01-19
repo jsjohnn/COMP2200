@@ -6,8 +6,19 @@
 #define FALSE (0)
 
 typedef enum color {
-    DELETE_THIS_VALUE
+    COLOR_BLACK = 1,
+    COLOR_WHITE
 } color_t;
+
+/* add start */
+
+extern int g_black_score;  /* extern 키워드가 꼭 있어야 하나? */
+extern int g_white_score;
+extern int g_boards[20][20];
+void view_ary(void);
+
+
+/* add end */
 
 void init_game(void);
 
@@ -41,3 +52,4 @@ int copy_row(const color_t color, const size_t src, const size_t dst);
 int copy_column(const color_t color, const size_t src, const size_t dst);
 
 #endif /* POMOKU_H */
+
