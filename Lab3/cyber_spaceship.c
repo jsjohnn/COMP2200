@@ -1,7 +1,6 @@
 #include <assert.h>
 #include "cyber_spaceship.h"
 
-
 const char* get_longest_safe_zone_or_null(
     const char* const cab_start_location, 
     const size_t cab_length, 
@@ -17,7 +16,6 @@ const char* get_longest_safe_zone_or_null(
      
     const char* temp_longest_address = NULL;
     const char* longest_address = NULL;
-
     const char* current_location = cab_start_location;
     const char* last_location = current_location + cab_length;
 
@@ -31,12 +29,12 @@ const char* get_longest_safe_zone_or_null(
         for (i = 0; i < cluster_count; ++i) {
             if (current_location >= cluster_start_locations[i]
                 && current_location < cluster_start_locations[i] + cluster_lengths[i]) {
-                overlab_count += 1;
+                ++overlab_count;
             }
         }
 
         if (overlab_count % 2 == 0) {
-            safe_area_length += 1;
+            ++safe_area_length;
 
             if (bool_continous_flag != 1) {
                 temp_longest_address = current_location;
@@ -49,9 +47,9 @@ const char* get_longest_safe_zone_or_null(
                     longest_address = temp_longest_address;
                 }
             }
-            temp_longest_address = 0;
-            safe_area_length = 0;
-            bool_continous_flag = 0;
+            temp_longest_address = NULL;
+            safe_area_length ^= safe_area_length;
+            bool_continous_flag ^= bool_continous_flag;
         }
         
         if (current_location == last_location - 1 && bool_continous_flag != 0
@@ -63,7 +61,7 @@ const char* get_longest_safe_zone_or_null(
             break;
         }
 
-        overlab_count = 0;
+        overlab_count ^= overlab_count;
     }
     
     return longest_address;
@@ -79,7 +77,6 @@ int get_travel_time(
 {
     size_t i;
     size_t overlab_count = 0;
-
     size_t safe_area_length = 0;
     size_t unsafe_area_length = 0;
 
@@ -90,17 +87,12 @@ int get_travel_time(
         for (i = 0; i < cluster_count; ++i) {
             if (current_location >= cluster_start_locations[i]
                 && current_location < cluster_start_locations[i] + cluster_lengths[i]) {
-                overlab_count += 1;
+                ++overlab_count;
             }
         }
 
-        if (overlab_count % 2 == 0) {
-            safe_area_length += 1;
-        } else {
-            unsafe_area_length += 1;
-        }
-
-        overlab_count = 0;
+        overlab_count % 2 == 0 ? ++safe_area_length : ++unsafe_area_length;
+        overlab_count ^= overlab_count;
     }
 
     return (int)((safe_area_length / 10.0 + unsafe_area_length / 5.0) + 0.5);
