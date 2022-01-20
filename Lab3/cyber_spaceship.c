@@ -32,16 +32,16 @@ const char* get_longest_safe_zone_or_null(
                 ++overlab_count;
             }
         }
-
-        if (overlab_count % 2 == 0) {
+        
+        if ((overlab_count & 1) == 0) {
             ++safe_area_length;
 
-            if (bool_continous_flag != 1) {
+            if ((bool_continous_flag ^ 1) != 0) {
                 temp_longest_address = current_location;
-                bool_continous_flag = 1;
+                ++bool_continous_flag;
             }
         } else {
-            if (bool_continous_flag != 0 && safe_area_length >= *out_longest_safe_area_length) {
+            if ((bool_continous_flag ^ 0) != 0 && safe_area_length >= *out_longest_safe_area_length) {
                 *out_longest_safe_area_length = safe_area_length;
                 if (temp_longest_address > longest_address) {
                     longest_address = temp_longest_address;
@@ -52,7 +52,7 @@ const char* get_longest_safe_zone_or_null(
             bool_continous_flag ^= bool_continous_flag;
         }
         
-        if (current_location == last_location - 1 && bool_continous_flag != 0
+        if (current_location == last_location - 1 && (bool_continous_flag ^ 0) != 0
             && safe_area_length >= *out_longest_safe_area_length) {
             *out_longest_safe_area_length = safe_area_length;
             if (temp_longest_address > longest_address) {
@@ -91,7 +91,7 @@ int get_travel_time(
             }
         }
 
-        overlab_count % 2 == 0 ? ++safe_area_length : ++unsafe_area_length;
+        (overlab_count & 1) == 0 ? ++safe_area_length : ++unsafe_area_length;
         overlab_count ^= overlab_count;
     }
 
