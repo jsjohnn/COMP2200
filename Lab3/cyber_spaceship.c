@@ -90,7 +90,7 @@ int get_travel_time(
             }
         }
 
-        (overlab_count % 2 == 0)? ++safe_area_length : ++unsafe_area_length;
+        (overlab_count % 2 == 0) ? ++safe_area_length : ++unsafe_area_length;
         overlab_count = 0;
     }
 
