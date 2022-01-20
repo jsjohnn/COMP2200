@@ -1,11 +1,16 @@
 #include <stdio.h>
 #include <assert.h>
 #include "cyber_spaceship.h"
+#include <time.h>
 
 #define CAB_LENGTH (50)
     
 int main(void)
 {
+
+        double time_spent = 0.0;
+        clock_t begin = clock();
+        clock_t end;
 
         /* 0 cluster */
         {
@@ -172,7 +177,13 @@ int main(void)
             assert(*out_longest_safe_area_length_p == 50);
             time_in_mins = get_travel_time(cyber_asteroid_belt, 100, cluster_start_addresses, cluster_lengths, 3);
             assert(time_in_mins == 15);
-        }    
+        }
+
+
+       end = clock();
+       time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
+
+       printf("The elapsed time is %f seconds\n", time_spent);
 
 
         return 0;
