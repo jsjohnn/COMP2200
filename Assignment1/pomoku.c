@@ -211,7 +211,7 @@ int place_stone(const color_t color, const size_t row, const size_t col)
     temp_score = 1;
 
     /* 대각선 왼쪽 */
-    
+
     i = row - 1;
     j = col + 1;
 

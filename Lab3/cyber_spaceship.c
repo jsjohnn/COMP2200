@@ -35,7 +35,7 @@ const char* get_longest_safe_zone_or_null(
         }
 
         if ((overlab_count & 1) == 0) {
-            ++ current_safe_area_length;
+            ++current_safe_area_length;
 
             if (bool_continous_flag != 1) {
                 current_longest_start_address = current_location;
