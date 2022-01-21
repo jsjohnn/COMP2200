@@ -47,8 +47,7 @@ size_t get_row_count(void)
             return i;
         }
     }
-
-    return 0;
+    return 20;
 }
 
 /* 2.4 */
@@ -61,7 +60,7 @@ size_t get_column_count(void)
             return i;
         }
     }
-    return 0;
+    return 20;
 }
 
 /* 2.5 */
