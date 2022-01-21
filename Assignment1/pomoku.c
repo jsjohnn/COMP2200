@@ -259,14 +259,14 @@ int insert_row(const color_t color, const size_t row)
 
     switch (color) {
         case COLOR_BLACK:
-            if (g_black_score < 3 || row > get_row_count() || row > 19) {
+            if (g_black_score < 3 || row > get_row_count()) {
                 return FALSE;
             } else {
                 g_black_score -= 3;
             }
             break;
         case COLOR_WHITE:
-            if (g_white_score < 3 || row > get_row_count() || row > 19) {
+            if (g_white_score < 3 || row > get_row_count()) {
                 return FALSE;
             } else {
                 g_white_score -= 3;
@@ -283,7 +283,7 @@ int insert_row(const color_t color, const size_t row)
     }
 
     for (i = 0; i < (int)get_column_count(); ++i) {
-        g_boards[row][i] = 7;
+        g_boards[row][i] = BLANK;
     }
 
     return TRUE;
@@ -296,14 +296,14 @@ int insert_column(const color_t color, const size_t col)
 
     switch (color) {
         case COLOR_BLACK:
-            if (g_black_score < 3 || col > get_column_count() || col > 19) {
+            if (g_black_score < 3 || col > get_column_count()) {
                 return FALSE;
             } else {
                 g_black_score -= 3;
             }
             break;
         case COLOR_WHITE:
-            if (g_black_score < 3 || col > get_column_count() || col > 19) {
+            if (g_black_score < 3 || col > get_column_count()) {
                 return FALSE;
             } else {
                 g_white_score -= 3;
@@ -312,8 +312,6 @@ int insert_column(const color_t color, const size_t col)
         default:
             return FALSE;
     }
-    printf("==================\n");
-    printf("col: %d\n",col);
 
     for (i = get_column_count() - 1; i > (int)col - 1; --i) {
         for (j = 0; j < (int)get_row_count(); ++j) {
@@ -322,7 +320,7 @@ int insert_column(const color_t color, const size_t col)
     }
 
     for (i = 0; i < (int)get_row_count(); ++i) {
-        g_boards[i][col] = 7;
+        g_boards[i][col] = BLANK;
     }
 
     return TRUE;
@@ -332,17 +330,18 @@ int remove_row(const color_t color, const size_t row)
 {
     int i;
     int j;
+    int last_row = get_row_count() - 1;
 
     switch (color) {
         case COLOR_BLACK:
-            if (g_black_score < 3 || row > get_row_count() - 1 || row > 19) {
+            if (g_black_score < 3 || row > get_row_count() - 1) {
                 return FALSE;
             } else {
                 g_black_score -= 3;
             }
             break;
         case COLOR_WHITE:
-            if (g_white_score < 3 || row > get_row_count() || row > 19) {
+            if (g_white_score < 3 || row > get_row_count() - 1) {
                 return FALSE;
             } else {
                 g_white_score -= 3;
@@ -350,6 +349,203 @@ int remove_row(const color_t color, const size_t row)
             break;
         default:
             return FALSE;
+    }
+
+    for (i = row + 1; i < (int)get_row_count(); ++i) {
+        for (j = 0; j < (int)get_column_count(); ++j) {
+            g_boards[i - 1][j] = g_boards[i][j];
+        }
+    }
+
+    for (i = 0; i < (int)get_column_count(); ++i) {
+        g_boards[last_row][i] = -1;
+    }
+    
+
+    return TRUE;
+}
+
+int remove_column(const color_t color, const size_t col)
+{
+    int i;
+    int j;
+    int last_col = get_column_count() - 1;
+
+    switch (color) {
+        case COLOR_BLACK:
+            if (g_black_score < 3 || col > get_column_count() - 1) {
+                return FALSE;
+            } else {
+                g_black_score -= 3;
+            }
+            break;
+        case COLOR_WHITE:
+            if (g_white_score < 3 || col > get_column_count() - 1) {
+                return FALSE;
+            } else {
+                g_white_score -= 3;
+            }
+            break;
+        default:
+            return FALSE;
+    }
+
+    for (i = col + 1; i < (int)get_column_count(); ++i) {
+        for (j = 0; j < (int)get_row_count(); ++j) {
+            g_boards[j][i - 1] = g_boards[j][i];
+        }
+    }
+
+    for (i = 0; i < (int)get_row_count(); ++i) {
+        g_boards[i][last_col] = -1;
+    }
+
+    return TRUE;
+}
+
+int swap_rows(const color_t color, const size_t row0, const size_t row1)
+{
+    size_t i;
+    size_t last_row = get_row_count() - 1;
+
+    if (row0 > last_row || row1 > last_row) {
+        return FALSE;
+    }
+    
+    switch (color) {
+        case COLOR_BLACK:
+            if (g_black_score < 2) {
+                return FALSE;
+            } else {
+                g_black_score -= 2;
+            }
+            break;
+        case COLOR_WHITE:
+            if (g_white_score < 2) {
+                
+                return FALSE;
+            } else {
+                g_white_score -= 2;
+            }
+            break;
+        default:
+            return FALSE;
+    }
+
+    
+    for (i = 0; i < get_column_count(); ++i) {
+        g_boards[row0][i] = g_boards[row0][i] ^ g_boards[row1][i];
+        g_boards[row1][i] = g_boards[row0][i] ^ g_boards[row1][i];
+        g_boards[row0][i] = g_boards[row0][i] ^ g_boards[row1][i];
+    }
+
+    return TRUE;
+}
+
+int swap_columns(const color_t color, const size_t col0, const size_t col1)
+{
+    size_t i;
+    size_t last_col = get_column_count() - 1;
+
+    if (col0 > last_col || col1 > last_col) {
+        return FALSE;
+    }
+    
+    switch (color) {
+        case COLOR_BLACK:
+            if (g_black_score < 2) {
+                return FALSE;
+            } else {
+                g_black_score -= 2;
+            }
+            break;
+        case COLOR_WHITE:
+            if (g_white_score < 2) {     
+                return FALSE;
+            } else {
+                g_white_score -= 2;
+            }
+            break;
+        default:
+            return FALSE;
+    }
+    
+    for (i = 0; i < get_row_count(); ++i) {
+        g_boards[i][col0] = g_boards[i][col0] ^ g_boards[i][col1];
+        g_boards[i][col1] = g_boards[i][col0] ^ g_boards[i][col1];
+        g_boards[i][col0] = g_boards[i][col0] ^ g_boards[i][col1];
+    }
+
+    return TRUE;
+}
+
+int copy_row(const color_t color, const size_t src, const size_t dst)
+{
+    size_t i;
+    size_t last_row = get_row_count() - 1;
+
+
+    if (src > last_row || dst > last_row) {
+        return FALSE;
+    }
+    
+    switch (color) {
+        case COLOR_BLACK:
+            if (g_black_score < 4) {
+                return FALSE;
+            } else {
+                g_black_score -= 4;
+            }
+            break;
+        case COLOR_WHITE:
+            if (g_white_score < 4) {     
+                return FALSE;
+            } else {
+                g_white_score -= 4;
+            }
+            break;
+        default:
+            return FALSE;
+    }
+
+    for (i = 0; i < get_column_count(); ++i) {
+        g_boards[dst][i] = g_boards[src][i];
+    }
+
+    return TRUE;
+}
+
+int copy_column(const color_t color, const size_t src, const size_t dst)
+{
+    size_t i;
+    size_t last_col = get_column_count() - 1;
+
+
+    if (src > last_col || dst > last_col) {
+        return FALSE;
+    }
+    
+    switch (color) {
+        case COLOR_BLACK:
+            if (g_black_score < 4) {
+                return FALSE;
+            } else {
+                g_black_score -= 4;
+            }
+            break;
+        case COLOR_WHITE:
+            if (g_white_score < 4) {     
+                return FALSE;
+            } else {
+                g_white_score -= 4;
+            }
+            break;
+        default:
+            return FALSE;
+    }
+
+    for (i = 0; i < get_row_count(); ++i) {
+        g_boards[i][dst] = g_boards[i][src];
     }
 
     return TRUE;
