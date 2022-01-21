@@ -6,7 +6,7 @@
 #define FALSE (0)
 
 typedef enum color {
-    COLOR_BLACK = 1,
+    COLOR_BLACK = 0,
     COLOR_WHITE
 } color_t;
 

@@ -2,9 +2,13 @@
 #include <limits.h>
 #include "pomoku.h"
 
+#define ROW_LENGTH (20)
+#define COLUMN_LENGTH (20)
+#define BLANK (7)
+
 int g_black_score = 0;
 int g_white_score = 0;
-int g_boards[20][20] = {0,};
+int g_boards[20][20];
 
 /* 2.2 */
 void init_game(void)
@@ -12,225 +16,78 @@ void init_game(void)
     size_t i;
     size_t j;
 
-    for (i = 15; i < 20; ++i) {
-        for (j =0; j < 20; ++j) {
-            g_boards[i][j] = -1;
-            g_boards[j][i] = -1;
-        }
-    }
-    
-/* debug start */
-
-    for (i = 0; i < 15; ++i) {
-        g_boards[14][i] = -1;
-    }
-
-/* debug end */
-
     g_black_score = 0;
     g_white_score = 0;
-    
+
+    for (i = 0; i < ROW_LENGTH; ++i) {
+        for (j = 0; j < COLUMN_LENGTH; ++j) {
+            g_boards[i][j] = -1;
+        }
+    }
+
+    for (i = 0; i < 15; ++i) {
+        for (j = 0; j < 15; ++j) {
+            g_boards[i][j] = BLANK;
+        }
+
+    }
+
 }
 
 /* 2.3 */
 size_t get_row_count(void)
 {
     size_t i;
-    
-    for (i = 0; i < 20; ++i) {
-        if (g_boards[i][0] == -1) {
-            break;
+
+    for (i = 0; i < ROW_LENGTH; ++i) {
+        if (g_boards[0][i] == -1) {
+            return i;
         }
     }
-    return i;
+
+    return 0;
 }
 
 /* 2.4 */
 size_t get_column_count(void)
 {
     size_t i;
-    
-    for (i = 0; i < 20; ++i) {
-        if (g_boards[0][i] == -1) {
-            break;
+
+    for (i = 0; i < COLUMN_LENGTH; ++i) {
+        if (g_boards[i][0] == -1) {
+            return i;
         }
     }
-    return i;
+   return 0;
 }
 
 /* 2.5 */
 int get_score(const color_t color)
 {
-    size_t temps_score;
-    size_t weighted_score;
-    size_t add_score;
-    size_t i;
-    size_t j;
-    int m;
-    int n;
-
-    size_t row_count = get_row_count();
-    size_t column_count = get_column_count();
-
-    weighted_score = 0;
-
-    if (color != COLOR_BLACK && color != COLOR_WHITE) {
+    switch (color) {
+    case COLOR_BLACK:
+        return g_black_score;
+    case COLOR_WHITE:
+        return g_white_score;
+    default:
         return -1;
     }
-
-/* 가로 */
-    for (i = 0; i < row_count; ++i) {
-        temps_score = 0;
-        add_score = 0;
-
-        for (j = 0; j < column_count; ++j) {
-        /* printf("boards[%d][%d]\n",m+n, n); */
-            if (g_boards[i][j] == (int)color) {
-                temps_score += g_boards[i][j];
-
-                if (color == COLOR_BLACK && temps_score >= 5) {
-                    add_score += 1;
-                    weighted_score += add_score;
-                } else if (color == COLOR_WHITE && temps_score >= 10) {
-                    add_score += 1;
-                    weighted_score += add_score;
-                }
-            } else {
-                temps_score = 0;
-                add_score = 0;
-            }
-            
-        }
-        /* printf("=================\n"); */
-    }
-    
-/* 세로 */
-    for (i = 0; i < row_count; ++i) {
-        temps_score = 0;
-        add_score = 0;
-
-        for (j = 0; j < column_count; ++j) {
-        /* printf("boards[%d][%d]\n",m+n, n); */
-            if (g_boards[j][i] == (int)color) {
-                temps_score += g_boards[j][i];
-
-                if (color == COLOR_BLACK && temps_score >= 5) {
-                    add_score += 1;
-                    weighted_score += add_score;
-                } else if (color == COLOR_WHITE && temps_score >= 10) {
-                    add_score += 1;
-                    weighted_score += add_score;
-                }
-            } else {
-                temps_score = 0;
-                add_score = 0;
-            }
-            
-        }
-        /* printf("=================\n"); */
-    }
-
-/* 대각선 ↘︎ 왼쪽*/
-    for (m = row_count - 5; m >= 0; --m) {
-        temps_score = 0;
-        add_score = 0;
-
-        for (n = 0; n < (int)row_count - m; ++n) {
-            /* printf("boards[%d][%d]\n",m+n, n); */
-            if (g_boards[m + n][n] == (int)color) {
-                temps_score += g_boards[m + n][n];
-
-                if (color == COLOR_BLACK && temps_score >= 5) {
-                    add_score += 1;
-                    weighted_score += add_score;
-                } else if (color == COLOR_WHITE && temps_score >= 10) {
-                    add_score += 1;
-                    weighted_score += add_score;
-                }
-            } else {
-                temps_score = 0;
-                add_score = 0;
-            }
-        }
-        /* printf("=================\n"); */
-    }
-
-/* 대각선 ↘︎ 오른쪽*/
-    for (m = row_count - 5; m > 0; --m) {
-        temps_score = 0;
-        add_score = 0;
-
-        for (n = 0; n < (int)row_count - m; ++n) {
-            /* printf("boards[%d][%d]\n",n, m + n); */
-            if (g_boards[n][m + n] == (int)color) {
-                temps_score += g_boards[n][m + n];
-
-                if (color == COLOR_BLACK && temps_score >= 5) {
-                    add_score += 1;
-                    weighted_score += add_score;
-                } else if (color == COLOR_WHITE && temps_score >= 10) {
-                    add_score += 1;
-                    weighted_score += add_score;
-                }
-            } else {
-                temps_score = 0;
-                add_score = 0;
-            }
-        }
-        /* printf("=================\n"); */
-    }
-
-/* 대각선 ↗︎　왼쪽 */
-    for (m = 4; m < (int)row_count; ++m) {
-        temps_score = 0;
-        add_score = 0;
-
-        for (n = 0; n < m + 1; ++n) {
-            if (g_boards[m - n][n] == -1) {
-                break;
-            }
-            printf("boards[%d][%d]\n",m - n, n);
-            if (g_boards[m - n][n] == (int)color) {
-                temps_score += g_boards[m - n][n];
-
-                if (color == COLOR_BLACK && temps_score >= 5) {
-                    add_score += 1;
-                    weighted_score += add_score;
-                } else if (color == COLOR_WHITE && temps_score >= 10) {
-                    add_score += 1;
-                    weighted_score += add_score;
-                }
-            } else {
-                temps_score = 0;
-                add_score = 0;
-            }
-        }
-        printf("=================\n");
-
-    }
-
-/* 대각선 ↗︎ 오른쪽 */
-    
-
-/* 합산 */
-
-    if (color == COLOR_BLACK) {
-        g_black_score = weighted_score;
-    } else {
-        g_white_score = weighted_score;
-    }
-
-    return weighted_score;
 }
 
 /* 2.6 */
 int get_color(const size_t row, const size_t col)
 {
-    if (g_boards[row][col] == 1) {
-        return 0;
-    } else if (g_boards[row][col] == 2) {
-        return 1;
-    } else {
+    if (row < 0 || row > get_row_count() - 1 || col < 0 
+        || col > get_column_count() - 1) {
+        return -1;
+    }
+
+    switch ((color_t)g_boards[row][col]) {
+    case COLOR_BLACK:
+        return COLOR_BLACK;
+    case COLOR_WHITE:
+        return COLOR_WHITE;
+    default:
         return -1;
     }
 }
@@ -238,22 +95,161 @@ int get_color(const size_t row, const size_t col)
 /* 2.7 */
 int is_placeable(const size_t row, const size_t col)
 {
-    if (g_boards[row][col] == 0) {
-        return TRUE;
-    }
-
-    return FALSE;
+    if (row < 0 || row > get_row_count() - 1 || col < 0 
+        || col > get_column_count() - 1 || g_boards[row][col] != BLANK) {
+        return FALSE;
+    }  
+    
+    return TRUE;
 }
 
 /* 2.8 */
 int place_stone(const color_t color, const size_t row, const size_t col)
 {
-    if (is_placeable(row, col) == TRUE) {
-        g_boards[row][col] = color;
-        return TRUE;
+    size_t temp_score = 1;
+    int i;
+    int j;
+
+    if (is_placeable(row, col) == FALSE 
+        || g_boards[row][col] != BLANK) {
+        return FALSE;
     }
 
-    return FALSE;
+    g_boards[row][col] = color;
+
+    /* 가로 */
+    for (i = col + 1; i < (int)get_column_count(); ++i) {
+        if (g_boards[row][i] != (int)color) {
+            break;
+        } else {
+            ++temp_score;
+        }
+    }
+
+    for (i = col - 1; i > -1; --i) {
+        if (g_boards[row][i] != (int)color) {
+            break;
+        } else {
+            ++temp_score;
+        }
+    }
+
+    if (temp_score >= 5) {
+        if (color == COLOR_BLACK) {
+            g_black_score += temp_score - 4;
+        } else {
+            g_white_score += temp_score - 4;
+        }
+    }
+
+    temp_score = 1;
+
+    /* 세로 */
+    for (i = row + 1; i < (int)get_row_count(); ++i) {
+        if (g_boards[i][col] != (int)color) {
+            break;
+        } else {
+            ++temp_score;
+        }
+    }
+
+    for (i = row - 1; i > -1; --i) {
+        if (g_boards[i][col] != (int)color) {
+            break;
+        } else {
+            ++temp_score;
+        }
+    }
+
+    if (temp_score >= 5) {
+        if (color == COLOR_BLACK) {
+            g_black_score += temp_score - 4;
+        } else {
+            g_white_score += temp_score - 4;
+        }
+    }
+
+    temp_score = 1;
+
+    /* 대각선 오른쪽 */
+    
+    i = row - 1;
+    j = col - 1;
+
+    while (TRUE) {
+        if (i  < 0 || j < 0 || g_boards[i][j] != (int)color) {
+            break;
+        }
+        ++temp_score;
+        --i;
+        --j;
+
+    }
+    
+    i = row + 1;
+    j = col + 1;
+
+    while (TRUE) {
+        if (i > (int)get_row_count() - 1 || j > (int)get_column_count() - 1
+            || g_boards[i][j] != (int)color) {
+            break;
+        }
+
+        ++temp_score;
+        ++i;
+        ++j;
+    }
+
+
+    if (temp_score >= 5) {
+        if (color == COLOR_BLACK) {
+            g_black_score += temp_score - 4;
+        } else {
+            g_white_score += temp_score - 4;
+        }
+    }
+    temp_score = 1;
+
+    /* 대각선 왼쪽 */
+    
+    i = row - 1;
+    j = col + 1;
+
+    while (TRUE) {
+        if (i < 0 || j > (int)get_column_count() - 1
+            || g_boards[i][j] != (int)color) {
+            break;
+        }
+
+        ++temp_score;
+        --i;
+        ++j;
+
+    }
+
+    i = row + 1;
+    j = col - 1;
+
+    while (TRUE) {
+        if (i > (int)get_column_count() - 1 || j < 0
+            || g_boards[i][j] != (int)color) {
+            break;
+        }
+
+        ++temp_score;
+        ++i;
+        --j;
+    }
+
+    if (temp_score >= 5) {
+        if (color == COLOR_BLACK) {
+            g_black_score += temp_score - 4;
+        } else {
+            g_white_score += temp_score - 4;
+        }
+    }
+
+    return TRUE;
 }
 
 
@@ -268,6 +264,6 @@ void view_ary(void)
         }
         printf("\n");
     }
-
+    
     printf("\n");
 }

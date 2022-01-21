@@ -11,11 +11,12 @@ const char* get_longest_safe_zone_or_null(
 {
     size_t i;
     size_t overlab_count = 0;
-    size_t safe_area_length = 0;
+    size_t current_safe_area_length = 0;
     size_t bool_continous_flag = 0;
      
-    const char* temp_longest_address = NULL;
-    const char* longest_address = NULL;
+    const char* current_longest_start_address = NULL;
+    const char* most_longest_start_address = NULL;
+
     const char* current_location = cab_start_location;
     const char* last_location = current_location + cab_length;
 
@@ -33,38 +34,36 @@ const char* get_longest_safe_zone_or_null(
             }
         }
 
-        if (overlab_count % 2 == 0) {
-            safe_area_length += 1;
+        if ((overlab_count & 1) == 0) {
+            ++ current_safe_area_length;
 
             if (bool_continous_flag != 1) {
-                temp_longest_address = current_location;
+                current_longest_start_address = current_location;
                 bool_continous_flag = 1;
             }
         } else {
-            if (bool_continous_flag != 0 && safe_area_length >= *out_longest_safe_area_length) {
-                *out_longest_safe_area_length = safe_area_length;
-                if (temp_longest_address > longest_address) {
-                    longest_address = temp_longest_address;
+            if (bool_continous_flag != 0 && current_safe_area_length >= *out_longest_safe_area_length) {
+                *out_longest_safe_area_length = current_safe_area_length;
+                if (current_longest_start_address > most_longest_start_address) {
+                    most_longest_start_address = current_longest_start_address;
                 }
             }
-            temp_longest_address = 0;
-            safe_area_length = 0;
+            current_longest_start_address = 0;
+            current_safe_area_length = 0;
             bool_continous_flag = 0;
         }
-        
-        if (current_location == last_location - 1 && bool_continous_flag != 0
-            && safe_area_length >= *out_longest_safe_area_length) {
-            *out_longest_safe_area_length = safe_area_length;
-            if (temp_longest_address > longest_address) {
-                longest_address = temp_longest_address;
-            }
-            break;
-        }
-
         overlab_count = 0;
     }
+
+    if (current_location == last_location && bool_continous_flag != 0
+        && current_safe_area_length >= *out_longest_safe_area_length) {
+        *out_longest_safe_area_length = current_safe_area_length;
+        if (current_longest_start_address > most_longest_start_address) {
+            most_longest_start_address = current_longest_start_address;
+        }
+    }
     
-    return longest_address;
+    return most_longest_start_address;
 }
 
 int get_travel_time(
@@ -90,7 +89,7 @@ int get_travel_time(
             }
         }
 
-        (overlab_count % 2 == 0) ? ++safe_area_length : ++unsafe_area_length;
+        ((overlab_count & 1) == 0) ? ++safe_area_length : ++unsafe_area_length;
         overlab_count = 0;
     }
 
