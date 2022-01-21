@@ -333,7 +333,7 @@ int remove_row(const color_t color, const size_t row)
     int j;
     int last_row = get_row_count() - 1;
 
-    if (get_row_count() < MIN_LENGTH) {
+    if (get_row_count() <= MIN_LENGTH) {
         return FALSE;
     }
 
@@ -365,7 +365,6 @@ int remove_row(const color_t color, const size_t row)
     for (i = 0; i < (int)get_column_count(); ++i) {
         g_boards[last_row][i] = -1;
     }
-    
 
     return TRUE;
 }
@@ -376,7 +375,7 @@ int remove_column(const color_t color, const size_t col)
     int j;
     int last_col = get_column_count() - 1;
 
-    if (get_column_count() < MIN_LENGTH) {
+    if (get_column_count() <= MIN_LENGTH) {
         return FALSE;
     }
 
@@ -417,7 +416,7 @@ int swap_rows(const color_t color, const size_t row0, const size_t row1)
     size_t i;
     size_t last_row = get_row_count() - 1;
 
-    if (row0 > last_row || row1 > last_row) {
+    if (row0 > last_row || row1 > last_row || row0 < 0 || row1 < 0) {
         return FALSE;
     }
     
@@ -454,7 +453,7 @@ int swap_columns(const color_t color, const size_t col0, const size_t col1)
     size_t i;
     size_t last_col = get_column_count() - 1;
 
-    if (col0 > last_col || col1 > last_col) {
+    if (col0 > last_col || col1 > last_col || col0 < 0 || col1 < 0) {
         return FALSE;
     }
     

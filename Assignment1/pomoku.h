@@ -10,15 +10,11 @@ typedef enum color {
     COLOR_WHITE
 } color_t;
 
-/* add start */
-
-extern int g_black_score;  /* extern 키워드가 꼭 있어야 하나? */
+extern int g_black_score;
 extern int g_white_score;
 extern int g_boards[20][20];
 void view_ary(void);
 
-
-/* add end */
 
 void init_game(void);
 
