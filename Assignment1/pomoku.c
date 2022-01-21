@@ -5,7 +5,9 @@
 #define ROW_LENGTH (20)
 #define COLUMN_LENGTH (20)
 #define BLANK (7)
+
 #define MIN_LENGTH (10)
+#define MAX_LENGTH (20)
 
 int g_black_score = 0;
 int g_white_score = 0;
@@ -258,6 +260,10 @@ int insert_row(const color_t color, const size_t row)
     int i;
     int j;
 
+    if (get_row_count() >= MAX_LENGTH) {
+        return FALSE;
+    }
+
     switch (color) {
     case COLOR_BLACK:
         if (g_black_score < 3 || row > get_row_count()) {
@@ -295,6 +301,10 @@ int insert_column(const color_t color, const size_t col)
     int i;
     int j;
 
+    if (get_column_count() >= MAX_LENGTH) {
+        return FALSE;
+    }
+
     switch (color) {
     case COLOR_BLACK:
         if (g_black_score < 3 || col > get_column_count()) {
@@ -304,7 +314,7 @@ int insert_column(const color_t color, const size_t col)
         }
         break;
     case COLOR_WHITE:
-        if (g_black_score < 3 || col > get_column_count()) {
+        if (g_white_score < 3 || col > get_column_count()) {
             return FALSE;
         } else {
             g_white_score -= 3;
