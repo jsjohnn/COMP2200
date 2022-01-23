@@ -51,7 +51,7 @@ size_t get_row_count(void)
         }
     }
 
-    return (size_t)-1;
+    return MAX_LENGTH;
 }
 
 size_t get_column_count(void)
@@ -63,7 +63,7 @@ size_t get_column_count(void)
             return i;
         }
     }
-    return (size_t)-1;
+    return MAX_LENGTH;
 }
 
 int get_score(const color_t color)
@@ -97,7 +97,7 @@ int get_color(const size_t row, const size_t col)
 
 int is_placeable(const size_t row, const size_t col)
 {
-    if (row < 0 ||  col < 0 || row > get_row_count() - 1
+    if (row < 0 || col < 0 || row > get_row_count() - 1
         || col > get_column_count() - 1 || g_boards[row][col] != BLANK) {
         return FALSE;
     }  
