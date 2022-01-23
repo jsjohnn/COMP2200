@@ -2,18 +2,24 @@
 #include <limits.h>
 #include "pomoku.h"
 
-#define ROW_LENGTH (20)
-#define COLUMN_LENGTH (20)
 #define BLANK (7)
+#define OUT_OF_RANGE_COL_OR_ROW (-1)
 
 #define MIN_LENGTH (10)
 #define MAX_LENGTH (20)
+
+#define GET_SCORE_POINT (5)
+#define DUMP_SCORE (4)
+#define ONE_SCORE (1)
+
+#define INSERT_OR_REMOVE_REQUIRED_POINT (3)
+#define SWAP_REQUIRED_POINT (2)
+#define COPY_REQUIRED_POINT (4)
 
 int g_black_score = 0;
 int g_white_score = 0;
 int g_boards[20][20];
 
-/* 2.2 */
 void init_game(void)
 {
     size_t i;
@@ -22,9 +28,9 @@ void init_game(void)
     g_black_score = 0;
     g_white_score = 0;
 
-    for (i = 0; i < ROW_LENGTH; ++i) {
-        for (j = 0; j < COLUMN_LENGTH; ++j) {
-            g_boards[i][j] = -1;
+    for (i = 0; i < MAX_LENGTH; ++i) {
+        for (j = 0; j < MAX_LENGTH; ++j) {
+            g_boards[i][j] = OUT_OF_RANGE_COL_OR_ROW;
         }
     }
 
@@ -32,38 +38,34 @@ void init_game(void)
         for (j = 0; j < 15; ++j) {
             g_boards[i][j] = BLANK;
         }
-
     }
-
 }
 
-/* 2.3 */
 size_t get_row_count(void)
 {
     size_t i;
 
-    for (i = 0; i < ROW_LENGTH; ++i) {
-        if (g_boards[i][0] == -1) {
+    for (i = 0; i < MAX_LENGTH; ++i) {
+        if (g_boards[i][0] == OUT_OF_RANGE_COL_OR_ROW) {
             return i;
         }
     }
-    return 20;
+
+    return (size_t)-1;
 }
 
-/* 2.4 */
 size_t get_column_count(void)
 {
     size_t i;
 
-    for (i = 0; i < COLUMN_LENGTH; ++i) {
-        if (g_boards[0][i] == -1) {
+    for (i = 0; i < MAX_LENGTH; ++i) {
+        if (g_boards[0][i] == OUT_OF_RANGE_COL_OR_ROW) {
             return i;
         }
     }
-    return 20;
+    return (size_t)-1;
 }
 
-/* 2.5 */
 int get_score(const color_t color)
 {
     switch (color) {
@@ -76,10 +78,9 @@ int get_score(const color_t color)
     }
 }
 
-/* 2.6 */
 int get_color(const size_t row, const size_t col)
 {
-    if (row < 0 || row > get_row_count() - 1 || col < 0 
+    if (row < 0 || col < 0 || row > get_row_count() - 1  
         || col > get_column_count() - 1) {
         return -1;
     }
@@ -94,10 +95,9 @@ int get_color(const size_t row, const size_t col)
     }
 }
 
-/* 2.7 */
 int is_placeable(const size_t row, const size_t col)
 {
-    if (row < 0 || row > get_row_count() - 1 || col < 0 
+    if (row < 0 ||  col < 0 || row > get_row_count() - 1
         || col > get_column_count() - 1 || g_boards[row][col] != BLANK) {
         return FALSE;
     }  
@@ -105,15 +105,13 @@ int is_placeable(const size_t row, const size_t col)
     return TRUE;
 }
 
-/* 2.8 */
 int place_stone(const color_t color, const size_t row, const size_t col)
 {
-    size_t temp_score = 1;
+    size_t temp_score = ONE_SCORE;
     int i;
     int j;
 
-    if (is_placeable(row, col) == FALSE 
-        || g_boards[row][col] != BLANK) {
+    if (is_placeable(row, col) == FALSE || g_boards[row][col] != BLANK) {
         return FALSE;
     }
 
@@ -136,15 +134,15 @@ int place_stone(const color_t color, const size_t row, const size_t col)
         }
     }
 
-    if (temp_score >= 5) {
+    if (temp_score >= GET_SCORE_POINT) {
         if (color == COLOR_BLACK) {
-            g_black_score += temp_score - 4;
+            g_black_score += temp_score - DUMP_SCORE;
         } else {
-            g_white_score += temp_score - 4;
+            g_white_score += temp_score - DUMP_SCORE;
         }
     }
 
-    temp_score = 1;
+    temp_score = ONE_SCORE;
 
     /* 세로 */
     for (i = row + 1; i < (int)get_row_count(); ++i) {
@@ -163,18 +161,17 @@ int place_stone(const color_t color, const size_t row, const size_t col)
         }
     }
 
-    if (temp_score >= 5) {
+    if (temp_score >= GET_SCORE_POINT) {
         if (color == COLOR_BLACK) {
-            g_black_score += temp_score - 4;
+            g_black_score += temp_score - DUMP_SCORE;
         } else {
-            g_white_score += temp_score - 4;
+            g_white_score += temp_score - DUMP_SCORE;
         }
     }
 
-    temp_score = 1;
+    temp_score = ONE_SCORE;
 
-    /* 대각선 오른쪽 */
-    
+    /* 대각선 (＼) */
     i = row - 1;
     j = col - 1;
 
@@ -185,7 +182,6 @@ int place_stone(const color_t color, const size_t row, const size_t col)
         ++temp_score;
         --i;
         --j;
-
     }
     
     i = row + 1;
@@ -202,18 +198,17 @@ int place_stone(const color_t color, const size_t row, const size_t col)
         ++j;
     }
 
-
-    if (temp_score >= 5) {
+    if (temp_score >= GET_SCORE_POINT) {
         if (color == COLOR_BLACK) {
-            g_black_score += temp_score - 4;
+            g_black_score += temp_score - DUMP_SCORE;
         } else {
-            g_white_score += temp_score - 4;
+            g_white_score += temp_score - DUMP_SCORE;
         }
     }
-    temp_score = 1;
 
-    /* 대각선 왼쪽 */
+    temp_score = ONE_SCORE;
 
+    /* 대각선 (/)*/
     i = row - 1;
     j = col + 1;
 
@@ -226,14 +221,13 @@ int place_stone(const color_t color, const size_t row, const size_t col)
         ++temp_score;
         --i;
         ++j;
-
     }
 
     i = row + 1;
     j = col - 1;
 
     while (TRUE) {
-        if (i > (int)get_column_count() - 1 || j < 0
+        if (j < 0 || i > (int)get_column_count() - 1
             || g_boards[i][j] != (int)color) {
             break;
         }
@@ -243,11 +237,11 @@ int place_stone(const color_t color, const size_t row, const size_t col)
         --j;
     }
 
-    if (temp_score >= 5) {
+    if (temp_score >= GET_SCORE_POINT) {
         if (color == COLOR_BLACK) {
-            g_black_score += temp_score - 4;
+            g_black_score += temp_score - DUMP_SCORE;
         } else {
-            g_white_score += temp_score - 4;
+            g_white_score += temp_score - DUMP_SCORE;
         }
     }
 
@@ -265,17 +259,17 @@ int insert_row(const color_t color, const size_t row)
 
     switch (color) {
     case COLOR_BLACK:
-        if (g_black_score < 3 || row > get_row_count()) {
+        if (g_black_score < INSERT_OR_REMOVE_REQUIRED_POINT || row > get_row_count()) {
             return FALSE;
         } else {
-            g_black_score -= 3;
+            g_black_score -= INSERT_OR_REMOVE_REQUIRED_POINT;
         }
         break;
     case COLOR_WHITE:
-        if (g_white_score < 3 || row > get_row_count()) {
+        if (g_white_score < INSERT_OR_REMOVE_REQUIRED_POINT || row > get_row_count()) {
             return FALSE;
         } else {
-            g_white_score -= 3;
+            g_white_score -= INSERT_OR_REMOVE_REQUIRED_POINT;
         }
         break;
     default:
@@ -306,17 +300,17 @@ int insert_column(const color_t color, const size_t col)
 
     switch (color) {
     case COLOR_BLACK:
-        if (g_black_score < 3 || col > get_column_count()) {
+        if (g_black_score < INSERT_OR_REMOVE_REQUIRED_POINT || col > get_column_count()) {
             return FALSE;
         } else {
-            g_black_score -= 3;
+            g_black_score -= INSERT_OR_REMOVE_REQUIRED_POINT;
         }
         break;
     case COLOR_WHITE:
-        if (g_white_score < 3 || col > get_column_count()) {
+        if (g_white_score < INSERT_OR_REMOVE_REQUIRED_POINT || col > get_column_count()) {
             return FALSE;
         } else {
-            g_white_score -= 3;
+            g_white_score -= INSERT_OR_REMOVE_REQUIRED_POINT;
         }
         break;
     default:
@@ -348,17 +342,17 @@ int remove_row(const color_t color, const size_t row)
 
     switch (color) {
     case COLOR_BLACK:
-        if (g_black_score < 3 || row > get_row_count() - 1) {
+        if (g_black_score < INSERT_OR_REMOVE_REQUIRED_POINT || row > get_row_count() - 1) {
             return FALSE;
         } else {
-            g_black_score -= 3;
+            g_black_score -= INSERT_OR_REMOVE_REQUIRED_POINT;
         }
         break;
     case COLOR_WHITE:
-        if (g_white_score < 3 || row > get_row_count() - 1) {
+        if (g_white_score < INSERT_OR_REMOVE_REQUIRED_POINT || row > get_row_count() - 1) {
             return FALSE;
         } else {
-            g_white_score -= 3;
+            g_white_score -= INSERT_OR_REMOVE_REQUIRED_POINT;
         }
         break;
     default:
@@ -390,17 +384,17 @@ int remove_column(const color_t color, const size_t col)
 
     switch (color) {
     case COLOR_BLACK:
-        if (g_black_score < 3 || col > get_column_count() - 1) {
+        if (g_black_score < INSERT_OR_REMOVE_REQUIRED_POINT || col > get_column_count() - 1) {
             return FALSE;
         } else {
-            g_black_score -= 3;
+            g_black_score -= INSERT_OR_REMOVE_REQUIRED_POINT;
         }
         break;
     case COLOR_WHITE:
-        if (g_white_score < 3 || col > get_column_count() - 1) {
+        if (g_white_score < INSERT_OR_REMOVE_REQUIRED_POINT || col > get_column_count() - 1) {
             return FALSE;
         } else {
-            g_white_score -= 3;
+            g_white_score -= INSERT_OR_REMOVE_REQUIRED_POINT;
         }
         break;
     default:
@@ -431,17 +425,17 @@ int swap_rows(const color_t color, const size_t row0, const size_t row1)
     
     switch (color) {
     case COLOR_BLACK:
-        if (g_black_score < 2) {
+        if (g_black_score < SWAP_REQUIRED_POINT) {
             return FALSE;
         } else {
-            g_black_score -= 2;
+            g_black_score -= SWAP_REQUIRED_POINT;
         }
         break;
     case COLOR_WHITE:
-        if (g_white_score < 2) {
+        if (g_white_score < SWAP_REQUIRED_POINT) {
             return FALSE;
         } else {
-            g_white_score -= 2;
+            g_white_score -= SWAP_REQUIRED_POINT;
         }
         break;
     default:
@@ -449,9 +443,9 @@ int swap_rows(const color_t color, const size_t row0, const size_t row1)
     }
 
     for (i = 0; i < get_column_count(); ++i) {
-        g_boards[row0][i] = g_boards[row0][i] ^ g_boards[row1][i];
-        g_boards[row1][i] = g_boards[row0][i] ^ g_boards[row1][i];
-        g_boards[row0][i] = g_boards[row0][i] ^ g_boards[row1][i];
+        g_boards[row0][i] ^= g_boards[row1][i];
+        g_boards[row1][i] ^= g_boards[row1][i];
+        g_boards[row0][i] ^= g_boards[row1][i];
     }
 
     return TRUE;
@@ -468,17 +462,17 @@ int swap_columns(const color_t color, const size_t col0, const size_t col1)
     
     switch (color) {
     case COLOR_BLACK:
-        if (g_black_score < 2) {
+        if (g_black_score < SWAP_REQUIRED_POINT) {
             return FALSE;
         } else {
-            g_black_score -= 2;
+            g_black_score -= SWAP_REQUIRED_POINT;
         }
         break;
     case COLOR_WHITE:
-        if (g_white_score < 2) {     
+        if (g_white_score < SWAP_REQUIRED_POINT) {     
             return FALSE;
         } else {
-            g_white_score -= 2;
+            g_white_score -= SWAP_REQUIRED_POINT;
         }
         break;
     default:
@@ -486,9 +480,9 @@ int swap_columns(const color_t color, const size_t col0, const size_t col1)
     }
     
     for (i = 0; i < get_row_count(); ++i) {
-        g_boards[i][col0] = g_boards[i][col0] ^ g_boards[i][col1];
-        g_boards[i][col1] = g_boards[i][col0] ^ g_boards[i][col1];
-        g_boards[i][col0] = g_boards[i][col0] ^ g_boards[i][col1];
+        g_boards[i][col0] ^= g_boards[i][col1];
+        g_boards[i][col1] ^= g_boards[i][col1];
+        g_boards[i][col0] ^= g_boards[i][col1];
     }
 
     return TRUE;
@@ -499,24 +493,23 @@ int copy_row(const color_t color, const size_t src, const size_t dst)
     size_t i;
     size_t last_row = get_row_count() - 1;
 
-
-    if (src > last_row || src < 0 || dst > last_row || dst < 0) {
+    if (src > last_row || dst > last_row || src < 0 || dst < 0) {
         return FALSE;
     }
     
     switch (color) {
     case COLOR_BLACK:
-        if (g_black_score < 4) {
+        if (g_black_score < COPY_REQUIRED_POINT) {
             return FALSE;
         } else {
-            g_black_score -= 4;
+            g_black_score -= COPY_REQUIRED_POINT;
         }
         break;
     case COLOR_WHITE:
-        if (g_white_score < 4) {     
+        if (g_white_score < COPY_REQUIRED_POINT) {     
             return FALSE;
         } else {
-            g_white_score -= 4;
+            g_white_score -= COPY_REQUIRED_POINT;
         }
         break;
     default:
@@ -542,17 +535,17 @@ int copy_column(const color_t color, const size_t src, const size_t dst)
     
     switch (color) {
     case COLOR_BLACK:
-        if (g_black_score < 4) {
+        if (g_black_score < COPY_REQUIRED_POINT) {
             return FALSE;
         } else {
-            g_black_score -= 4;
+            g_black_score -= COPY_REQUIRED_POINT;
         }
         break;
     case COLOR_WHITE:
-        if (g_white_score < 4) {     
+        if (g_white_score < COPY_REQUIRED_POINT) {     
             return FALSE;
         } else {
-            g_white_score -= 4;
+            g_white_score -= COPY_REQUIRED_POINT;
         }
         break;
     default:
@@ -580,3 +573,4 @@ void view_ary(void)
     
     printf("\n");
 }
+
