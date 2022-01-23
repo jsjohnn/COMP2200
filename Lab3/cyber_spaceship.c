@@ -1,4 +1,3 @@
-#include <assert.h>
 #include "cyber_spaceship.h"
 
 const char* get_longest_safe_zone_or_null(

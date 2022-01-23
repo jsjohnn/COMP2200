@@ -63,6 +63,7 @@ size_t get_column_count(void)
             return i;
         }
     }
+
     return MAX_LENGTH;
 }
 
@@ -443,9 +444,9 @@ int swap_rows(const color_t color, const size_t row0, const size_t row1)
     }
 
     for (i = 0; i < get_column_count(); ++i) {
-        g_boards[row0][i] ^= g_boards[row1][i];
-        g_boards[row1][i] ^= g_boards[row1][i];
-        g_boards[row0][i] ^= g_boards[row1][i];
+        g_boards[row0][i] = g_boards[row0][i] ^ g_boards[row1][i];
+        g_boards[row1][i] = g_boards[row0][i] ^ g_boards[row1][i];
+        g_boards[row0][i] = g_boards[row0][i] ^ g_boards[row1][i];
     }
 
     return TRUE;
@@ -480,9 +481,9 @@ int swap_columns(const color_t color, const size_t col0, const size_t col1)
     }
     
     for (i = 0; i < get_row_count(); ++i) {
-        g_boards[i][col0] ^= g_boards[i][col1];
-        g_boards[i][col1] ^= g_boards[i][col1];
-        g_boards[i][col0] ^= g_boards[i][col1];
+        g_boards[i][col0] = g_boards[i][col0] ^ g_boards[i][col1];
+        g_boards[i][col1] = g_boards[i][col0] ^ g_boards[i][col1];
+        g_boards[i][col0] = g_boards[i][col0] ^ g_boards[i][col1];
     }
 
     return TRUE;
