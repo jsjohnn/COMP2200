@@ -573,4 +573,3 @@ void view_ary(void)
     
     printf("\n");
 }
-
