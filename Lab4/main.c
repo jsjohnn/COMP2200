@@ -113,18 +113,20 @@ int main(void)
             token_strtok = strtok(NULL, one_delim);
             token_tokenize = tokenize(NULL, one_delim);
         }
+
+        printf("==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--\n");
         token_strtok = strtok(str_strtok2, mult_delim);
         token_tokenize = tokenize(str_tokenize2, mult_delim);
 
-        while (token_strtok != NULL && token_tokenize != NULL) {
 
-            printf("token_strtok: %s\n", token_strtok);
-            printf("token_tokenize: %s\n", token_tokenize);
+        while (token_strtok != NULL && token_tokenize != NULL) {
 
             assert(strcmp(token_strtok, token_tokenize) == 0);
             token_strtok = strtok(NULL, mult_delim);
             token_tokenize = tokenize(NULL, mult_delim);
         }
+
+        printf("==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--\n");
     }
 
     /*

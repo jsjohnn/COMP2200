@@ -59,7 +59,7 @@ int index_of(const char* str, const char* word)
     while (*copy_str != 0x00) {
         first_word_same = *copy_str++ == *copy_word;
 
-        if(first_word_same) {
+        if (first_word_same) {
             first_address = copy_str - 1;
             --left_count;
 
@@ -106,12 +106,12 @@ void reverse_by_words(char* str)
 
         if (is_space) {
             if (*str == 0x00) {
-                reverse(str- str_move);
+                reverse (str- str_move);
                 break;
             }
 
             *--str = 0x00;
-            reverse(str- (str_move - 1));
+            reverse (str- (str_move - 1));
             *str++ = 0x20;
 
             str_move = 0;
@@ -179,6 +179,7 @@ char* tokenize(char* str_or_null, const char* delims)
                 continue;
             }
         }
+
         if (*str_or_null == *delims) {
             *str_or_null = '\0';
             break;
@@ -193,7 +194,7 @@ char* tokenize(char* str_or_null, const char* delims)
     
     ++s_is_continue;
 
-    if (*(s_str + 1) == '\0') {
+    if (*str_or_null == '\0') {
         s_is_continue = 0;
     }
 
