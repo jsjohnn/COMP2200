@@ -13,6 +13,7 @@ typedef enum color {
 extern int g_black_score;
 extern int g_white_score;
 extern int g_boards[20][20];
+extern char* g_ary;
 
 void view_ary(void);
 

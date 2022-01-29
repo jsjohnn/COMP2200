@@ -19,9 +19,11 @@
 int g_black_score = 0;
 int g_white_score = 0;
 int g_boards[20][20];
+char* g_ary = "HEY";
 
 void init_game(void)
 {
+    
     size_t i;
     size_t j;
 
