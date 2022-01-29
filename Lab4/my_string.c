@@ -2,7 +2,6 @@
 #include <assert.h>
 #include "my_string.h"
 
-/* TODO: 반복문을 index접근이 아닌 포인터 접근으로 가능? */
 void reverse(char* str)
 {
     size_t i = 0;
@@ -29,7 +28,6 @@ void reverse(char* str)
 
 }
 
-/* TODO: 배열 할당 최소한으로 줄이기 */
 int index_of(const char* str, const char* word)
 {
     const char* copy_word = word;
@@ -40,6 +38,7 @@ int index_of(const char* str, const char* word)
     size_t word_same;
     size_t word_count;
     size_t left_count;
+
 
     if (str == NULL || word == NULL) {
         return -1;
@@ -125,180 +124,88 @@ void reverse_by_words(char* str)
 
 char* tokenize(char* str_or_null, const char* delims)
 {
-
-    static char* start_address;
-    static size_t is_continous = 0;
-
+    static char* s_str;
+    static size_t s_is_continue = 0;
+    
     const char* orign_delims = delims;
-
+    
     size_t count = 0;
-    size_t delims_count = 0;
-    size_t is_founded = 0;
-    size_t first_char_delims = 0;
+    size_t added_null = 0;
 
-    if (str_or_null == NULL && is_continous == 0) {
+    if (s_is_continue == 0 && str_or_null == NULL) {
         return NULL;
     }
 
-    if (str_or_null != NULL && is_continous == 0) {
-        start_address = str_or_null;
+    if (s_is_continue == 0 && str_or_null != NULL) {
+        s_str = str_or_null;
     }
 
-    while (*delims++ != 0x00) {
-        delims_count++;
+    if (s_is_continue != 0) {
+        str_or_null = s_str;
     }
 
-    if (str_or_null != NULL && str_or_null != start_address) {
-        start_address = str_or_null;
-    }
+    while (*str_or_null != '\0') {
 
-    delims = delims - 1 - delims_count;
-    assert(*delims == 0x20);
-
-    printf("start_address: %c\n", *(start_address));
-
-    while (*delims != 0x00) {
-        if (*start_address == *delims) {
-            first_char_delims = 1;
-            delims = orign_delims;
-            ++start_address;
-            break;
-        }
-        ++delims;
-    }
-
-    if (first_char_delims) {
-        
-        while (*start_address != 0x00) {
-            while (*delims != 0x00) {
-                if (*start_address != *delims) {
-                    first_char_delims = 2;
-                    break;
-                }
-
-                if (*start_address == 0x20) {
-                    *start_address = 0x00;
-                }
-
-                ++delims;
-            }
-
-            ++start_address;
-
-            if (first_char_delims == 2) {
+        while (*delims != '\0') {
+            if (*str_or_null == *delims) {
                 break;
-            }        
-
-        }
-
-        /* printf("start_address: %c\n", *(start_address)); */
-        /* printf("count: %d\n", count); */
-
-        while (*start_address != 0x00) {
-            delims = orign_delims;
-            ++count;
-            while (*delims != 0x00) {
-                if (*start_address != *delims) {
-                    ++is_continous;
-
-                    return start_address - count;
-                }
-
-                if (*start_address == 0x20) {
-                    *start_address = 0x00;
-                    break;
-                }
-
+            } else {
                 ++delims;
-            }
-            ++start_address;
-            
-        }
-        /* return NULL; */
-    }
-
-    while (*start_address != 0x00) {
-        ++count;
-
-        while (*delims != 0x00) {
-            if (*start_address == *delims) {
-                is_founded = 1;
-
-                if (*start_address == 0x20) {
-                    *start_address = 0x00;
-                }
-
-                break;
-            }
-            ++delims;
-
-        }
-        ++start_address;
-        delims = orign_delims;
-
-        if (is_founded == 1) {
-            break;
-        }
-    }
-/*
-    printf("count: %lu", count);
-    printf("is_founded: %lu\n", is_founded);
-*/
-
-    if (is_founded == 0) {
-        is_continous = 0;
-        return start_address - count;
-    }
-
-    is_founded = 0;
-
-/* debug start */
-
-    assert(*delims == 0x20);
-
-/* debug end */
-
-
-    /* printf("start_address: %c,  ", *start_address);
-     printf("count: %lu\n", count); */
-
-
-    while (*start_address != 0x00) {
-        ++count;
-        while (*delims != 0x00) {
-            
-            if (*start_address == *delims && *start_address == 0x20) {
-                *start_address = 0x00;
-                ++delims;
-
                 continue;
             }
 
-            if (*start_address != *delims) {
-                is_founded = 1;
-
-                break;
-            }
-
-            ++delims;
         }
 
-        if (is_founded == 1) {
+        if (*str_or_null != *delims) {
+            s_str = str_or_null;
+            delims = orign_delims;
             break;
         }
 
-        ++start_address;
         delims = orign_delims;
+        ++str_or_null;
 
     }
 
-    /* start_address++; */
-    is_continous++;
 
-    printf("start_address: %c\n", *(start_address));
-    printf("count: %lu\n", count);
-    printf("=======\n");
+    ++str_or_null;
 
-    return start_address + 1 - count;
+    while (*str_or_null != '\0') {
+        while (*delims != '\0') {
+            if (*str_or_null == *delims) {
+                break;
+            } else {
+                ++delims;
+                continue;
+            }
+        }
+        if (*str_or_null == *delims) {
+            *str_or_null = '\0';
+            break;
+        }
+        ++str_or_null;
+        delims = orign_delims;
+    }
 
+    count = str_or_null - s_str;
+
+    s_str = str_or_null + 1;
+    
+    ++s_is_continue;
+
+    if (*(s_str + 1) == '\0') {
+        s_is_continue = 0;
+    }
+
+    return s_str - 1 - count;
+    
+}
+
+char* reverse_tokenize(char* str_or_null, const char* delims)
+{
+    char* my_token = tokenize(str_or_null, delims);
+    reverse(my_token);
+
+    return my_token;
+    
 }
