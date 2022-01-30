@@ -128,8 +128,8 @@ int main(void)
     {
         const char* one_delim = " ";
         const char* mult_delim = " ,!";
-        char str_strtok[] = "I am a boy, and you are a girl!";
-        char str_tokenize[] = "I am a boy, and you are a girl!";
+        char str_strtok[] = "I am a boy, and you are a girl!    ";
+        char str_tokenize[] = "I am a boy, and you are a girl!    ";
 
         char str_strtok2[] = "!,I    am  a boy,  and    you   are a   girl!";
         char str_tokenize2[] = "!,I    am  a boy,  and    you   are a   girl!";
@@ -142,8 +142,6 @@ int main(void)
         while (token_strtok != NULL && token_tokenize != NULL) {
             puts(token_strtok);
             puts(token_tokenize);
-            printf("token_strtok: %s  ", token_strtok);
-            printf("token_tokenize: %s  \n", token_tokenize);
 
             assert(strcmp(token_strtok, token_tokenize) == 0);
             token_strtok = strtok(NULL, one_delim);
@@ -151,6 +149,10 @@ int main(void)
                 reverse(token_strtok);
             }
             token_tokenize = reverse_tokenize(NULL, one_delim);
+
+            printf("token_strtok: %s  ", token_strtok);
+            printf("token_tokenize: %s  \n", token_tokenize);
+
         }
 
         token_strtok = strtok(str_strtok2, mult_delim);

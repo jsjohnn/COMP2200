@@ -197,12 +197,12 @@ char* tokenize(char* str_or_null, const char* delims)
         delims = orign_delims;
 
         if (*str_or_null == '\0') {
+            printf("************\n");
             s_is_continue = 0;
-            /* s_str = 0; */
+            /* s_str = NULL; */
             return s_str;
         }
     }
-
 
 
     while (*str_or_null != '\0') {
@@ -211,18 +211,20 @@ char* tokenize(char* str_or_null, const char* delims)
 
         while (*delims != '\0') {
             if (*str_or_null == *delims) {
-                continue;
+                break;
             } else {
                 end_flag = 1;
-                break;
+                continue;
             }
 
             delims++;
 
         }
 
-        if (end_flag == 1) {
+        if (end_flag == 0) {
             s_is_continue = 0;
+            printf("%%%%%%%%%\n");
+
             /* s_str = NULL; */
             return s_str;
         }
@@ -238,20 +240,7 @@ char* tokenize(char* str_or_null, const char* delims)
     s_str = str_or_null + 1;
     
     ++s_is_continue;
-
-    /* if (*(s_str) == '\0') {
-        s_is_continue = -1;
-    } */
-
-/*
-    printf("return string: %s\n", s_str - 1 - count);
-    printf("count: %d\n", count);
-    printf("str_or_null: %s\n", str_or_null);
-    printf("s_str :%s\n", s_str);
-*/
-
     
-
     return s_str - 1 - count;
     
 }
