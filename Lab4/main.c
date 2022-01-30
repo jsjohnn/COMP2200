@@ -1,171 +1,213 @@
-#include <assert.h>
 #include <stdio.h>
 #include <string.h>
-
 #include "my_string.h"
-
+ 
+void print_address(void* addr1, void* addr2) {
+    printf("	Return value: %p", addr1);
+    if (addr1 == addr2) {
+        printf(" == ");
+    } else {
+        printf(" != ");
+    }
+    printf("%p(Expected value)\n\n", addr2);
+}
+ 
 int main(void)
 {
-    /*
-    1. reverse()
-    */
-    {
-        char empty[] = "";
-        char empty_reverse[] = "";
-
-        char one_char[] = "a";
-        char one_char_reverse[] = "a";
-
-        char even_num_chars[] = "able";
-        char even_num_chars_reverse[] = "elba";
-
-        char odd_num_chars[] = "apple";
-        char odd_num_chars_reverse[] = "elppa";
-
-        reverse(empty);
-        assert(strcmp(empty, empty_reverse) == 0);
-
-        reverse(one_char);
-        assert(strcmp(one_char, one_char_reverse) == 0);
-
-        reverse(even_num_chars);
-        assert(strcmp(even_num_chars, even_num_chars_reverse) == 0);
-
-        reverse(odd_num_chars);
-        assert(strcmp(odd_num_chars, odd_num_chars_reverse) == 0);
+    char str[] = "Oh happy day! My lovely day!";
+    char* token;
+    int is_passed = 1;
+ 
+    /* &str[0]을 반환. 토큰은 "hO" */
+    token = reverse_tokenize(str, " !");
+    printf("\"%s\" == \"%s\"?", token, "hO");
+    if (strcmp(token, "hO") == 0) {
+        printf(" - OK\n");
+    } else {
+        printf(" - Wrong!!!\n");
+        is_passed = 0;
     }
-    
-    /*
-        2. index_of()
-    */
-    {
-        char str[] = "I am a boy and you are a girl, we like banana";
-        char empty_str[] = "";
-        char empty[] = "";
-        char one_char_word1[] = "a";
-        char one_char_word2[] = "m";
-        char mult_chars_word1[] = "am";
-        char mult_chars_word2[] = "an";
-        char word_not_found1[] = "band";
-        char word_not_found2[] = "z";
-        char word_not_found3[] = "your";
-        int index;
-
-        index = strstr(str, empty) - str;
-        assert(index_of(str, empty) == index);
-
-        assert(index_of(empty_str, empty) == 0);
-
-        index = strstr(str, one_char_word1) - str;
-        assert(index_of(str, one_char_word1) == index);
-
-        index = strstr(str, one_char_word2) - str;
-        assert(index_of(str, one_char_word2) == index);
-
-        assert(index_of(str, word_not_found1) == -1);
-
-        assert(index_of(str, word_not_found2) == -1);
-
-        assert(index_of(str, word_not_found3) == -1);
+    print_address(token, &str[0]);
+    if (token != &str[0]) {
+        is_passed = 0;
     }
-
-    /*
-        3. reverse_by_words()
-    */
-    {
-        char empty[] = "";
-        char empty_reverse[] = "";
-
-        char one_word[] = "a";
-        char one_word_reverse[] = "a";
-
-        char mult_words[] = "I am a boy and you are a girl";
-        char mult_words_reverse[] = "I ma a yob dna uoy era a lrig";
-        
-        reverse_by_words(empty);
-        assert(strcmp(empty, empty_reverse) == 0);
-
-        reverse_by_words(one_word);
-        assert(strcmp(one_word, one_word_reverse) == 0);
-
-        reverse_by_words(mult_words);
-        assert(strcmp(mult_words, mult_words_reverse) == 0);
+    if (is_passed == 0) {
+        goto end;
     }
-
-    /*
-        4. tokenize()
-    */
-    {
-        const char* one_delim = " ";
-        const char* mult_delim = " ,!";
-        char str_strtok[] = "I am a boy, and you are a girl!";
-        char str_tokenize[] = "I am a boy, and you are a girl!";
-
-        char str_strtok2[] = "!,I    am  a boy,  and    you   are a   girl!";
-        char str_tokenize2[] = "!,I    am  a boy,  and    you   are a   girl!";
-        char* token_strtok = strtok(str_strtok, one_delim);
-        char* token_tokenize = tokenize(str_tokenize, one_delim);
-
-        while (token_strtok != NULL && token_tokenize != NULL) {
-            assert(strcmp(token_strtok, token_tokenize) == 0);
-            token_strtok = strtok(NULL, one_delim);
-            token_tokenize = tokenize(NULL, one_delim);
-        }
-
-        token_strtok = strtok(str_strtok2, mult_delim);
-        token_tokenize = tokenize(str_tokenize2, mult_delim);
-
-        while (token_strtok != NULL && token_tokenize != NULL) {
-            assert(strcmp(token_strtok, token_tokenize) == 0);
-            token_strtok = strtok(NULL, mult_delim);
-            token_tokenize = tokenize(NULL, mult_delim);
-        }
+ 
+    /* &str[3]을 반환. 토큰은 "yppah" */
+    token = reverse_tokenize(NULL, " !");
+    printf("\"%s\" == \"%s\"?", token, "yppah");
+    if (strcmp(token, "yppah") == 0) {
+        printf(" - OK\n");
+    } else {
+        printf(" - Wrong!!!\n");
+        is_passed = 0;
     }
-
-    /*
-        5. reverse_tokenize()
-    */
-    {
-        const char* one_delim = " ";
-        const char* mult_delim = " ,!";
-        char str_strtok[] = "I am a boy, and you are a girl!";
-        char str_tokenize[] = "I am a boy, and you are a girl!";
-
-        char str_strtok2[] = "!,I    am  a boy,  and    you   are a   girl!";
-        char str_tokenize2[] = "!,I    am  a boy,  and    you   are a   girl!";
-        char* token_strtok = strtok(str_strtok, one_delim);
-        char* token_tokenize = reverse_tokenize(str_tokenize, one_delim);
-        if (token_strtok != NULL) {
-            reverse(token_strtok);
-        }
-
-        while (token_strtok != NULL && token_tokenize != NULL) {
-            puts(token_strtok);
-            puts(token_tokenize);
-            assert(strcmp(token_strtok, token_tokenize) == 0);
-            token_strtok = strtok(NULL, one_delim);
-            if (token_strtok != NULL) {
-                reverse(token_strtok);
-            }
-            token_tokenize = reverse_tokenize(NULL, one_delim);
-        }
-
-        token_strtok = strtok(str_strtok2, mult_delim);
-        reverse(token_strtok);
-        token_tokenize = reverse_tokenize(str_tokenize2, mult_delim);
-
-        while (token_strtok != NULL && token_tokenize != NULL) {
-            puts(token_strtok);
-            puts(token_tokenize);
-            assert(strcmp(token_strtok, token_tokenize) == 0);
-            token_strtok = strtok(NULL, mult_delim);
-            if (token_strtok != NULL) {
-                reverse(token_strtok);
-            }
-            token_tokenize = reverse_tokenize(NULL, mult_delim);
-        }
+    print_address(token, &str[3]);
+    if (token != &str[3]) {
+        is_passed = 0;
     }
-    puts("End");
-    return 0;
+    if (is_passed == 0) {
+        goto end;
+    }
+ 
+    /* &str[9]을 반환. 토큰은 "yad" */
+    token = reverse_tokenize(NULL, " !");
+    printf("\"%s\" == \"%s\"?", token, "yad");
+    if (strcmp(token, "yad") == 0) {
+        printf(" - OK\n");
+    } else {
+        printf(" - Wrong!!!\n");
+        is_passed = 0;
+    }
+    print_address(token, &str[9]);
+    if (token != &str[9]) {
+        is_passed = 0;
+    }
+    if (is_passed == 0) {
+        goto end;
+    }
+ 
+    /* &str[14]을 반환. 토큰은 "yM" */
+    token = reverse_tokenize(NULL, " !");
+    printf("\"%s\" == \"%s\"?", token, "yM");
+    if (strcmp(token, "yM") == 0) {
+        printf(" - OK\n");
+    } else {
+        printf(" - Wrong!!!\n");
+        is_passed = 0;
+    }
+    print_address(token, &str[14]);
+    if (token != &str[14]) {
+        is_passed = 0;
+    }
+    if (is_passed == 0) {
+        goto end;
+    }
+ 
+    /* &str[17]을 반환. 토큰은 "lovely" */
+    token = tokenize(NULL, " !");
+    printf("\"%s\" == \"%s\"?", token, "lovely");
+    if (strcmp(token, "lovely") == 0) {
+        printf(" - OK\n");
+    } else {
+        printf(" - Wrong!!!\n");
+        is_passed = 0;
+    }
+    print_address(token, &str[17]);
+    if (token != &str[17]) {
+        is_passed = 0;
+    }
+    if (is_passed == 0) {
+        goto end;
+    }
+ 
+    /* &str[24]을 반환. 토큰은 "yad" */
+    token = reverse_tokenize(NULL, " !");
+    printf("\"%s\" == \"%s\"?", token, "yad");
+    if (strcmp(token, "yad") == 0) {
+        printf(" - OK\n");
+    } else {
+        printf(" - Wrong!!!\n");
+        is_passed = 0;
+    }
+    print_address(token, &str[24]);
+    if (token != &str[24]) {
+        is_passed = 0;
+    }
+    if (is_passed == 0) {
+        goto end;
+    }
+ 
+    /* NULL을 반환. "!\0"이어서. Delims 다음으로 넘어가도 끝만 나옴. */
+    token = reverse_tokenize(NULL, " !");
+    printf("\"%s\" == \"%s\"?", token, NULL);
+    if (token == NULL) {
+        printf(" - OK\n");
+    } else {
+        printf(" - Wrong!!!\n");
+        is_passed = 0;
+    }
+    print_address(token, NULL);
+    if (token != NULL) {
+        is_passed = 0;
+    }
+    if (is_passed == 0) {
+        goto end;
+    }
+ 
+    /*
+    	토큰화가 모두 끝난 빈 문자열("". 즉, '\0')이면,
+    	NULL을 반환
+	*/
+    /* NULL을 반환. ""('\0')이어서. */
+    token = reverse_tokenize(token, " !");
+    printf("\"%s\" == \"%s\"?", token, NULL);
+    if (token == NULL) {
+        printf(" - OK\n");
+    } else {
+        printf(" - Wrong!!!\n");
+        is_passed = 0;
+    }
+    print_address(token, NULL);
+    if (token != NULL) {
+        is_passed = 0;
+    }
+    if (is_passed == 0) {
+        goto end;
+    }
+ 
+    /*
+    	이미 토큰화가 다 된(delims를 만나지 않고, '\0'으로 끝나는 연속된 문자들) 단위라도,
+    	시작위치 제대로 반환
+	*/
+    /* &str[0]을 반환. 토큰은 "hO" */
+    token = tokenize(str, " !");
+    printf("\"%s\" == \"%s\"?", token, "hO");
+    if (strcmp(token, "hO") == 0) {
+        printf(" - OK\n");
+    } else {
+        printf(" - Wrong!!!\n");
+        is_passed = 0;
+    }
+    print_address(token, &str[0]);
+    if (token != &str[0]) {
+        is_passed = 0;
+    }
+    if (is_passed == 0) {
+        goto end;
+    }
+ 
+    /*
+    	이미 토큰화가 다 된(delims를 만나지 않고, '\0'으로 끝나는 연속된 문자들) 단위라도,
+    	단위를 정상적으로 뒤집고, 시작위치 제대로 반환
+	*/
+    /* &str[0]을 반환. 토큰은 "Oh" */
+    token = reverse_tokenize(str, " !");
+    printf("\"%s\" == \"%s\"?", token, "Oh");
+    if (strcmp(token, "Oh") == 0) {
+        printf(" - OK\n");
+    } else {
+        printf(" - Wrong!!!\n");
+        is_passed = 0;
+    }
+    print_address(token, &str[0]);
+    if (token != &str[0]) {
+        is_passed = 0;
+    }
+    if (is_passed == 0) {
+        goto end;
+    }
+ 
+end:
+    if (is_passed == 1) {
+        /* 위 테스트를 모두 성공하면 이 메시지를 출력 */
+        printf("~~~ If you see this message, you passed all tokenize test. ~~~\n");
+        return 0;
+    } else {
+        /* 위 테스트 중 하나라도 실패하면, 바로 goto로 여기로 오면서 이 실패 메시지를 출력 */
+        printf("!!! You may correct your function. !!!\n");
+        return 1;
+    }
 }
-

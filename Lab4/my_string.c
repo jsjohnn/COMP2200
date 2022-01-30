@@ -106,12 +106,12 @@ void reverse_by_words(char* str)
 
         if (is_space) {
             if (*str == 0x00) {
-                reverse (str- str_move);
+                reverse (str - str_move);
                 break;
             }
 
             *--str = 0x00;
-            reverse (str- (str_move - 1));
+            reverse (str - (str_move - 1));
             *str++ = 0x20;
 
             str_move = 0;
@@ -134,7 +134,7 @@ char* tokenize(char* str_or_null, const char* delims)
     size_t count = 0;
     size_t end_count = 0;
     size_t not_end_flag = 0;
-    size_t added_null = 0;
+    /* size_t added_null = 0; */
     
     
     if (s_is_continue == 0 && str_or_null == NULL) {
@@ -204,7 +204,7 @@ char* tokenize(char* str_or_null, const char* delims)
 
     }
 
-/* end check start */
+    /* end check start */
     end_chk_str = str_or_null + 1;
 
     if (*end_chk_str == '\0') {
@@ -242,7 +242,7 @@ char* tokenize(char* str_or_null, const char* delims)
         return tmp_str;
     }
 
-/* end check end */
+    /* end check end */
 
 
     count = str_or_null - s_str;
