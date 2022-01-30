@@ -144,6 +144,11 @@ char* tokenize(char* str_or_null, const char* delims)
     if (s_is_continue == 0 && str_or_null != NULL) {
         s_str = str_or_null;
     }
+    /* add */
+    if (str_or_null != NULL && *str_or_null != *s_str) {
+        s_is_continue = 0;
+        s_str = str_or_null;
+    }
 
     if (s_is_continue > 0) {
         str_or_null = s_str;
@@ -227,7 +232,7 @@ char* tokenize(char* str_or_null, const char* delims)
         /* printf("(delims - orign_delims): %d   ", delims - orign_delims);
         printf("end_count: %d\n", end_count); */
 
-        if (end_count == delims - orign_delims) {
+        if (end_count == (size_t)(delims - orign_delims)) {
             not_end_flag = 1;
             break;
         }
