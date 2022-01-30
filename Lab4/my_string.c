@@ -125,7 +125,7 @@ void reverse_by_words(char* str)
 char* tokenize(char* str_or_null, const char* delims)
 {
     static char* s_str;
-    static size_t s_is_continue = 0;
+    static int s_is_continue = 0;
     
     const char* orign_delims = delims;
     
@@ -140,9 +140,21 @@ char* tokenize(char* str_or_null, const char* delims)
         s_str = str_or_null;
     }
 
-    if (s_is_continue != 0) {
+    if (s_is_continue >= 0) {
         str_or_null = s_str;
+    } else {
+        return NULL;
     }
+
+    
+
+    /* if (s_is_continue != 0 && * (s_str - 1) == '\0') {
+        return NULL;
+    }  */
+/*
+    printf("=-=-=-==-=-=-==-=-=-==-=-=-=\n");
+    printf("str_or_null: %c\n", *str_or_null);
+*/
 
     while (*str_or_null != '\0') {
 
@@ -155,7 +167,7 @@ char* tokenize(char* str_or_null, const char* delims)
             }
 
         }
-
+        
         if (*str_or_null != *delims) {
             s_str = str_or_null;
             delims = orign_delims;
@@ -165,8 +177,9 @@ char* tokenize(char* str_or_null, const char* delims)
         delims = orign_delims;
         ++str_or_null;
 
-    }
+        
 
+    }
 
     ++str_or_null;
 
@@ -186,7 +199,15 @@ char* tokenize(char* str_or_null, const char* delims)
         }
         ++str_or_null;
         delims = orign_delims;
+
+        if (*str_or_null == '\0') {
+            s_is_continue = 0;
+            s_str = 0;
+            return s_str;
+        }
     }
+
+    /* printf("this_str_or_null: %c\n", *(str_or_null - 1)); */
 
     count = str_or_null - s_str;
 
@@ -194,10 +215,15 @@ char* tokenize(char* str_or_null, const char* delims)
     
     ++s_is_continue;
 
-    if (*str_or_null == '\0') {
-        s_is_continue = 0;
+    if (*(s_str) == '\0') {
+        s_is_continue = -1;
     }
-
+/*    
+    printf("return string: %s\n", s_str - 1 - count);
+    printf("count: %d\n", count);
+    printf("str_or_null: %s\n", str_or_null);
+    printf("s_str :%s\n", s_str);
+*/
     return s_str - 1 - count;
     
 }
