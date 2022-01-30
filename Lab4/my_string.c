@@ -106,12 +106,12 @@ void reverse_by_words(char* str)
 
         if (is_space) {
             if (*str == 0x00) {
-                reverse (str - str_move);
+                reverse(str - str_move);
                 break;
             }
 
             *--str = 0x00;
-            reverse (str - (str_move - 1));
+            reverse(str - (str_move - 1));
             *str++ = 0x20;
 
             str_move = 0;
