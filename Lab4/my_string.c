@@ -1,82 +1,49 @@
-#include <stdio.h>
 #include <assert.h>
-#include "my_string.h"
+#include <stdio.h>
+
+#define TRUE (1)
+
+size_t get_str_length(const char* const str);
 
 void reverse(char* str)
 {
-    char* dec_str = str;
+    size_t str_length = get_str_length(str);
 
-    while (*dec_str++ != '\0') {
+    char* p_front_char = str;
+    char* p_rear_char = str + str_length - 1;
+
+    assert(str != NULL);
+
+    while (p_front_char < p_rear_char) {
+        *p_front_char = *p_front_char ^ *p_rear_char;
+        *p_rear_char = *p_front_char ^ *p_rear_char;
+        *p_front_char = *p_front_char ^ *p_rear_char;
+
+        ++p_front_char;
+        --p_rear_char;
     }
-
-    dec_str = dec_str - 2;
-
-    while (str < dec_str) {
-        *str = *str ^ *dec_str;
-        *dec_str = *str ^ *dec_str;
-        *str = *str ^ *dec_str;
-
-        ++str;
-        --dec_str;
-    }
-
 }
 
 int index_of(const char* str, const char* word)
 {
-    const char* copied_word = word;
-    const char* copied_str = str;
-    const char* first_address;
+    const char* p_word;
+    const char* p_word_start_in_str;
 
-    size_t first_word_same;
-    size_t word_same;
-
-    size_t word_count;
-    size_t word_left_count;
-
-
-    if (str == NULL || word == NULL) {
-        return -1;
-    }
+    assert(str != NULL && word != NULL);
 
     if (*word == '\0') {
         return 0;
     }
-    
-    while (*copied_word++ != '\0') {
-    }
 
-    word_count = copied_word - 1 - word;
-    word_left_count = word_count;
+    for (p_word_start_in_str = str; *p_word_start_in_str != '\0'; ++p_word_start_in_str) {
+        const char* p_current_position = p_word_start_in_str;
 
-    copied_word = word;
+        p_word = word;
+        while (*p_current_position++ == *p_word++) {
 
-    while (*copied_str != '\0') {
-        first_word_same = *copied_str++ == *copied_word;
-
-        if (first_word_same) {
-            first_address = copied_str - 1;
-            --word_left_count;
-
-            if (word_left_count == 0) {
-                return first_address - str;
-            }
-
-            while (*copied_str != '\0') {
-                word_same = *copied_str++ == *++copied_word;
-                if (!word_same) {
-                    word_left_count = word_count;
-                    copied_word = word;
-                    copied_str = first_address + 1;
-                    break;
-                }
-
-                word_left_count--;
-
-                if (word_left_count == 0) {
-                    return first_address - str;
-                }
-            }
+            if (*p_word == '\0') {
+                return p_word_start_in_str - str;
+            }   
         }
     }
 
@@ -85,172 +52,123 @@ int index_of(const char* str, const char* word)
 
 void reverse_by_words(char* str)
 {
-    size_t is_space = 0;
-    size_t str_move = 0;
+    char* p_str = str;
 
-    while (*str != 0x00) {
-        is_space = (*str++ == ' ') || (*str == '\0');
-        ++str_move;
+    size_t current_word_length = 0;
+    
+    assert(str != NULL);
 
-        if (is_space) {
-            if (*str =='\0') {
-                reverse(str - str_move);
-                break;
-            }
+    while (*p_str != '\0') {
+        char* p_word_start = p_str;
+        char* p_word_end;
 
-            *--str = '\0';
-            reverse(str - (str_move - 1));
-            *str++ = ' ';
+        current_word_length ^= current_word_length;
+        while (*p_str != '\0' && *p_str++ != ' ') {
+            ++current_word_length;
+        }
 
-            str_move = 0;
+        p_word_end = p_word_start + current_word_length - 1;
 
-            continue;
+        while (p_word_start < p_word_end) {
+            *p_word_start = *p_word_start ^ *p_word_end;
+            *p_word_end = *p_word_start ^ *p_word_end;
+            *p_word_start = *p_word_start ^ *p_word_end;
+
+            ++p_word_start;
+            --p_word_end;
         }
     }
-
 }
 
 char* tokenize(char* str_or_null, const char* delims)
 {
-    static char* s_str;
-    static int s_is_continue = 0;
-    
-    const char* orign_delims = delims;
-    const char* end_chk_str;
-    
-    char* tmp_str;
-    size_t count = 0;
-    size_t end_count = 0;
-    size_t not_end_flag = 0;  
-    
-    if (s_is_continue == 0 && str_or_null == NULL) {
-        return NULL;
-    }
-    
-    if (s_is_continue == 0 && str_or_null != NULL) {
-        s_str = str_or_null;
-    }
+    static char* s_p_str_indicator = NULL;
 
-    if (str_or_null != NULL && *str_or_null != *s_str) {
-        s_is_continue = 0;
-        s_str = str_or_null;
-    }
+    const char* p_delims;
 
-    if (s_is_continue > 0) {
-        str_or_null = s_str;
-    }
+    char* p_token_start;
+    char* p_str;
 
-    if (s_str == NULL) {
-        return NULL;
-    }
+    assert(delims != NULL);
 
-    while (*str_or_null != '\0') {
+    if (str_or_null == NULL) {
+        if (s_p_str_indicator == NULL || *s_p_str_indicator == '\0') {
+            return NULL;
+        }        
 
-        while (*delims != '\0') {
-            if (*str_or_null == *delims) {
-                break;
-            } else {
-                ++delims;
-                continue;
-            }
+        p_str = s_p_str_indicator;
 
-        }
-        
-        if (*str_or_null != *delims) {
-            s_str = str_or_null;
-            delims = orign_delims;
-            break;
-        }
-
-        delims = orign_delims;
-        ++str_or_null;       
-
-    }
-
-    ++str_or_null;
-
-    while (*str_or_null != '\0') {
-        while (*delims != '\0') {
-            if (*str_or_null == *delims) {
-                break;
-            } else {
-                ++delims;
-                continue;
-            }
-        }
-
-        if (*str_or_null == *delims) {
-            *str_or_null = '\0';
-            break;
-        }
-        ++str_or_null;
-        delims = orign_delims;
-
+    } else {
         if (*str_or_null == '\0') {
-            s_is_continue = 0;
-            tmp_str = s_str;
-            s_str = NULL;
-            return tmp_str;
+            return NULL;
         }
 
+        p_str = str_or_null;
     }
 
-    end_chk_str = str_or_null + 1;
+    while (TRUE) {
 
-    if (*end_chk_str == '\0') {
-        s_is_continue = 0;
-        tmp_str = s_str;
-        s_str = NULL;
-        return tmp_str;
-    }
+        p_delims = delims;
+        while (*p_str != *p_delims++) {
 
-    while (*end_chk_str != '\0') {
-        delims = orign_delims;
-        while (*delims != '\0') {
-            if (*end_chk_str != *delims) {
-                ++end_count;
+            if (*p_delims == '\0') {
+                ++p_str;
+                goto tokenize_start;
             }
-
-            ++delims;
         }
 
-        if (end_count == (size_t)(delims - orign_delims)) {
-            not_end_flag = 1;
-            break;
+        if (*++p_str == '\0') {
+            return NULL;
         }
-        ++end_chk_str;
-        end_count = 0;
-    }
-                
-    if (not_end_flag != 1) {
-        s_is_continue = 0;
-        tmp_str = s_str;
-        s_str = NULL;
-        return tmp_str;
     }
 
-    count = str_or_null - s_str;
+tokenize_start:
 
-    s_str = str_or_null + 1;
     
-    ++s_is_continue;
+    p_token_start = p_str - 1;
+    while (*p_str != '\0') {
     
-    return s_str - 1 - count;
-    
+        for (p_delims = delims; *p_delims != '\0'; ++p_delims) {
+
+            if (*p_str == *p_delims) {
+                *p_str++ = '\0';
+
+                goto exit_to_end;
+            }
+        }
+
+        ++p_str;
+    }
+
+exit_to_end:
+
+    s_p_str_indicator = p_str;
+
+    return p_token_start;
 }
 
 char* reverse_tokenize(char* str_or_null, const char* delims)
 {
-    char* my_token = tokenize(str_or_null, delims);
+    char* p_token = tokenize(str_or_null, delims);
 
-    if (my_token == NULL) {
+    if (p_token == NULL) {
         return NULL;
     }
-    reverse(my_token);
 
-    return my_token;
-    
+    reverse(p_token);
+
+    return p_token;
 }
 
+size_t get_str_length(const char* const str)
+{
+    const char* p_str = str;
 
+    assert(str != NULL);
 
+    while (*p_str++ != '\0') {
+        /* It wasn`t NUL */
+    }
+
+    return p_str - str - 1;
+}
