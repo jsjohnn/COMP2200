@@ -6,7 +6,7 @@
 #include "receipter.h"
 
 #define ITEM_LENGTH (300)
-#define DELIM (36)
+#define DELIM (10)
 
 static char s_temp[300] = {0,};
 static double s_prices[10];
@@ -151,7 +151,7 @@ int print_receipt(const char* filename, time_t timestamp)
 
         fputc('\n', stream);
 
-        token = strtok(NULL, "$");
+        token = strtok(NULL, "\n");
     }
     
     fputc('\n', stream);
