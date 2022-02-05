@@ -91,7 +91,7 @@ int print_receipt(const char* filename, time_t timestamp)
     size_t i;
     double d_subtotal = 0.0;
 
-    struct tm tm = *localtime(&timestamp);
+    struct tm tm = *gmtime(&timestamp);
 
     FILE* stream;
 
@@ -126,7 +126,7 @@ int print_receipt(const char* filename, time_t timestamp)
     /* UNIX TIME */
     fprintf(stream, "%d-%02d-%02d %02d:%02d:%02d",
             tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
-            tm.tm_hour - 9, tm.tm_min, tm.tm_sec);
+            tm.tm_hour, tm.tm_min, tm.tm_sec);
 
     for (i = 0; i < 26; ++i) {
         putc(' ', stream);
