@@ -8,7 +8,7 @@
 #define ITEM_LENGTH (300)
 #define DELIM (1)
 
-static char s_temp[300] = {0,};
+static char s_temp[300] = {0, };
 static double s_prices[10];
 static s_item_number = 0;
 static double s_tip = 0.0;
@@ -74,19 +74,19 @@ int print_receipt(const char* filename, time_t timestamp)
 
     char* token;
 
-    const char* restaurant_name = "Charles' Seafood";
-    const char* Subtotal = "Subtotal";
-    const char* Tip = "Tip";
-    const char* Tax = "Tax";
-    const char* Total = "Total";
-    const char* tax_num = "Tax#-51234";
+    const char* RESTAURANT_NAME = "Charles' Seafood";
+    const char* SUBTOTAL = "Subtotal";
+    const char* TIP = "Tip";
+    const char* TAX = "Tax";
+    const char* TOTAL = "Total";
+    const char* TAX_NUM = "Tax#-51234";
 
-    const double d_tax = 0.05;
+    const double D_TAX = 0.05;
 
-    const char* bar = "----------";
-    const char* dup_bar = "==========";
-    const double* loc_prices = s_prices;
-    const char* loc_message = s_message;
+    const char* BAR = "----------";
+    const char* DUP_BAR = "==========";
+    const double* LOC_PRICES = s_prices;
+    const char* LOC_MESSAGE = s_message;
     
     size_t i;
     double d_subtotal = 0.0;
@@ -114,19 +114,17 @@ int print_receipt(const char* filename, time_t timestamp)
         return FALSE;
     }
 
-    fprintf(stream, "%s", restaurant_name);
+    fprintf(stream, "%s", RESTAURANT_NAME);
     fputc('\n', stream);
 
     for (i = 0; i < 5; ++i) {
-        fprintf(stream, "%s", bar);
+        fprintf(stream, "%s", BAR);
     }
 
     fputc('\n', stream);
     
     /* UNIX TIME */
-    fprintf(stream, "%d-%02d-%02d %02d:%02d:%02d",
-            tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
-            tm.tm_hour, tm.tm_min, tm.tm_sec);
+    fprintf(stream, "%d-%02d-%02d %02d:%02d:%02d", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
 
     for (i = 0; i < 26; ++i) {
         putc(' ', stream);
@@ -136,7 +134,7 @@ int print_receipt(const char* filename, time_t timestamp)
     fputc('\n', stream);
 
     for (i = 0; i < 5; ++i) {
-        fprintf(stream, "%s", bar);
+        fprintf(stream, "%s", BAR);
     }
 
     fputc('\n', stream);
@@ -144,10 +142,10 @@ int print_receipt(const char* filename, time_t timestamp)
     token = strtok(s_temp, "\1");
     while (token != NULL) {
         fprintf(stream, "%33s", token);
-        fprintf(stream, "%17.2f", *loc_prices);
+        fprintf(stream, "%17.2f", *LOC_PRICES);
 
-        d_subtotal += *loc_prices;
-        loc_prices++;
+        d_subtotal += *LOC_PRICES;
+        LOC_PRICES++;
 
         fputc('\n', stream);
 
@@ -156,32 +154,32 @@ int print_receipt(const char* filename, time_t timestamp)
     
     fputc('\n', stream);
 
-    fprintf(stream, "%33s", Subtotal);
+    fprintf(stream, "%33s", SUBTOTAL);
     fprintf(stream, "%17.2f", d_subtotal);
     fputc('\n', stream);
 
     if (s_tip != 0) {
-        fprintf(stream, "%33s", Tip);
+        fprintf(stream, "%33s", TIP);
         fprintf(stream, "%17.2f", s_tip);
         fputc('\n', stream);
     }
 
-    fprintf(stream, "%33s", Tax);
-    fprintf(stream, "%17.2f", d_subtotal * d_tax);
+    fprintf(stream, "%33s", TAX);
+    fprintf(stream, "%17.2f", d_subtotal * D_TAX);
     fputc('\n', stream);
 
-    fprintf(stream, "%33s", Total);
-    fprintf(stream, "%17.2f", d_subtotal + (d_subtotal * d_tax) + s_tip);
+    fprintf(stream, "%33s", TOTAL);
+    fprintf(stream, "%17.2f", d_subtotal + (d_subtotal * D_TAX) + s_tip);
 
     fputc('\n', stream);
 
-    if (*loc_message != '\0') {
-         fputc('\n', stream);
+    if (*LOC_MESSAGE != '\0') {
+        fputc('\n', stream);
     }
 
     i = 0;
-    while (*loc_message != '\0') {
-        fprintf(stream, "%c", *loc_message);
+    while (*LOC_MESSAGE != '\0') {
+        fprintf(stream, "%c", *LOC_MESSAGE);
         
         ++i;
         if (i == 50) {
@@ -189,19 +187,19 @@ int print_receipt(const char* filename, time_t timestamp)
             i = 0;
         }
 
-        ++loc_message;
+        ++LOC_MESSAGE;
 
     }
 
     fputc('\n', stream);
 
     for (i = 0; i < 5; ++i) {
-        fprintf(stream, "%s", dup_bar);
+        fprintf(stream, "%s", DUP_BAR);
     }
 
     fputc('\n', stream);
 
-    fprintf(stream, "%50s", tax_num);
+    fprintf(stream, "%50s", TAX_NUM);
 
     fclose(stream);
 
