@@ -8,7 +8,7 @@
 #define ITEM_LENGTH (300)
 #define DELIM (1)
 
-static char s_temp[300] = {0, };
+static char s_temp[300] = "";
 static double s_prices[10];
 static s_item_number = 0;
 static double s_tip = 0.0;
