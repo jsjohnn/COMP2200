@@ -166,6 +166,7 @@ version1_start:
             while (*tmp_player_name != '\0') {
                 out_character->name[x++] = *tmp_player_name;
                 if (x == 50) {
+                    out_character->name[x] = '\0';
                     break;
                 }
 
@@ -227,6 +228,7 @@ version2_start:
                 out_character->name[x] = v2_name[x];
                 ++x;
                 if (x == 50) {
+                    out_character->name[x] = '\0';
                     break;
                 }
             }
@@ -457,6 +459,7 @@ version3_start:
                 out_character->name[x] = v2_name[x];
                 ++x;
                 if (x == 50) {
+                    out_character->name[x] = '\0';
                     break;
                 }
             }
@@ -790,6 +793,7 @@ version3_start:
                 ++buffer_p;
 
                 if (x == 50) {
+                    out_character->minions[0].name[x] = '\0';
                     break;
                 }
             }                
@@ -837,6 +841,7 @@ version3_start:
                 ++buffer_p;
 
                 if (x == 50) {
+                    out_character->minions[1].name[x] = '\0';
                     break;
                 }
             }                
@@ -884,6 +889,7 @@ version3_start:
                 ++buffer_p;
 
                 if (x == 50) {
+                    out_character->minions[2].name[x] = '\0';
                     break;
                 }
             }                

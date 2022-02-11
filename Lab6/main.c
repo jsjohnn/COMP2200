@@ -29,8 +29,8 @@ int main(void)
     assert(superman_v1.elemental_resistance.lightning == 1);
     
     version = get_character("Batman_v2.txt", &batman_v2);
-    assert(version == 2);
-    assert(strcmp(batman_v2.name, "Batman_v2") == 0);
+    assert(version == 2);    
+    assert(strcmp(batman_v2.name,"abcde12345abcde12345abcde12345abcde12345abcde12345") == 0);
     assert(batman_v2.level == 25);
     assert(batman_v2.health == 130);
     assert(batman_v2.mana == 50);
@@ -47,7 +47,7 @@ int main(void)
     
     version = get_character("Flash_v3.txt", &flash_v3);
     assert(version == 3);
-    assert(strcmp(flash_v3.name, "Flash_v3") == 0);
+    assert(strcmp(flash_v3.name, "abcde12345abcde12345abcde12345abcde12345abcde12345") == 0);
     assert(flash_v3.level == 50);
     assert(flash_v3.health == 280);
     assert(flash_v3.mana == 55);
