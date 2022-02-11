@@ -122,7 +122,7 @@ version1_start:
 
     token = strtok(buffer, ":");
 
-    while(token != NULL) {
+    while (token != NULL) {
 
         if (strcmp(token, lvl) == 0) {
             token = strtok(NULL, ",");
@@ -223,7 +223,7 @@ version2_start:
 
             sscanf(buffer_p, "%s", v2_name);
 
-            while(v2_name[x] != ' ') {
+            while (v2_name[x] != ' ') {
                  out_character->name[x] = v2_name[x];
                  ++x;
                  if (x == 50) {
@@ -427,514 +427,489 @@ version2_start:
 
     return version;
 
-/* VERSION3 START */
+version3_start:
 
-    version3_start:
+    fgets(buffer2, LENGTH, file);
+    buffer_p = buffer2;
 
-        fgets(buffer2, LENGTH, file);
-        buffer_p = buffer2;
+    token = strtok(buffer, " |\r");
 
-        token = strtok(buffer, " |\r");
+    while (token != NULL) {
 
-        while (token != NULL) {
-
-            /*  name set */
-            if (strcmp(token, name) == 0) {
+        if (strcmp(token, name) == 0) {
                 
-                while (*buffer_p != '\0') {
+            while (*buffer_p != '\0') {
 
-                    if (*buffer_p == '|') {
-                        break;
-                    }
-
-                    count++;
-                    buffer_p++;
+                if (*buffer_p == '|') {
+                    break;
                 }
 
-                *buffer_p = ' ';
-                buffer_p -= count;
-
-                sscanf(buffer_p, "%s", v2_name);
-
-                while(v2_name[x] != ' ') {
-                     out_character->name[x] = v2_name[x];
-                     ++x;
-                     if (x == 50) {
-                         break;
-                     }
-                }
-
-                buffer_p = buffer_p + count + 1;                
-                count = 0;
-
-/* level */
-            } else if (strcmp(token, level) == 0) {
-                while (*buffer_p != '\0') {
-
-                    if (*buffer_p == '|') {
-                        break;
-                    } 
-
-                    count++;
-                    buffer_p++;
-                }
-                *buffer_p = ' ';
-                buffer_p -= count;
-
-                sscanf(buffer_p, "%d", &num);
-
-                out_character->level = num;
-                
-                buffer_p = buffer_p + count + 1;                
-                count = 0;
-/* health */
-
-            } else if (strcmp(token, health) == 0) {
-                while (*buffer_p != '\0') {
-
-                    if (*buffer_p == '|') {
-                        break;
-                    } 
-
-                    count++;
-                    buffer_p++;
-                }
-                *buffer_p = ' ';
-                buffer_p -= count;
-
-                sscanf(buffer_p, "%d", &num);
-
-                out_character->health = num;
-                
-                buffer_p = buffer_p + count + 1;                
-                count = 0;
-
-/* mana */
-
-            } else if (strcmp(token, mana) == 0) {
-                while (*buffer_p != '\0') {
-
-                    if (*buffer_p == '|') {
-                        break;
-                    } 
-
-                    count++;
-                    buffer_p++;
-                }
-                *buffer_p = ' ';
-                buffer_p -= count;
-
-                sscanf(buffer_p, "%d", &num);
-
-                out_character->mana = num;
-                
-                buffer_p = buffer_p + count + 1;                
-                count = 0;
-/* strength */
-
-            } else if (strcmp(token, strength) == 0) {
-                while (*buffer_p != '\0') {
-
-                    if (*buffer_p == '|') {
-                        break;
-                    } 
-
-                    count++;
-                    buffer_p++;
-                }
-                *buffer_p = ' ';
-                buffer_p -= count;
-
-                sscanf(buffer_p, "%d", &num);
-
-                out_character->strength = num;
-                
-                buffer_p = buffer_p + count + 1;                
-                count = 0;
-
-/* dexterity */
-
-            } else if (strcmp(token, dexterity) == 0) {
-                while (*buffer_p != '\0') {
-
-                    if (*buffer_p == '|') {
-                        break;
-                    } 
-
-                    count++;
-                    buffer_p++;
-                }
-                *buffer_p = ' ';
-                buffer_p -= count;
-
-                sscanf(buffer_p, "%d", &num);
-
-                out_character->dexterity = num;
-                
-                buffer_p = buffer_p + count + 1;                
-                count = 0;
-
-/* intelligence */
-
-            } else if (strcmp(token, intelligence) == 0) {
-                while (*buffer_p != '\0') {
-
-                    if (*buffer_p == '|') {
-                        break;
-                    } 
-
-                    count++;
-                    buffer_p++;
-                }
-                *buffer_p = ' ';
-                buffer_p -= count;
-
-                sscanf(buffer_p, "%d", &num);
-
-                out_character->intelligence = num;
-                
-                buffer_p = buffer_p + count + 1;                
-                count = 0;
-
-/* armour */
-
-            } else if (strcmp(token, armour) == 0) {
-                while (*buffer_p != '\0') {
-
-                    if (*buffer_p == '|') {
-                        break;
-                    } 
-
-                    count++;
-                    buffer_p++;
-                }
-                *buffer_p = ' ';
-                buffer_p -= count;
-
-                sscanf(buffer_p, "%d", &num);
-
-                out_character->armour = num;
-                
-                buffer_p = buffer_p + count + 1;                
-                count = 0;
-
-/* evasion */
-
-            } else if (strcmp(token, evasion) == 0) {
-                while (*buffer_p != '\0') {
-
-                    if (*buffer_p == '|') {
-                        break;
-                    } 
-
-                    count++;
-                    buffer_p++;
-                }
-                *buffer_p = ' ';
-                buffer_p -= count;
-
-                sscanf(buffer_p, "%d", &num);
-
-                out_character->evasion = num;
-                
-                buffer_p = buffer_p + count + 1;                
-                count = 0;
-/* fire_res */
-
-            } else if (strcmp(token, fire_res) == 0) {
-                while (*buffer_p != '\0') {
-
-                    if (*buffer_p == '|') {
-                        break;
-                    } 
-
-                    count++;
-                    buffer_p++;
-                }
-                *buffer_p = ' ';
-                buffer_p -= count;
-
-                sscanf(buffer_p, "%d", &num);
-
-                out_character->elemental_resistance.fire = num;
-                
-                buffer_p = buffer_p + count + 1;                
-                count = 0;
-
-/* cold_res */
-
-            } else if (strcmp(token, cold_res) == 0) {
-                while (*buffer_p != '\0') {
-
-                    if (*buffer_p == '|') {
-                        break;
-                    } 
-
-                    count++;
-                    buffer_p++;
-                }
-                *buffer_p = ' ';
-                buffer_p -= count;
-
-                sscanf(buffer_p, "%d", &num);
-
-                out_character->elemental_resistance.cold = num;
-                
-                buffer_p = buffer_p + count + 1;                
-                count = 0;
-
-/* lightning_res */
-
-            } else if (strcmp(token, lightning_res) == 0) {
-                while (*buffer_p != '\0') {
-
-                    if (*buffer_p == '|') {
-                        break;
-                    } 
-
-                    count++;
-                    buffer_p++;
-                }
-                *buffer_p = ' ';
-                buffer_p -= count;
-
-                sscanf(buffer_p, "%d", &num);
-
-                out_character->elemental_resistance.lightning = num;
-                
-                buffer_p = buffer_p + count + 1;                
-                count = 0;
-
-/* leadership */
-
-            } else if (strcmp(token, leadership) == 0) {
-                while (*buffer_p != '\0') {
-
-                    if (*buffer_p == '|') {
-                        break;
-                    } 
-
-                    count++;
-                    buffer_p++;
-                }
-                *buffer_p = ' ';
-                buffer_p -= count;
-
-                sscanf(buffer_p, "%d", &num);
-
-                out_character->leadership = num;
-                
-                buffer_p = buffer_p + count + 1;                
-                count = 0;
-
-/* minion_count */
-
-            } else if (strcmp(token, minion_count) == 0) {
-                while (*buffer_p != '\0') {
-
-                    if (*buffer_p == '|') {
-                        break;
-                    } 
-
-                    count++;
-                    buffer_p++;
-                }
-                *buffer_p = ' ';
-                buffer_p -= count;
-
-                sscanf(buffer_p, "%d", &num);
-
-                out_character->minion_count = num;
-                
-                buffer_p = buffer_p + count + 1;                
-                count = 0;
-
+                count++;
+                buffer_p++;
             }
 
-            token = strtok(NULL, " |\r");
+            *buffer_p = ' ';
+            buffer_p -= count;
+
+            sscanf(buffer_p, "%s", v2_name);
+
+            while(v2_name[x] != ' ') {
+                 out_character->name[x] = v2_name[x];
+                 ++x;
+                 if (x == 50) {
+                     break;
+                 }
+            }
+
+            buffer_p = buffer_p + count + 1;                
+            count = 0;
+
+        } else if (strcmp(token, level) == 0) {
+            while (*buffer_p != '\0') {
+
+                if (*buffer_p == '|') {
+                    break;
+                } 
+
+                count++;
+                buffer_p++;
+            }
+            *buffer_p = ' ';
+            buffer_p -= count;
+
+            sscanf(buffer_p, "%d", &num);
+
+            out_character->level = num;
+                
+            buffer_p = buffer_p + count + 1;                
+            count = 0;
+
+        } else if (strcmp(token, health) == 0) {
+            while (*buffer_p != '\0') {
+
+                if (*buffer_p == '|') {
+                    break;
+                } 
+
+                count++;
+                buffer_p++;
+            }
+            *buffer_p = ' ';
+            buffer_p -= count;
+
+            sscanf(buffer_p, "%d", &num);
+
+            out_character->health = num;
+                
+            buffer_p = buffer_p + count + 1;                
+            count = 0;
+
+        } else if (strcmp(token, mana) == 0) {
+            while (*buffer_p != '\0') {
+
+                if (*buffer_p == '|') {
+                    break;
+                } 
+
+                count++;
+                buffer_p++;
+            }
+            *buffer_p = ' ';
+            buffer_p -= count;
+
+            sscanf(buffer_p, "%d", &num);
+
+            out_character->mana = num;
+                
+            buffer_p = buffer_p + count + 1;                
+            count = 0;
+
+        } else if (strcmp(token, strength) == 0) {
+            while (*buffer_p != '\0') {
+
+                if (*buffer_p == '|') {
+                    break;
+                } 
+
+                count++;
+                buffer_p++;
+            }
+            *buffer_p = ' ';
+            buffer_p -= count;
+
+            sscanf(buffer_p, "%d", &num);
+
+            out_character->strength = num;
+                
+            buffer_p = buffer_p + count + 1;                
+            count = 0;
+
+        } else if (strcmp(token, dexterity) == 0) {
+            while (*buffer_p != '\0') {
+
+                if (*buffer_p == '|') {
+                    break;
+                } 
+
+                count++;
+                buffer_p++;
+            }
+            *buffer_p = ' ';
+            buffer_p -= count;
+
+            sscanf(buffer_p, "%d", &num);
+
+            out_character->dexterity = num;
+                
+            buffer_p = buffer_p + count + 1;                
+            count = 0;
+
+        } else if (strcmp(token, intelligence) == 0) {
+            while (*buffer_p != '\0') {
+
+                if (*buffer_p == '|') {
+                    break;
+                } 
+
+                count++;
+                buffer_p++;
+            }
+            *buffer_p = ' ';
+            buffer_p -= count;
+
+            sscanf(buffer_p, "%d", &num);
+
+            out_character->intelligence = num;
+                
+            buffer_p = buffer_p + count + 1;                
+            count = 0;
+
+        } else if (strcmp(token, armour) == 0) {
+            while (*buffer_p != '\0') {
+
+                if (*buffer_p == '|') {
+                    break;
+                } 
+
+                count++;
+                buffer_p++;
+            }
+            *buffer_p = ' ';
+            buffer_p -= count;
+
+            sscanf(buffer_p, "%d", &num);
+
+            out_character->armour = num;
+                
+            buffer_p = buffer_p + count + 1;                
+            count = 0;
+
+        } else if (strcmp(token, evasion) == 0) {
+            while (*buffer_p != '\0') {
+
+                if (*buffer_p == '|') {
+                    break;
+                } 
+
+                count++;
+                buffer_p++;
+            }
+            *buffer_p = ' ';
+            buffer_p -= count;
+
+            sscanf(buffer_p, "%d", &num);
+
+            out_character->evasion = num;
+                
+            buffer_p = buffer_p + count + 1;                
+            count = 0;
+
+        } else if (strcmp(token, fire_res) == 0) {
+            while (*buffer_p != '\0') {
+
+                if (*buffer_p == '|') {
+                    break;
+                } 
+
+                count++;
+                buffer_p++;
+            }
+            *buffer_p = ' ';
+            buffer_p -= count;
+
+            sscanf(buffer_p, "%d", &num);
+
+            out_character->elemental_resistance.fire = num;
+                
+            buffer_p = buffer_p + count + 1;                
+            count = 0;
+
+        } else if (strcmp(token, cold_res) == 0) {
+            while (*buffer_p != '\0') {
+
+                if (*buffer_p == '|') {
+                    break;
+                } 
+
+                count++;
+                buffer_p++;
+            }
+            *buffer_p = ' ';
+            buffer_p -= count;
+
+            sscanf(buffer_p, "%d", &num);
+
+            out_character->elemental_resistance.cold = num;
+                
+            buffer_p = buffer_p + count + 1;                
+            count = 0;
+
+        } else if (strcmp(token, lightning_res) == 0) {
+            while (*buffer_p != '\0') {
+
+                if (*buffer_p == '|') {
+                    break;
+                } 
+
+                count++;
+                buffer_p++;
+            }
+            *buffer_p = ' ';
+            buffer_p -= count;
+
+            sscanf(buffer_p, "%d", &num);
+
+            out_character->elemental_resistance.lightning = num;
+                
+            buffer_p = buffer_p + count + 1;                
+            count = 0;
+
+        } else if (strcmp(token, leadership) == 0) {
+            while (*buffer_p != '\0') {
+
+                if (*buffer_p == '|') {
+                    break;
+                } 
+
+                count++;
+                buffer_p++;
+            }
+            *buffer_p = ' ';
+            buffer_p -= count;
+
+            sscanf(buffer_p, "%d", &num);
+
+            out_character->leadership = num;
+                
+            buffer_p = buffer_p + count + 1;                
+            count = 0;
+
+        } else if (strcmp(token, minion_count) == 0) {
+            while (*buffer_p != '\0') {
+
+                if (*buffer_p == '|') {
+                    break;
+                } 
+
+                count++;
+                buffer_p++;
+            }
+            *buffer_p = ' ';
+            buffer_p -= count;
+
+            sscanf(buffer_p, "%d", &num);
+
+            out_character->minion_count = num;
+                
+            buffer_p = buffer_p + count + 1;                
+            count = 0;
 
         }
 
-        if (out_character->minion_count == 0) {
-            goto VERSION3_END;
-        }
+        token = strtok(NULL, " |\r");
 
-/* minion count가 0이 아닌 경우 */
+    }
+
+    if (out_character->minion_count == 0) {
+        goto VERSION3_END;
+    }
+
+
+    /* minion count가 0이 아닌 경우 */
+    fgets(buffer3, LENGTH, file);
+
+
+    /* att1 */
+    token = strtok(buffer3, " |\r");
+    strcpy(att1, token);
         
-        fgets(buffer3, LENGTH, file);
+    minion_att[0] = att1;
 
-/* att1 */
+    /* att2 */
+    token = strtok(NULL, " |\r");
+    strcpy(att2, token);
 
-        token = strtok(buffer3, " |\r");
-        strcpy(att1, token);
-        
-        minion_att[0] = att1;
-
-/* att2 */
-        token = strtok(NULL, " |\r");
-        strcpy(att2, token);
-
-        i = 0;
-        minion_att[1] = att2;
+    i = 0;
+    minion_att[1] = att2;
 
 
-/* att3 */
-        i = 0;
-        token = strtok(NULL, " |\r");
-        strcpy(att3, token);
+    /* att3 */
+    i = 0;
+    token = strtok(NULL, " |\r");
+    strcpy(att3, token);
 
-        minion_att[2] = att3;
+    minion_att[2] = att3;
 
-/* att4 */
-        i = 0;
-        token = strtok(NULL, " |\r");
-        strcpy(att4, token);
+    /* att4 */
+    i = 0;
+    token = strtok(NULL, " |\r");
+    strcpy(att4, token);
 
-        minion_att[3] = att4;
+    minion_att[3] = att4;
 
-        dummy = fgets(buffer4, LENGTH, file);
+    dummy = fgets(buffer4, LENGTH, file);
 
-        if (dummy == NULL) {
-            goto VERSION3_END;
-        }
+    if (dummy == NULL) {
+        goto VERSION3_END;
+    }
 
-        token = strtok(buffer4, " |\r");
+    token = strtok(buffer4, " |\r");
 
-        i = 0;
-        x = 0;
-        num = 0;
+    i = 0;
+    x = 0;
+    num = 0;
 
-        while (token != NULL) {
-            if (strcmp(minion_att[i], name) == 0) {
-                buffer_p = token;
+    while (token != NULL) {
+        if (strcmp(minion_att[i], name) == 0) {
+            buffer_p = token;
                 
-                while(*buffer_p != '\0') {
-                    out_character->minions[0].name[x] = *buffer_p;
+            while(*buffer_p != '\0') {
+                out_character->minions[0].name[x] = *buffer_p;
 
-                    ++x;
-                    ++buffer_p;
+                ++x;
+                ++buffer_p;
 
-                    if (x == 50) {
-                        break;
-                    }
-                }                
+                if (x == 50) {
+                    break;
+                }
+            }                
 
-            } else if (strcmp(minion_att[i], health) == 0) {
-                sscanf(token, "%d", &num);
-                out_character->minions[0].health = num;
-            } else if (strcmp(minion_att[i], strength) == 0) {
-                sscanf(token, "%d", &num);
-                out_character->minions[0].strength = num;
-            } else if (strcmp(minion_att[i], defence) == 0) {
-                sscanf(token, "%d", &num);
-                out_character->minions[0].defence = num;
-            } 
+        } else if (strcmp(minion_att[i], health) == 0) {
+            sscanf(token, "%d", &num);
+            out_character->minions[0].health = num;
+        } else if (strcmp(minion_att[i], strength) == 0) {
+            sscanf(token, "%d", &num);
+            out_character->minions[0].strength = num;
+        } else if (strcmp(minion_att[i], defence) == 0) {
+            sscanf(token, "%d", &num);
+            out_character->minions[0].defence = num;
+        } 
 
-            token = strtok(NULL, " |\r");
-            ++i;
+        token = strtok(NULL, " |\r");
+        ++i;
 
-            if (i == 4) {
-                break;
-            }
-
+        if (i == 4) {
+            break;
         }
 
-        dummy = fgets(buffer5, LENGTH, file);
+    }
 
-        if (dummy == NULL) {
-            goto VERSION3_END;
-        }
+    dummy = fgets(buffer5, LENGTH, file);
 
-        token = strtok(buffer5, " |\r");
+    if (dummy == NULL) {
+        goto VERSION3_END;
+    }
 
-        i = 0;
-        x = 0;
-        num = 0;
+    token = strtok(buffer5, " |\r");
 
-        while (token != NULL) {
-            if (strcmp(minion_att[i], name) == 0) {
-                buffer_p = token;
+    i = 0;
+    x = 0;
+    num = 0;
+
+    while (token != NULL) {
+        if (strcmp(minion_att[i], name) == 0) {
+            buffer_p = token;
                 
-                while(*buffer_p != '\0') {
-                    out_character->minions[1].name[x] = *buffer_p;
+            while(*buffer_p != '\0') {
+                out_character->minions[1].name[x] = *buffer_p;
 
-                    ++x;
-                    ++buffer_p;
+                ++x;
+                ++buffer_p;
 
-                    if (x == 50) {
-                        break;
-                    }
-                }                
+                if (x == 50) {
+                    break;
+                }
+            }                
 
-            } else if (strcmp(minion_att[i], health) == 0) {
-                sscanf(token, "%d", &num);
-                out_character->minions[1].health = num;
-            } else if (strcmp(minion_att[i], strength) == 0) {
-                sscanf(token, "%d", &num);
-                out_character->minions[1].strength = num;
-            } else if (strcmp(minion_att[i], defence) == 0) {
-                sscanf(token, "%d", &num);
-                out_character->minions[1].defence = num;
-            } 
+        } else if (strcmp(minion_att[i], health) == 0) {
+            sscanf(token, "%d", &num);
+            out_character->minions[1].health = num;
+        } else if (strcmp(minion_att[i], strength) == 0) {
+            sscanf(token, "%d", &num);
+            out_character->minions[1].strength = num;
+        } else if (strcmp(minion_att[i], defence) == 0) {
+            sscanf(token, "%d", &num);
+            out_character->minions[1].defence = num;
+        } 
 
-            token = strtok(NULL, " |\r");
-            ++i;
+        token = strtok(NULL, " |\r");
+        ++i;
 
-            if (i == 4) {
-                break;
-            }
-
+        if (i == 4) {
+            break;
         }
 
-        dummy = fgets(buffer6, LENGTH, file);
+    }
 
-        if (dummy == NULL) {
-            goto VERSION3_END;
-        }
+    dummy = fgets(buffer6, LENGTH, file);
 
-        token = strtok(buffer6, " |\r");
+    if (dummy == NULL) {
+        goto VERSION3_END;
+    }
 
-        i = 0;
-        x = 0;
-        num = 0;
+    token = strtok(buffer6, " |\r");
 
-        while (token != NULL) {
-            if (strcmp(minion_att[i], name) == 0) {
-                buffer_p = token;
+    i = 0;
+    x = 0;
+    num = 0;
+
+    while (token != NULL) {
+        if (strcmp(minion_att[i], name) == 0) {
+            buffer_p = token;
                 
-                while(*buffer_p != '\0') {
-                    out_character->minions[2].name[x] = *buffer_p;
+            while(*buffer_p != '\0') {
+                out_character->minions[2].name[x] = *buffer_p;
 
-                    ++x;
-                    ++buffer_p;
+                ++x;
+                ++buffer_p;
 
-                    if (x == 50) {
-                        break;
-                    }
-                }                
+                if (x == 50) {
+                    break;
+                }
+            }                
 
-            } else if (strcmp(minion_att[i], health) == 0) {
-                sscanf(token, "%d", &num);
-                out_character->minions[2].health = num;
-            } else if (strcmp(minion_att[i], strength) == 0) {
-                sscanf(token, "%d", &num);
-                out_character->minions[2].strength = num;
-            } else if (strcmp(minion_att[i], defence) == 0) {
-                sscanf(token, "%d", &num);
-                out_character->minions[2].defence = num;
-            } 
+        } else if (strcmp(minion_att[i], health) == 0) {
+            sscanf(token, "%d", &num);
+            out_character->minions[2].health = num;
+        } else if (strcmp(minion_att[i], strength) == 0) {
+            sscanf(token, "%d", &num);
+            out_character->minions[2].strength = num;
+        } else if (strcmp(minion_att[i], defence) == 0) {
+            sscanf(token, "%d", &num);
+            out_character->minions[2].defence = num;
+        } 
 
-            token = strtok(NULL, " |\r");
-            ++i;
+        token = strtok(NULL, " |\r");
+        ++i;
 
-            if (i == 4) {
-                break;
-            }
-
+        if (i == 4) {
+            break;
         }
 
-        VERSION3_END:
-            fclose(file);
-            return version;
+    }
+
+VERSION3_END:
+        fclose(file);
+        return version;
     
 }
