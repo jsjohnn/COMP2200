@@ -13,7 +13,7 @@ int get_character(const char* filename, character_v3_t* out_character)
     size_t bar = 0;
     size_t x = 0;
 
-    size_t buf_size = 0;
+    /* size_t buf_size = 0; */
     size_t count = 0;
 
     int num;
@@ -200,7 +200,7 @@ version2_start:
     fgets(buffer2, LENGTH, file);
     buffer_p = buffer2;
 
-    buf_size = strlen(buffer_p);
+    /* buf_size = strlen(buffer_p); */
         
     token = strtok(buffer, ",\r");
 
@@ -224,11 +224,11 @@ version2_start:
             sscanf(buffer_p, "%s", v2_name);
 
             while (v2_name[x] != ' ') {
-                 out_character->name[x] = v2_name[x];
-                 ++x;
-                 if (x == 50) {
-                     break;
-                 }
+                out_character->name[x] = v2_name[x];
+                ++x;
+                if (x == 50) {
+                    break;
+                }
             }
 
             buffer_p = buffer_p + count + 1;                
@@ -392,7 +392,7 @@ version2_start:
 
             sscanf(buffer_p, "%d", &num);
 
-            out_character-> health = num;
+            out_character->health = num;
                 
             buffer_p = buffer_p + count + 1;                
             count = 0;
@@ -453,12 +453,12 @@ version3_start:
 
             sscanf(buffer_p, "%s", v2_name);
 
-            while(v2_name[x] != ' ') {
-                 out_character->name[x] = v2_name[x];
-                 ++x;
-                 if (x == 50) {
-                     break;
-                 }
+            while (v2_name[x] != ' ') {
+                out_character->name[x] = v2_name[x];
+                ++x;
+                if (x == 50) {
+                    break;
+                }
             }
 
             buffer_p = buffer_p + count + 1;                
@@ -783,7 +783,7 @@ version3_start:
         if (strcmp(minion_att[i], name) == 0) {
             buffer_p = token;
                 
-            while(*buffer_p != '\0') {
+            while (*buffer_p != '\0') {
                 out_character->minions[0].name[x] = *buffer_p;
 
                 ++x;
@@ -830,7 +830,7 @@ version3_start:
         if (strcmp(minion_att[i], name) == 0) {
             buffer_p = token;
                 
-            while(*buffer_p != '\0') {
+            while (*buffer_p != '\0') {
                 out_character->minions[1].name[x] = *buffer_p;
 
                 ++x;
@@ -877,7 +877,7 @@ version3_start:
         if (strcmp(minion_att[i], name) == 0) {
             buffer_p = token;
                 
-            while(*buffer_p != '\0') {
+            while (*buffer_p != '\0') {
                 out_character->minions[2].name[x] = *buffer_p;
 
                 ++x;
@@ -909,7 +909,7 @@ version3_start:
     }
 
 VERSION3_END:
-        fclose(file);
-        return version;
+    fclose(file);
+    return version;
     
 }
