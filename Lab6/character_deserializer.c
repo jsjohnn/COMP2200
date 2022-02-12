@@ -115,7 +115,6 @@ int get_character(const char* filename, character_v3_t* out_character)
         goto version2_start;
     }
 
-/* VERSION1 START */
 version1_start:
     
     out_character->minion_count = 0;

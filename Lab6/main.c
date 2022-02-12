@@ -29,11 +29,14 @@ int main(void)
     assert(superman_v1.elemental_resistance.lightning == 1);
     
     version = get_character("Batman_v2.txt", &batman_v2);
-    assert(version == 2);    
-    assert(strcmp(batman_v2.name,"abcde12345abcde12345abcde12345abcde12345abcde12345") == 0);
+    assert(version == 2);
+    assert(strcmp(batman_v2.name,"Batman_v2") == 0);
     assert(batman_v2.level == 25);
     assert(batman_v2.health == 130);
+
+    printf("batman_v2.mana: %d\n", batman_v2.mana);
     assert(batman_v2.mana == 50);
+
     assert(batman_v2.strength == 30);
     assert(batman_v2.dexterity == 28);
     assert(batman_v2.intelligence == 40);
@@ -44,7 +47,6 @@ int main(void)
     assert(batman_v2.elemental_resistance.fire == 3);
     assert(batman_v2.elemental_resistance.cold == 3);
     assert(batman_v2.elemental_resistance.lightning == 3);
-    
     version = get_character("Flash_v3.txt", &flash_v3);
     assert(version == 3);
     assert(strcmp(flash_v3.name, "abcde12345abcde12345abcde12345abcde12345abcde12345") == 0);
@@ -88,6 +90,8 @@ int main(void)
     assert(wonderwoman_v3.minions[1].health == 45);
     assert(wonderwoman_v3.minions[1].strength == 20);
     assert(wonderwoman_v3.minions[1].defence == 4);
+
+    printf("if you see this message, pass the test!\n");
 
 	return 0;
 }

@@ -33,7 +33,7 @@ typedef struct {
 } character_v3_t;
 
 /* custmize define */
-typedef enum  { 
+typedef enum version{ 
     VERSION_1 = 1,
     VERSION_2, 
     VERSION_3 
