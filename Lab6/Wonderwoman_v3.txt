@@ -3,3 +3,4 @@ Wonderwoman_v3  |    55       |    320       |    75      |    75          |    
 name        |    health    |    strength    |    defence
 amazoness   |    50        |    15          |    5
 valkyrie    |    45        |    20          |    4
+valkyrie    |    47        |    20          |    4

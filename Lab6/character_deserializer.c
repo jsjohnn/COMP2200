@@ -79,7 +79,7 @@ int get_character(const char* filename, character_v3_t* out_character)
     size_t i = 0;
     
 
-    FILE* file = fopen(filename, "r");
+    FILE* file = fopen(filename, "rb");
 
     if (!file) {
         fprintf(stderr, "error while opening: %s", filename);

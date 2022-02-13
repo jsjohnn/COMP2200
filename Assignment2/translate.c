@@ -20,6 +20,15 @@ int translate(int argc, const char** argv)
 
     const char* temp = "";
 
+
+    /*                    '\','a','b', 'f', 'n', 'r', 't', 'v' ''' , '"' */
+    char escape_char[] = { 92, 97, 98, 102, 110, 114, 116, 118, 39, 34, 0};
+
+    char* escape_char_p = escape_char;
+
+    size_t is_backslash = 0;
+    size_t is_escape_char = 0;
+
     error_code_t err_code;
 
     int is_flag = 0;
@@ -37,7 +46,7 @@ int translate(int argc, const char** argv)
             return err_code;
         }
     }
-    /* 대소문자 무시 플래그가 없는 경우 */
+
     if (!is_flag) {
     
         temp = argv[1];
@@ -53,7 +62,6 @@ int translate(int argc, const char** argv)
         set1_p = set1;
         set2_p = set2;
 
-    /* 대소문자 무시 플래그가 있는 경우 */
     } else {
             
         temp = argv[2];
@@ -70,6 +78,44 @@ int translate(int argc, const char** argv)
         set2_p = set2;
 
     }
+
+    /* 역슬래쉬 뒤에 지정된 문자가 오지 않으면 오류 뱉어주기 */
+    while (*set1_p != '\0') {
+        if (*set1_p == '\\') {
+            is_backslash = 1;
+        }
+
+        if (is_backslash) {
+            ++set1_p;
+
+            while (*escape_char_p != '\0') {
+                if (*set1_p == *escape_char_p) {
+                    is_escape_char = 1;
+                    break;
+                }
+
+                ++escape_char_p;
+            }
+
+            escape_char_p = escape_char;
+ 
+            if (is_escape_char) {
+                is_backslash = 0;
+                is_escape_char = 0;
+                continue;
+            } else {
+                err_code = ERROR_CODE_INVALID_FORMAT;
+                return err_code;
+            }
+        }
+
+        set1_p++;
+    }
+    
+
+
+    set1_p = set1;
+    set2_p = set2;
 
     /* input.txt로 부터 한 줄씩 읽어 buffer에 저장 */
     while (fgets(buffer, BUFFER_LENGTH, stdin) != NULL) {
