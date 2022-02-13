@@ -398,7 +398,7 @@ version2_start:
             buffer_p = buffer_p + count + 1;                
             count = 0;
 
-        } else if (strcmp(token, mana) == 0) {
+        } else if (strcmp(token, "mana\n") == 0) {
                 
             while (*buffer_p != '\0') {
 
