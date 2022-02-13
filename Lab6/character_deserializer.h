@@ -32,8 +32,7 @@ typedef struct {
     minion_t minions[3];
 } character_v3_t;
 
-/* custmize define */
-typedef enum version{ 
+typedef enum version { 
     VERSION_1 = 1,
     VERSION_2, 
     VERSION_3 
