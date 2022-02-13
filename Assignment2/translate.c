@@ -4,8 +4,8 @@
 
 #include "translate.h"
 
-#define SET_LENGTH (1024)
-#define BUFFER_LENGTH (1024)
+#define SET_LENGTH (512)
+#define BUFFER_LENGTH (512)
 
 int translate(int argc, const char** argv)
 { 
@@ -17,6 +17,7 @@ int translate(int argc, const char** argv)
     char* buffer_p = buffer;
 
     char* set1_p = set1;
+    char* set1_cmp_p = set1;
     char* set2_p = set2;
     char* dummy_p = dummy;
 
@@ -29,10 +30,15 @@ int translate(int argc, const char** argv)
 
     size_t is_backslash = 0;
     size_t is_escape_char = 0;
+    size_t is_same_char = 0;
 
     error_code_t err_code;
 
     int is_flag = 0;
+
+    size_t i;
+    size_t length_diff;
+    char copied_char;
 
 
     if (argc < 3 || argc > 4) {
@@ -274,15 +280,77 @@ int translate(int argc, const char** argv)
 
     set2_p = set2;
     dummy_p = dummy;
-   
+
+    /* SET1의 원소가 중복 되는 경우 */
+    
+    while (*set1_p != '\0') {
+        copied_char = *set1_p;
+        set1_cmp_p = set1_p + 1;
+
+        while (*set1_cmp_p != '\0') {
+            if (copied_char == *set1_cmp_p) {
+                is_same_char = 1;
+                break;
+            }
+            ++set1_cmp_p;
+        }
+        if (!is_same_char) {
+            *dummy_p = copied_char;
+            ++dummy_p;
+        }
+
+        is_same_char = 0;
+        ++set1_p;
+
+    }
+    
+    is_same_char = 0;
+    copied_char = 0;
+    *dummy_p = '\0';
+
+    dummy_p = dummy;
+    set1_p = set1;
+
+    while (*dummy_p != '\0') {
+        *set1_p = *dummy_p;
+
+        ++set1_p;
+        ++dummy_p;
+    }
+
+    *set1_p = '\0';
+    dummy_p = dummy;
+    set1_p = set1;
+
+    /* SET1이 SET2 보다 긴 경우 */
+    if (strlen(set1_p) > strlen(set2_p)) {
+        length_diff = strlen(set1_p) - strlen(set2_p);
+     
+        while (*set2_p != '\0') {
+            ++set2_p;
+        }
+
+        copied_char = *(set2_p - 1);
+
+        for (i = 0; i < length_diff; ++i) {
+            *set2_p = copied_char;
+            set2_p++;
+        }
+
+        *set2_p = '\0';
+
+        set2_p = set2;
+        
+    }
+  
 
     /* input.txt로 부터 한 줄씩 읽어 buffer에 저장 */
     while (fgets(buffer, BUFFER_LENGTH, stdin) != NULL) {
         while (*buffer_p != '\0') {
             while (*set1_p != '\0') {
                 if (*buffer_p == *set1_p 
-                    || (is_flag == 1 &&  (*buffer_p) == *set1_p + 32)
-                    || (is_flag == 1 &&  (*buffer_p) == *set1_p - 32)) {
+                    || (is_flag == 1 && (*buffer_p) == *set1_p + 32)
+                    || (is_flag == 1 && (*buffer_p) == *set1_p - 32)) {
 
                     *buffer_p = *set2_p;
                 }
