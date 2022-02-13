@@ -37,7 +37,7 @@ int translate(int argc, const char** argv)
             return err_code;
         }
     }
-    /* 대소문자 무시 플래그가 없는 경우 */
+
     if (!is_flag) {
 
         temp = argv[1];
@@ -53,7 +53,6 @@ int translate(int argc, const char** argv)
         set1_p = set1;
         set2_p = set2;
 
-    /* 대소문자 무시 플래그가 있는 경우 */
     } else {
 
         temp = argv[2];
@@ -76,8 +75,8 @@ int translate(int argc, const char** argv)
         while (*buffer_p != '\0') {
             while (*set1_p != '\0') {
                 if (*buffer_p == *set1_p 
-                    || (is_flag == 1 &&  (*buffer_p) == *set1_p + 32)
-                    || (is_flag == 1 &&  (*buffer_p) == *set1_p - 32)) {
+                || (is_flag == 1 &&  (*buffer_p) == *set1_p + 32)
+                || (is_flag == 1 &&  (*buffer_p) == *set1_p - 32)) {
 
                     *buffer_p = *set2_p;
                 }
