@@ -5,8 +5,8 @@
 int main(int argc, const char* argv[])
 {
 
-    printf("=======\n");
-    printf("%s\n", argv[1]);
+    /* printf("=======\n");
+    printf("%d\n", argv[1][0]); */
 
     return translate(argc, argv);
 }
