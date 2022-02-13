@@ -81,13 +81,15 @@ int main(void)
 
     assert(strcmp(wonderwoman_v3.minions[0].name, "amazoness") == 0);
     assert(wonderwoman_v3.minions[0].health == 50);
-    /* assert(wonderwoman_v3.minions[0].strength == 15); */
+    assert(wonderwoman_v3.minions[0].strength == 15);
     assert(wonderwoman_v3.minions[0].defence == 5);
 
     assert(strcmp(wonderwoman_v3.minions[1].name, "valkyrie") == 0);
     assert(wonderwoman_v3.minions[1].health == 45);
-    /* assert(wonderwoman_v3.minions[1].strength == 20); */
+    assert(wonderwoman_v3.minions[1].strength == 20);
     assert(wonderwoman_v3.minions[1].defence == 4);
+
+    printf("if you see this message, you pass the test");
 
 
 

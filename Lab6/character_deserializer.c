@@ -20,12 +20,12 @@ int get_character(const char* filename, character_v3_t* out_character)
 
     version_t version;
 
-    char buffer[LENGTH];
-    char buffer2[LENGTH];
-    char buffer3[LENGTH];
-    char buffer4[LENGTH];
-    char buffer5[LENGTH];
-    char buffer6[LENGTH];
+    char buffer[LENGTH] = "";
+    char buffer2[LENGTH] = "";
+    char buffer3[LENGTH] = "";
+    char buffer4[LENGTH] = "";
+    char buffer5[LENGTH] = "";
+    char buffer6[LENGTH] = "";
     char* dummy = NULL;
 
 
@@ -738,37 +738,47 @@ version3_start:
 
 
     /* minion count가 0이 아닌 경우 */
-    fgets(buffer3, LENGTH, file);
+    
+    dummy = fgets(buffer3, LENGTH, file);
 
-
+    if (dummy == NULL) {
+        goto VERSION3_END;
+    }  
+    
     /* att1 */
     token = strtok(buffer3, " |\r");
     strcpy(att1, token);
-        
     minion_att[0] = att1;
 
     /* att2 */
     token = strtok(NULL, " |\r");
-    strcpy(att2, token);
 
-    i = 0;
+    if (token == NULL) {
+        goto MINION_ATT_SETTING;
+    }
+    strcpy(att2, token);
     minion_att[1] = att2;
 
 
     /* att3 */
-    i = 0;
     token = strtok(NULL, " |\r");
+    if (token == NULL) {
+        goto MINION_ATT_SETTING;
+    }
     strcpy(att3, token);
-
     minion_att[2] = att3;
 
     /* att4 */
-    i = 0;
     token = strtok(NULL, " |\r");
+    if (token == NULL) {
+        goto MINION_ATT_SETTING;
+    }
     strcpy(att4, token);
-
     minion_att[3] = att4;
 
+MINION_ATT_SETTING:
+
+    dummy = NULL;
     dummy = fgets(buffer4, LENGTH, file);
 
     if (dummy == NULL) {
@@ -777,6 +787,8 @@ version3_start:
 
     token = strtok(buffer4, " |\r");
 
+    /* printf("%d\n", *(token + 9)); */
+
     i = 0;
     x = 0;
     num = 0;
@@ -784,9 +796,12 @@ version3_start:
     while (token != NULL) {
         if (strcmp(minion_att[i], name) == 0) {
             buffer_p = token;
+            
                 
             while (*buffer_p != '\0') {
                 out_character->minions[0].name[x] = *buffer_p;
+
+                
 
                 ++x;
                 ++buffer_p;
@@ -795,7 +810,8 @@ version3_start:
                     out_character->minions[0].name[x] = '\0';
                     break;
                 }
-            }                
+            }
+            out_character->minions[0].name[x] = *buffer_p;         
 
         } else if (strcmp(minion_att[i], health) == 0) {
             sscanf(token, "%d", &num);
@@ -817,6 +833,7 @@ version3_start:
 
     }
 
+    dummy = NULL;
     dummy = fgets(buffer5, LENGTH, file);
 
     if (dummy == NULL) {
@@ -843,7 +860,8 @@ version3_start:
                     out_character->minions[1].name[x] = '\0';
                     break;
                 }
-            }                
+            }
+            out_character->minions[1].name[x] = '\0';                
 
         } else if (strcmp(minion_att[i], health) == 0) {
             sscanf(token, "%d", &num);
@@ -865,6 +883,7 @@ version3_start:
 
     }
 
+    dummy = NULL;
     dummy = fgets(buffer6, LENGTH, file);
 
     if (dummy == NULL) {
@@ -891,7 +910,8 @@ version3_start:
                     out_character->minions[2].name[x] = '\0';
                     break;
                 }
-            }                
+            }
+            out_character->minions[2].name[x] = '\0';      
 
         } else if (strcmp(minion_att[i], health) == 0) {
             sscanf(token, "%d", &num);
