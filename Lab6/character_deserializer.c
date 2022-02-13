@@ -811,7 +811,9 @@ MINION_ATT_SETTING:
                     break;
                 }
             }
-            out_character->minions[0].name[x] = *buffer_p;         
+            if (x != 50) {
+                out_character->minions[0].name[x] = *buffer_p;
+            }       
 
         } else if (strcmp(minion_att[i], health) == 0) {
             sscanf(token, "%d", &num);
@@ -861,7 +863,9 @@ MINION_ATT_SETTING:
                     break;
                 }
             }
-            out_character->minions[1].name[x] = '\0';                
+            if (x != 50) {
+                out_character->minions[1].name[x] = '\0';
+            }
 
         } else if (strcmp(minion_att[i], health) == 0) {
             sscanf(token, "%d", &num);
@@ -911,7 +915,9 @@ MINION_ATT_SETTING:
                     break;
                 }
             }
-            out_character->minions[2].name[x] = '\0';      
+            if (x != 50) {
+                out_character->minions[2].name[x] = '\0';  
+            }    
 
         } else if (strcmp(minion_att[i], health) == 0) {
             sscanf(token, "%d", &num);
