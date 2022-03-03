@@ -15,14 +15,11 @@ char** tokenize_malloc(const char* str, const char* delim)
 {
     const char* str_start = str;
     const char* str_cur = str;
-
     const char* my_delim = delim;
 
     size_t max_tokens = 0;
     size_t num_tokens = 0;
-
     size_t len;
-    size_t after_delim = 0;
 
     char** tokens;
     char** tmp;
@@ -41,11 +38,6 @@ char** tokenize_malloc(const char* str, const char* delim)
     if (strlen(delim) == 0 && *delim == '\0') {
         goto TOKENIZE_START;
     }
-/*
-    if (strlen(str) == 0 || strlen(delim) == 0) {
-        return NULL;
-    }
-*/
 
     while (*str_cur != '\0') {
         while (*my_delim != '\0') {
@@ -72,7 +64,6 @@ char** tokenize_malloc(const char* str, const char* delim)
 
 TOKENIZE_START:
 
-    /* tmp 해제는?? */
     tmp = malloc(INCREMENT * sizeof(char*));
     tokens = tmp;
     max_tokens += INCREMENT;
@@ -97,7 +88,7 @@ TOKENIZE_START:
                 str_cur = get_next_pointer_or_null(++str_cur, delim);
 
                 if (*str_cur == '\0') {
-                    goto TOKENIZE_EXIT_2;
+                    goto TOKENIZE_EXIT;
                 }
 
                 str_start = str_cur;
@@ -113,8 +104,6 @@ TOKENIZE_START:
         ++str_cur;
         
     }
-
-TOKENIZE_EXIT:
 
     if (*str_cur == '\0') {
         if (max_tokens == num_tokens) {
@@ -137,7 +126,7 @@ TOKENIZE_EXIT:
     
     
 
-TOKENIZE_EXIT_2:
+TOKENIZE_EXIT:
 
     if (max_tokens == num_tokens) {
         tmp = realloc(tokens, (max_tokens + 1) * sizeof(char*));
@@ -150,8 +139,6 @@ TOKENIZE_EXIT_2:
     return tokens;
 
 }
-
-/* TODO: or null 을 삭제하고 널 문자를 만나면 널 문자를 반환하도록 수정 */
 
 const char* get_next_pointer_or_null(const char* str, const char* delim)
 {
