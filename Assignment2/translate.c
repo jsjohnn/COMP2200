@@ -56,8 +56,6 @@ int translate(int argc, const char** argv)
     }
 
 
-
-
     if (!is_flag) {
     
         temp = argv[1];
@@ -280,6 +278,7 @@ int translate(int argc, const char** argv)
 
     set2_p = set2;
     dummy_p = dummy;
+
 
     /* SET1의 원소가 중복 되는 경우 */
     
