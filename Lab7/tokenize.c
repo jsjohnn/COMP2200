@@ -7,8 +7,6 @@
 
 #define INCREMENT (2)
 
-
-/* static 키워드 붙이기 */
 const char* get_next_pointer_or_null(const char* str, const char* delim);
 
 char** tokenize_malloc(const char* str, const char* delim)
@@ -124,7 +122,7 @@ TOKENIZE_START:
     }
 
     
-    
+   
 
 TOKENIZE_EXIT:
 
