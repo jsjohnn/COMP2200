@@ -224,7 +224,6 @@ int load_document(const char* document)
 
         }
 
-/* 파일에서 한 줄 읽은 부분 free */
         tmp_para_pp = tmp_tmp_pp;
         assert(tmp_tmp_pp == tmp_para_pp);
 
@@ -276,8 +275,6 @@ int load_document(const char* document)
 
         document_pppp[doc_num_count++] = paragraph_ppp;
 
-
-    /* 반복문 끝 */
     }
 
     if(!is_not_empty) {
@@ -341,7 +338,6 @@ void dispose(void)
 
 }
 
-/* TODO: loading 된 문서가 없는 경우 처리 */
 size_t get_total_word_count(void)
 {
 
@@ -460,7 +456,6 @@ size_t get_total_paragraph_count(void)
 
 }
 
-/* 로딩 된 문서가 없는 경우 처리 */
 const char*** get_paragraph_or_null(const size_t paragraph_index)
 {
     size_t i = 0;
@@ -484,10 +479,8 @@ const char*** get_paragraph_or_null(const size_t paragraph_index)
         ++i;
     }
 
-/* debug */
     s_para_word_cnt = 0;
 
-    /* word_count, sentence_count를 전역변수에 저장 */
     while (**document_pppp != NULL) {
         ++sen_cnt;
         word_cnt = 0;
@@ -525,7 +518,6 @@ size_t get_paragraph_sentence_count(const char*** paragraph)
     return s_para_sentence_cnt;
 }
 
-/* get_sentence_or_null(1, 1); */
 const char** get_sentence_or_null(const size_t paragraph_index, const size_t sentence_index)
 {
     const char*** para_ppp;
@@ -551,7 +543,6 @@ const char** get_sentence_or_null(const size_t paragraph_index, const size_t sen
         return NULL;
     }
 
-/* debug */
     s_sentence_word_cnt = 0;
 
     while (*para_ppp != NULL) {
@@ -646,4 +637,3 @@ int print_as_tree(const char* filename)
     return TRUE;
     
 }
-
