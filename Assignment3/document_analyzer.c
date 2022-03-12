@@ -73,16 +73,6 @@ int load_document(const char* document)
     }
     
     while (fgets(line, LINE_LENGTH, stream) != NULL) {
-        
-        /* if (*line == '\0') {
-            dispose();
-            s_is_doc = -1;
-
-            fclose(stream);
-            return TRUE;
-            
-        } */
-
 
         if (*line == '\n' || *line == '\r') {
             continue;
@@ -96,7 +86,6 @@ int load_document(const char* document)
         par_num_count = 0;
         par_max_count = 0;
 
-        /* 굳이 복사 안해도..? */
         strcpy(tmp_line, line);
 
         tmp_tmp_pp = malloc(2 * sizeof(char*));
@@ -138,14 +127,6 @@ int load_document(const char* document)
         } else {
             tmp_para_pp[tmp_num_count++] = NULL;
         }
-
-#if 0
-        while (*tmp_para_pp != NULL) {
-            printf("%s\n", *tmp_para_pp++);
-        }
-        fclose(stream);
-        assert(1==8);
-#endif
 
         while (*tmp_para_pp != NULL) {
 
@@ -197,16 +178,6 @@ int load_document(const char* document)
                 g_sentence_pp[num_count++] = NULL;
             }
 
-#if 0
-
-            while (*g_sentence_pp != NULL) {
-                printf("%s\n", *g_sentence_pp++);
-            }
-
-            fclose(stream);
-            assert(0 == 1);
-#endif
-
             if (par_max_count == 0) {
                 g_tmp_ppp = malloc(INCREMENT * sizeof(char**));
                 g_paragraph_ppp = g_tmp_ppp;
@@ -225,7 +196,6 @@ int load_document(const char* document)
         }
 
         tmp_para_pp = tmp_tmp_pp;
-        /* assert(tmp_tmp_pp == tmp_para_pp); */
 
         while (*tmp_para_pp != NULL) {
             free(*tmp_para_pp);
@@ -243,22 +213,6 @@ int load_document(const char* document)
         } else {
             g_paragraph_ppp[par_num_count] = NULL;
         }
-
-#if 0
-
-        while (*g_paragraph_ppp != NULL) {
-            while (**g_paragraph_ppp != NULL) {
-                printf("%s\n", **g_paragraph_ppp);
-                (*g_paragraph_ppp)++;
-            }
-            puts("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
-            g_paragraph_ppp++;
-
-        }
-
-        fclose(stream);
-
-#endif
 
         if (doc_max_count == 0) {
             g_tmp_pppp = malloc(INCREMENT * sizeof(char***));
@@ -305,8 +259,6 @@ void dispose(void)
     size_t word_cnt;
     size_t para_cnt;
 
-    /* assert(g_document_pppp == g_tmp_pppp); */
-
     if (s_is_doc < 1) {
         return;
     }
@@ -344,7 +296,6 @@ size_t get_total_word_count(void)
     size_t para_cnt;
     size_t weighted_word_cnt = 0;
 
-    /* assert(document_pppp == tmp_pppp); */
     if (s_is_doc < 1) {
         return 0;
     }
@@ -381,8 +332,6 @@ size_t get_total_sentence_count(void)
     size_t word_cnt;
     size_t para_cnt;
     size_t weighted_sen_cnt = 0;
-
-    /* assert(g_document_pppp == g_tmp_pppp); */
 
     if (s_is_doc < 1) {
         return 0;
@@ -421,8 +370,6 @@ size_t get_total_paragraph_count(void)
     size_t word_cnt;
     size_t para_cnt;
     size_t weighted_para_cnt = 0;
-
-    /* assert(g_document_pppp == g_tmp_pppp); */
 
     if (s_is_doc < 1) {
         return 0;
@@ -538,8 +485,6 @@ const char** get_sentence_or_null(const size_t paragraph_index, const size_t sen
     }
     para_ppp = get_paragraph_or_null(paragraph_index);
 
-    /* assert(para_ppp != NULL); */
-
     if (sentence_index > (size_t)(s_para_sentence_cnt - 1)) {
         return NULL;
     }
@@ -600,8 +545,6 @@ int print_as_tree(const char* filename)
     }
 
     stream = fopen(filename, "wb");
-
-    /* assert(tmp_pppp == document_pppp); */
 
     while (*g_document_pppp != NULL) {
         fprintf(stream, "Paragraph %d:\n", para_count++);
