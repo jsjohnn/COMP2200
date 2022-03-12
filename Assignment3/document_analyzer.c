@@ -73,16 +73,16 @@ int load_document(const char* document)
     }
     
     while (fgets(line, LINE_LENGTH, stream) != NULL) {
-/*        
-        if (*line == '\0') {
+        
+        /* if (*line == '\0') {
             dispose();
             is_doc = -1;
 
             fclose(stream);
             return TRUE;
             
-        }
-*/
+        } */
+
 
         if (*line == '\n' || *line == '\r') {
             continue;
@@ -225,7 +225,7 @@ int load_document(const char* document)
         }
 
         tmp_para_pp = tmp_tmp_pp;
-        assert(tmp_tmp_pp == tmp_para_pp);
+        /* assert(tmp_tmp_pp == tmp_para_pp); */
 
         while (*tmp_para_pp != NULL) {
             free(*tmp_para_pp);
@@ -257,7 +257,6 @@ int load_document(const char* document)
         }
 
         fclose(stream);
-        assert(1 == 9);
 
 #endif
 
@@ -268,7 +267,7 @@ int load_document(const char* document)
         }
 
         if (doc_max_count == doc_num_count) {
-            tmp_pppp = realloc(document_pppp, ((doc_max_count  + INCREMENT) * sizeof(char***)));
+            tmp_pppp = realloc(document_pppp, ((doc_max_count + INCREMENT) * sizeof(char***)));
             document_pppp = tmp_pppp;
             doc_max_count += INCREMENT;
         }
@@ -277,7 +276,7 @@ int load_document(const char* document)
 
     }
 
-    if(!is_not_empty) {
+    if (!is_not_empty) {
         dispose();
         is_doc = -1;
 
@@ -306,7 +305,7 @@ void dispose(void)
     size_t word_cnt;
     size_t para_cnt;
 
-    assert(document_pppp == tmp_pppp);
+    /* assert(document_pppp == tmp_pppp); */
 
     if (is_doc < 1) {
         return;
@@ -345,7 +344,7 @@ size_t get_total_word_count(void)
     size_t para_cnt;
     size_t weighted_word_cnt = 0;
 
-    assert(document_pppp == tmp_pppp);
+    /* assert(document_pppp == tmp_pppp); */
     if (is_doc < 1) {
         return 0;
     }
@@ -383,7 +382,7 @@ size_t get_total_sentence_count(void)
     size_t para_cnt;
     size_t weighted_sen_cnt = 0;
 
-    assert(document_pppp == tmp_pppp);
+    /* assert(document_pppp == tmp_pppp); */
 
     if (is_doc < 1) {
         return 0;
@@ -423,7 +422,7 @@ size_t get_total_paragraph_count(void)
     size_t para_cnt;
     size_t weighted_para_cnt = 0;
 
-    assert(document_pppp == tmp_pppp);
+    /* assert(document_pppp == tmp_pppp); */
 
     if (is_doc < 1) {
         return 0;
@@ -465,14 +464,14 @@ const char*** get_paragraph_or_null(const size_t paragraph_index)
     size_t word_cnt = 0;
 
     size_t total_paragraph_count = get_total_paragraph_count();
-    if (is_doc < 1 || paragraph_index  > total_paragraph_count - 1 ) {
+    if (is_doc < 1 || paragraph_index > total_paragraph_count - 1) {
         return NULL;
     }
 
     while (*document_pppp != NULL) {
         if (i == paragraph_index) {
-             para_ppp = (const char***)*document_pppp;
-             break;
+            para_ppp = (const char***)*document_pppp;
+            break;
         }
 
         ++document_pppp;
@@ -537,7 +536,7 @@ const char** get_sentence_or_null(const size_t paragraph_index, const size_t sen
     }
     para_ppp = get_paragraph_or_null(paragraph_index);
 
-    assert(para_ppp != NULL);
+    /* assert(para_ppp != NULL); */
 
     if (sentence_index > (size_t)(s_para_sentence_cnt - 1)) {
         return NULL;
@@ -599,7 +598,7 @@ int print_as_tree(const char* filename)
 
     stream = fopen(filename, "wb");
 
-    assert(tmp_pppp == document_pppp);
+    /* assert(tmp_pppp == document_pppp); */
 
     while (*document_pppp != NULL) {
         fprintf(stream, "Paragraph %lu:\n", para_count++);
