@@ -27,7 +27,7 @@ static size_t s_para_sentence_cnt = 0;
 static size_t s_sentence_word_cnt = 0;
 
 
-static int is_doc = 0;
+static int s_is_doc = 0;
 
 int load_document(const char* document)
 {
@@ -68,7 +68,7 @@ int load_document(const char* document)
         return FALSE;
     }
 
-    if (is_doc == 1) {
+    if (s_is_doc == 1) {
         dispose();
     }
     
@@ -76,7 +76,7 @@ int load_document(const char* document)
         
         /* if (*line == '\0') {
             dispose();
-            is_doc = -1;
+            s_is_doc = -1;
 
             fclose(stream);
             return TRUE;
@@ -278,7 +278,7 @@ int load_document(const char* document)
 
     if (!is_not_empty) {
         dispose();
-        is_doc = -1;
+        s_is_doc = -1;
 
         fclose(stream);
         return TRUE;
@@ -295,7 +295,7 @@ int load_document(const char* document)
     
     fclose(stream);
 
-    is_doc = 1;
+    s_is_doc = 1;
 
     return TRUE;
 }
@@ -307,7 +307,7 @@ void dispose(void)
 
     /* assert(g_document_pppp == g_tmp_pppp); */
 
-    if (is_doc < 1) {
+    if (s_is_doc < 1) {
         return;
     }
 
@@ -333,7 +333,7 @@ void dispose(void)
     }
 
     free(g_tmp_pppp);
-    is_doc = 0;
+    s_is_doc = 0;
 
 }
 
@@ -345,7 +345,7 @@ size_t get_total_word_count(void)
     size_t weighted_word_cnt = 0;
 
     /* assert(document_pppp == tmp_pppp); */
-    if (is_doc < 1) {
+    if (s_is_doc < 1) {
         return 0;
     }
 
@@ -384,7 +384,7 @@ size_t get_total_sentence_count(void)
 
     /* assert(g_document_pppp == g_tmp_pppp); */
 
-    if (is_doc < 1) {
+    if (s_is_doc < 1) {
         return 0;
     }
 
@@ -424,7 +424,7 @@ size_t get_total_paragraph_count(void)
 
     /* assert(g_document_pppp == g_tmp_pppp); */
 
-    if (is_doc < 1) {
+    if (s_is_doc < 1) {
         return 0;
     }
 
@@ -464,7 +464,7 @@ const char*** get_paragraph_or_null(const size_t paragraph_index)
     size_t word_cnt = 0;
 
     size_t total_paragraph_count = get_total_paragraph_count();
-    if (is_doc < 1 || paragraph_index > total_paragraph_count - 1) {
+    if (s_is_doc < 1 || paragraph_index > total_paragraph_count - 1) {
         return NULL;
     }
 
@@ -595,7 +595,7 @@ int print_as_tree(const char* filename)
 
     FILE* stream;
 
-    if (is_doc < 1) {
+    if (s_is_doc < 1) {
         return FALSE;
     }
 
