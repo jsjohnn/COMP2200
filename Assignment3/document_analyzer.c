@@ -8,19 +8,19 @@
 #define LINE_LENGTH (4096)
 #define INCREMENT (2)
 
-char* tmp_p = NULL;
-char** tmp_pp = NULL;
-char*** tmp_ppp = NULL;
-char**** tmp_pppp = NULL;
+char* g_tmp_p = NULL;
+char** g_tmp_pp = NULL;
+char*** g_tmp_ppp = NULL;
+char**** g_tmp_pppp = NULL;
 
-char* word_p = NULL;
-char** sentence_pp = NULL;
-char*** paragraph_ppp = NULL;
-char**** document_pppp = NULL;
+char* g_word_p = NULL;
+char** g_sentence_pp = NULL;
+char*** g_paragraph_ppp = NULL;
+char**** g_document_pppp = NULL;
 
-char* f_sentence_pp = NULL;
-char* f_paragraph_ppp = NULL;
-char* f_document_pppp = NULL;
+char* g_f_sentence_pp = NULL;
+char* g_f_paragraph_ppp = NULL;
+char* g_f_document_pppp = NULL;
 
 static size_t s_para_word_cnt = 0;
 static size_t s_para_sentence_cnt = 0;
@@ -159,25 +159,25 @@ int load_document(const char* document)
             while (token != NULL) {
 
                 if (max_count == 0) {
-                    tmp_pp = malloc((max_count + INCREMENT) * sizeof(char*));
-                    sentence_pp = tmp_pp;
+                    g_tmp_pp = malloc((max_count + INCREMENT) * sizeof(char*));
+                    g_sentence_pp = g_tmp_pp;
                     max_count += 2;
                 }
 
                 if (num_count == max_count) {
-                    tmp_pp = realloc(sentence_pp, ((max_count + INCREMENT) * sizeof(char*)));
+                    g_tmp_pp = realloc(g_sentence_pp, ((max_count + INCREMENT) * sizeof(char*)));
                     max_count += 2;
-                    sentence_pp = tmp_pp;
+                    g_sentence_pp = g_tmp_pp;
                 }
                 
 
                 len = strlen(token);
-                tmp_p = malloc(len + 1);
-                word_p = tmp_p;
-                memcpy(word_p, token, len);
-                word_p[len] = '\0';
+                g_tmp_p = malloc(len + 1);
+                g_word_p = g_tmp_p;
+                memcpy(g_word_p, token, len);
+                g_word_p[len] = '\0';
 
-                sentence_pp[num_count] = word_p;
+                g_sentence_pp[num_count] = g_word_p;
                 num_count += 1;
 
                 /* delim 이 다름..*/
@@ -188,19 +188,19 @@ int load_document(const char* document)
             }
 
             if (num_count == max_count) {
-                tmp_pp = realloc(sentence_pp, ((max_count + 1) * sizeof(char*)));
+                g_tmp_pp = realloc(g_sentence_pp, ((max_count + 1) * sizeof(char*)));
                 max_count += 1;
-                sentence_pp = tmp_pp;
-                sentence_pp[num_count] = NULL;
+                g_sentence_pp = g_tmp_pp;
+                g_sentence_pp[num_count] = NULL;
 
             } else {
-                sentence_pp[num_count++] = NULL;
+                g_sentence_pp[num_count++] = NULL;
             }
 
 #if 0
 
-            while (*sentence_pp != NULL) {
-                printf("%s\n", *sentence_pp++);
+            while (*g_sentence_pp != NULL) {
+                printf("%s\n", *g_sentence_pp++);
             }
 
             fclose(stream);
@@ -208,18 +208,18 @@ int load_document(const char* document)
 #endif
 
             if (par_max_count == 0) {
-                tmp_ppp = malloc(INCREMENT * sizeof(char**));
-                paragraph_ppp = tmp_ppp;
+                g_tmp_ppp = malloc(INCREMENT * sizeof(char**));
+                g_paragraph_ppp = g_tmp_ppp;
                 par_max_count += INCREMENT;
             }
 
             if (par_max_count == par_num_count) {
-                tmp_ppp = realloc(paragraph_ppp, ((par_max_count + INCREMENT) * sizeof(char**)));
-                paragraph_ppp = tmp_ppp;
+                g_tmp_ppp = realloc(g_paragraph_ppp, ((par_max_count + INCREMENT) * sizeof(char**)));
+                g_paragraph_ppp = g_tmp_ppp;
                 par_max_count += INCREMENT;
             }
 
-            paragraph_ppp[par_num_count++] = sentence_pp;
+            g_paragraph_ppp[par_num_count++] = g_sentence_pp;
             tmp_para_pp++;
 
         }
@@ -236,23 +236,23 @@ int load_document(const char* document)
         tmp_tmp_pp = NULL;
 
         if (par_max_count == par_num_count) {
-            tmp_ppp = realloc(paragraph_ppp, ((par_max_count + 1) * sizeof(char**)));
+            g_tmp_ppp = realloc(g_paragraph_ppp, ((par_max_count + 1) * sizeof(char**)));
             par_max_count += 1;
-            paragraph_ppp = tmp_ppp;
-            paragraph_ppp[par_num_count] = NULL;
+            g_paragraph_ppp = g_tmp_ppp;
+            g_paragraph_ppp[par_num_count] = NULL;
         } else {
-            paragraph_ppp[par_num_count] = NULL;
+            g_paragraph_ppp[par_num_count] = NULL;
         }
 
 #if 0
 
-        while (*paragraph_ppp != NULL) {
-            while (**paragraph_ppp != NULL) {
-                printf("%s\n", **paragraph_ppp);
-                (*paragraph_ppp)++;
+        while (*g_paragraph_ppp != NULL) {
+            while (**g_paragraph_ppp != NULL) {
+                printf("%s\n", **g_paragraph_ppp);
+                (*g_paragraph_ppp)++;
             }
             puts("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
-            paragraph_ppp++;
+            g_paragraph_ppp++;
 
         }
 
@@ -261,18 +261,18 @@ int load_document(const char* document)
 #endif
 
         if (doc_max_count == 0) {
-            tmp_pppp = malloc(INCREMENT * sizeof(char***));
-            document_pppp = tmp_pppp;
+            g_tmp_pppp = malloc(INCREMENT * sizeof(char***));
+            g_document_pppp = g_tmp_pppp;
             doc_max_count += INCREMENT;
         }
 
         if (doc_max_count == doc_num_count) {
-            tmp_pppp = realloc(document_pppp, ((doc_max_count + INCREMENT) * sizeof(char***)));
-            document_pppp = tmp_pppp;
+            g_tmp_pppp = realloc(g_document_pppp, ((doc_max_count + INCREMENT) * sizeof(char***)));
+            g_document_pppp = g_tmp_pppp;
             doc_max_count += INCREMENT;
         }
 
-        document_pppp[doc_num_count++] = paragraph_ppp;
+        g_document_pppp[doc_num_count++] = g_paragraph_ppp;
 
     }
 
@@ -285,12 +285,12 @@ int load_document(const char* document)
     }
 
     if (doc_max_count == doc_num_count) {
-        tmp_pppp = realloc(document_pppp, ((doc_max_count + 1) * sizeof(char***)));
+        g_tmp_pppp = realloc(g_document_pppp, ((doc_max_count + 1) * sizeof(char***)));
         doc_max_count += 1;
-        document_pppp = tmp_pppp;
-        document_pppp[doc_num_count] = NULL;
+        g_document_pppp = g_tmp_pppp;
+        g_document_pppp[doc_num_count] = NULL;
     } else {
-        document_pppp[doc_num_count] = NULL;
+        g_document_pppp[doc_num_count] = NULL;
     }
     
     fclose(stream);
@@ -305,34 +305,34 @@ void dispose(void)
     size_t word_cnt;
     size_t para_cnt;
 
-    /* assert(document_pppp == tmp_pppp); */
+    /* assert(g_document_pppp == g_tmp_pppp); */
 
     if (is_doc < 1) {
         return;
     }
 
-    while (*document_pppp != NULL) {
+    while (*g_document_pppp != NULL) {
         para_cnt = 0;
 
-        while (**document_pppp != NULL) {
+        while (**g_document_pppp != NULL) {
             word_cnt = 0;
 
-            while (***document_pppp != NULL) {
+            while (***g_document_pppp != NULL) {
                 ++word_cnt;
-                free(***document_pppp);
-                (**document_pppp)++;
+                free(***g_document_pppp);
+                (**g_document_pppp)++;
             }
-            free(**document_pppp - word_cnt);
-            (*document_pppp)++;
+            free(**g_document_pppp - word_cnt);
+            (*g_document_pppp)++;
             ++para_cnt;
 
         }
-        free(*document_pppp - para_cnt);
+        free(*g_document_pppp - para_cnt);
 
-        document_pppp++;
+        g_document_pppp++;
     }
 
-    free(tmp_pppp);
+    free(g_tmp_pppp);
     is_doc = 0;
 
 }
@@ -349,28 +349,28 @@ size_t get_total_word_count(void)
         return 0;
     }
 
-    while (*document_pppp != NULL) {
+    while (*g_document_pppp != NULL) {
         para_cnt = 0;
 
-        while (**document_pppp != NULL) {
+        while (**g_document_pppp != NULL) {
             word_cnt = 0;
 
-            while (***document_pppp != NULL) {
+            while (***g_document_pppp != NULL) {
                 ++weighted_word_cnt;
                 ++word_cnt;
-                (**document_pppp)++;
+                (**g_document_pppp)++;
             }
-            **document_pppp -= word_cnt;
-            (*document_pppp)++;
+            **g_document_pppp -= word_cnt;
+            (*g_document_pppp)++;
             ++para_cnt;
 
         }
-        *document_pppp -= para_cnt;
+        *g_document_pppp -= para_cnt;
 
-        document_pppp++;
+        g_document_pppp++;
     }
 
-    document_pppp = tmp_pppp;
+    g_document_pppp = g_tmp_pppp;
 
     return weighted_word_cnt;
 
@@ -382,35 +382,35 @@ size_t get_total_sentence_count(void)
     size_t para_cnt;
     size_t weighted_sen_cnt = 0;
 
-    /* assert(document_pppp == tmp_pppp); */
+    /* assert(g_document_pppp == g_tmp_pppp); */
 
     if (is_doc < 1) {
         return 0;
     }
 
-    while (*document_pppp != NULL) {
+    while (*g_document_pppp != NULL) {
         para_cnt = 0;
 
-        while (**document_pppp != NULL) {
+        while (**g_document_pppp != NULL) {
             word_cnt = 0;
 
-            while (***document_pppp != NULL) {
+            while (***g_document_pppp != NULL) {
                 ++word_cnt;
-                (**document_pppp)++;
+                (**g_document_pppp)++;
             }
             ++weighted_sen_cnt;
 
-            **document_pppp -= word_cnt;
-            (*document_pppp)++;
+            **g_document_pppp -= word_cnt;
+            (*g_document_pppp)++;
             ++para_cnt;
 
         }
-        *document_pppp -= para_cnt;
+        *g_document_pppp -= para_cnt;
 
-        document_pppp++;
+        g_document_pppp++;
     }
 
-    document_pppp = tmp_pppp;
+    g_document_pppp = g_tmp_pppp;
 
     return weighted_sen_cnt;
 
@@ -422,34 +422,34 @@ size_t get_total_paragraph_count(void)
     size_t para_cnt;
     size_t weighted_para_cnt = 0;
 
-    /* assert(document_pppp == tmp_pppp); */
+    /* assert(g_document_pppp == g_tmp_pppp); */
 
     if (is_doc < 1) {
         return 0;
     }
 
-    while (*document_pppp != NULL) {
+    while (*g_document_pppp != NULL) {
         para_cnt = 0;
         ++weighted_para_cnt;
 
-        while (**document_pppp != NULL) {
+        while (**g_document_pppp != NULL) {
             word_cnt = 0;
 
-            while (***document_pppp != NULL) {
+            while (***g_document_pppp != NULL) {
                 ++word_cnt;
-                (**document_pppp)++;
+                (**g_document_pppp)++;
             }
-            **document_pppp -= word_cnt;
-            (*document_pppp)++;
+            **g_document_pppp -= word_cnt;
+            (*g_document_pppp)++;
             ++para_cnt;
 
         }
-        *document_pppp -= para_cnt;
+        *g_document_pppp -= para_cnt;
 
-        document_pppp++;
+        g_document_pppp++;
     }
 
-    document_pppp = tmp_pppp;
+    g_document_pppp = g_tmp_pppp;
 
     return weighted_para_cnt;
 
@@ -468,33 +468,33 @@ const char*** get_paragraph_or_null(const size_t paragraph_index)
         return NULL;
     }
 
-    while (*document_pppp != NULL) {
+    while (*g_document_pppp != NULL) {
         if (i == paragraph_index) {
-            para_ppp = (const char***)*document_pppp;
+            para_ppp = (const char***)*g_document_pppp;
             break;
         }
 
-        ++document_pppp;
+        ++g_document_pppp;
         ++i;
     }
 
     s_para_word_cnt = 0;
 
-    while (**document_pppp != NULL) {
+    while (**g_document_pppp != NULL) {
         ++sen_cnt;
         word_cnt = 0;
-        while (***document_pppp != NULL) {
+        while (***g_document_pppp != NULL) {
             ++s_para_word_cnt;
 
             ++word_cnt;
-            ++(**document_pppp);
+            ++(**g_document_pppp);
         }
-        **document_pppp -= word_cnt;
-        ++(*document_pppp);
+        **g_document_pppp -= word_cnt;
+        ++(*g_document_pppp);
     }
-    *document_pppp -= sen_cnt;
+    *g_document_pppp -= sen_cnt;
 
-    document_pppp = tmp_pppp;
+    g_document_pppp = g_tmp_pppp;
 
     s_para_sentence_cnt = sen_cnt;
 
@@ -505,6 +505,7 @@ size_t get_paragraph_word_count(const char*** paragraph)
 {
     const char*** tmp = paragraph;
     tmp = NULL;
+    assert(tmp == NULL);
 
     return s_para_word_cnt;
 }
@@ -513,6 +514,7 @@ size_t get_paragraph_sentence_count(const char*** paragraph)
 {
     const char*** tmp = paragraph;
     tmp = NULL;
+    assert(tmp == NULL);
 
     return s_para_sentence_cnt;
 }
@@ -575,6 +577,7 @@ size_t get_sentence_word_count(const char** sentence)
 {
     const char** tmp = sentence;
     tmp = NULL;
+    assert(tmp == NULL);
 
     if (sentence == NULL) {
         return 0;
@@ -600,36 +603,43 @@ int print_as_tree(const char* filename)
 
     /* assert(tmp_pppp == document_pppp); */
 
-    while (*document_pppp != NULL) {
-        fprintf(stream, "Paragraph %lu:\n", para_count++);
+    while (*g_document_pppp != NULL) {
+        fprintf(stream, "Paragraph %d:\n", para_count++);
         para_cnt = 0;
         
         sen_count = 0;
-        while (**document_pppp != NULL) {
+        while (**g_document_pppp != NULL) {
             word_cnt = 0;
-            fprintf(stream, "    Sentence %lu:\n", sen_count++);
+            fprintf(stream, "    Sentence %d:\n", sen_count++);
 
-            while (***document_pppp != NULL) {
-                fprintf(stream, "        %s\n", ***document_pppp);
+            while (***g_document_pppp != NULL) {
+                fprintf(stream, "        %s", ***g_document_pppp);
                 ++word_cnt;
-                (**document_pppp)++;
-            }
-            **document_pppp -= word_cnt;
+                (**g_document_pppp)++;
 
-            (*document_pppp)++;
+                if (***g_document_pppp != NULL) {
+                    fprintf(stream, "\n");
+                }
+            }
+            **g_document_pppp -= word_cnt;
+
+            (*g_document_pppp)++;
             ++para_cnt;
+            if (**g_document_pppp != NULL) {
+                fprintf(stream, "\n");
+            }
 
         }
-        *document_pppp -= para_cnt;
+        *g_document_pppp -= para_cnt;
 
-        document_pppp++;
+        g_document_pppp++;
 
-        if (*document_pppp != NULL) {
-            fprintf(stream, "\n");
+        if (*g_document_pppp != NULL) {
+            fprintf(stream, "\n\n");
         }
     }
 
-    document_pppp = tmp_pppp;
+    g_document_pppp = g_tmp_pppp;
 
     fclose(stream);
 
