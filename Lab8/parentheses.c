@@ -66,7 +66,7 @@ size_t get_matching_parentheses(parenthesis_t* out_parentheses, size_t max_size,
                 ++my_str_p;
 
                 if (*my_str_p == '\0') {
-                    my_str_p = my_str_p - 1 - fnd_closing_cnt;
+                    my_str_p = my_str_p - fnd_closing_cnt - 1;
                     break;
                 }
             }
