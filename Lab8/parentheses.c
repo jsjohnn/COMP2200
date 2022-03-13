@@ -66,13 +66,13 @@ size_t get_matching_parentheses(parenthesis_t* out_parentheses, size_t max_size,
                 ++my_str_p;
 
                 if (*my_str_p == '\0') {
-                     my_str_p = my_str_p - 1 - fnd_closing_cnt;
-                     break;
+                    my_str_p = my_str_p - 1 - fnd_closing_cnt;
+                    break;
                 }
             }
             
         } else if (*my_str_p == '<') {
-           cur_opening_index = cur_index;
+            cur_opening_index = cur_index;
             cur_closing_index = cur_index + 1;
             ++my_str_p;
 
@@ -106,12 +106,12 @@ size_t get_matching_parentheses(parenthesis_t* out_parentheses, size_t max_size,
                 ++my_str_p;
 
                 if (*my_str_p == '\0') {
-                     my_str_p = my_str_p  - 1 - fnd_closing_cnt;
-                     break;
+                    my_str_p = my_str_p  - 1 - fnd_closing_cnt;
+                    break;
                 }
             }
         } else if (*my_str_p == '(') {
-           cur_opening_index = cur_index;
+            cur_opening_index = cur_index;
             cur_closing_index = cur_index + 1;
             ++my_str_p;
 
@@ -145,12 +145,12 @@ size_t get_matching_parentheses(parenthesis_t* out_parentheses, size_t max_size,
                 ++my_str_p;
 
                 if (*my_str_p == '\0') {
-                     my_str_p = my_str_p  - 1 - fnd_closing_cnt;
-                     break;
+                    my_str_p = my_str_p  - 1 - fnd_closing_cnt;
+                    break;
                 }
             }
         } else if (*my_str_p == '[') {
-           cur_opening_index = cur_index;
+            cur_opening_index = cur_index;
             cur_closing_index = cur_index + 1;
             ++my_str_p;
 
@@ -184,8 +184,8 @@ size_t get_matching_parentheses(parenthesis_t* out_parentheses, size_t max_size,
                 ++my_str_p;
 
                 if (*my_str_p == '\0') {
-                     my_str_p = my_str_p  - 1 - fnd_closing_cnt;
-                     break;
+                    my_str_p = my_str_p  - 1 - fnd_closing_cnt;
+                    break;
                 }
             }
         }
@@ -197,3 +197,4 @@ size_t get_matching_parentheses(parenthesis_t* out_parentheses, size_t max_size,
 
     return struct_num;
 }
+
