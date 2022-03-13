@@ -18,14 +18,15 @@ char** g_sentence_pp = NULL;
 char*** g_paragraph_ppp = NULL;
 char**** g_document_pppp = NULL;
 
+/*
 char* g_f_sentence_pp = NULL;
 char* g_f_paragraph_ppp = NULL;
 char* g_f_document_pppp = NULL;
+*/
 
 static size_t s_para_word_cnt = 0;
 static size_t s_para_sentence_cnt = 0;
 static size_t s_sentence_word_cnt = 0;
-
 
 static int s_is_doc = 0;
 
@@ -47,8 +48,6 @@ int load_document(const char* document)
     char line[LINE_LENGTH];
     char tmp_line[LINE_LENGTH];
 
-
-    /* temp paragrap, 이 함수 안에서 해제 */
     char** tmp_para_pp = NULL;
     char** tmp_tmp_pp = NULL;
 
