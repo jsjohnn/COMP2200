@@ -8,7 +8,7 @@
 #define ABS(x) (x >= 0 ? x : -x)
 
 #define RANGE(curr, min, max)            \
-	for (curr = min; curr <= max; ++curr) \
+    for (curr = min; curr <= max; ++curr) \
     
 #define RANGE_DESC(curr, max, min)        \
     for (curr = max; curr >= min; --curr) \
