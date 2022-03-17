@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
 
 #include "macros.h"
@@ -7,9 +8,8 @@ int main(void)
 {
     int i = 0;
     int arr[20];
-    int* curr;
+    int* curr;    
 
-    assert(10 == MAX(10, 5));
     assert(10.0f == MAX(10.0f, 5.0f));
     assert(10.0 == MAX(10.0, 5.0f));
 
