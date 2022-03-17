@@ -13,15 +13,17 @@
 #define RANGE_DESC(curr, max, min)         \
     for (((curr) = (max)); ((curr) >= (min)); --(curr))  \
 
-
 #define SET(ary, start, count, value) \
-{                                     \
-    int i = (start);                  \
-    int end = i + (count);            \
+    do {                              \
+        int i = (start);              \
+        int end = i + (count);        \
                                       \
-    for (; i < end; ++i) {            \
-        (ary)[i] = (value);           \
-    }                                 \
-}                                     \
+        for (; i < end; ++i) {        \
+            (ary)[i] = (value);       \
+        }                             \
+                                      \
+        break;                        \
+    } while(0)                        \
+
 
 #endif /* MACROS_H */
