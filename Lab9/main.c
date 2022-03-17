@@ -8,9 +8,10 @@ int main(void)
 {
     int i = 0;
     int arr[20];
-    int* curr;    
+    int* curr;
 
     assert(10.0f == MAX(10.0f, 5.0f));
+
     assert(10.0 == MAX(10.0, 5.0f));
 
     assert(5 == MIN(10, 5));
