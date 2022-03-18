@@ -7,8 +7,12 @@ static size_t hash_function(const char* key);
 
 int main(void)
 {
+    hashmap_t* hashmap = NULL;
 
-    init_hashmap_malloc(1, hash_function);
+    hashmap  = init_hashmap_malloc(10, hash_function);
+
+    /* destroy(hashmap); */
+    
     return 0;
 }
 
