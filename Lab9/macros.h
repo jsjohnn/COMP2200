@@ -22,8 +22,20 @@
             (ary)[i] = (value);       \
         }                             \
                                       \
-        break;                        \
-    } while(0)                        \
+    } while(0) \
 
+/* 중괄호가 없는 if / else 문에 복붙 될 때 세미콜론 때문에 빌드 오류가 발생
+
+#define SET(ary, start, count, value) \
+{
+    int i = (start);
+    int end = i + (count);
+
+    for (; i < end; ++i) {
+        (ary)[i] = (value);
+    }
+}
+
+*/
 
 #endif /* MACROS_H */
