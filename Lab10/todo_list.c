@@ -11,6 +11,7 @@ todo_list_t init_todo_list(size_t max_size)
     my_todo_list.max_count = max_size;
     my_todo_list.cur_count = 0;
     my_todo_list.next = NULL;
+    my_todo_list.max_priority_num = 0;
     
     return my_todo_list;
     
@@ -44,6 +45,7 @@ bool add_todo(todo_list_t* todo_list, const int32_t priority, const char* task)
     if (todo_list->cur_count == 0) {
 
         todo_list->priority = priority;
+        todo_list->max_priority_num = priority;
         todo_list->cur_count = 1;
 
         strncpy(todo_list->str, task, LENGTH);
@@ -55,6 +57,10 @@ bool add_todo(todo_list_t* todo_list, const int32_t priority, const char* task)
     }
 
     todo_list_t* tmp_todo_list = todo_list;
+
+    if (todo_list->max_priority_num < priority) {
+        todo_list->max_priority_num = priority;
+    }
 
 
     while (todo_list->next != NULL) {
@@ -100,11 +106,80 @@ bool is_empty(const todo_list_t* todo_list)
 
 bool complete_todo(todo_list_t* todo_list)
 {
+    
+    /* if (todo_list->cur_count == 0) {
+        return false;
+    }
+
+    if (todo_list->cur_count == 1) {
+        (todo_list->str)[0] = '\0';
+        todo_list->priority = 0;
+        todo_list->cur_count = 0;
+        todo_list->max_priority_num = 0;
+
+        return true;
+
+    }
+
+    todo_list_t* tmp_todo_list = todo_list;
+    
+    todo_list_t* tmp_p;
+    
+    int max_priority = todo_list->max_priority_num;
+
+    while (todo_list->next != NULL) {
+        if (max_priority == todo_list->next->priority) {
+            todo_list->next = todo_list->next->next;
+            free(todo_list->next);
+            return true;
+        }
+
+        if (todo_list->next->next == NULL) {
+            tmp_p = todo_list->next->next;
+            todo_list->next = todo_list->next->next;
+            free(tmp_p);
+            return true;
+            
+        }
+
+        todo_list = todo_list->next;
+
+
+    }
+
+    todo_list = tmp_todo_list;
+
+    int tmp_max = 0;
+
+    while (todo_list->next != NULL) {
+        if (tmp_max < todo_list->max_priority_num) {
+            tmp_max = todo_list->max_priority_num;
+        }
+    }
+
+    if (tmp_max < todo_list->max_priority_num) {
+        tmp_max = todo_list->max_priority_num;
+    }
+
+    todo_list = tmp_todo_list; */
+    
+
+    todo_list = NULL;
+
+    assert(todo_list == NULL);
+
+
     return false;
 }
 
 const char* peek_or_null(const todo_list_t* todo_list)
 {
+    todo_list = NULL;
+
+    assert(todo_list == NULL);
+    
     return NULL;
 }
+
+
 

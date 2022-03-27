@@ -12,6 +12,7 @@ typedef struct todo_list {
     size_t max_count;
     size_t cur_count;
     struct todo_list* next;
+    int max_priority_num;
 } todo_list_t;
 
 todo_list_t init_todo_list(size_t max_size);
