@@ -33,7 +33,7 @@ typedef struct node {
 */
 
 void destroy(hashmap_t* hashmap)
-{
+{2
     size_t i;
     node_t* tmp;
 
