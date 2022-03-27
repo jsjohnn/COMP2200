@@ -98,3 +98,13 @@ bool is_empty(const todo_list_t* todo_list)
     return false;
 }
 
+bool complete_todo(todo_list_t* todo_list)
+{
+    return false;
+}
+
+const char* peek_or_null(const todo_list_t* todo_list)
+{
+    return NULL;
+}
+
