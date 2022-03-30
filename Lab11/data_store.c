@@ -56,37 +56,10 @@ bool update_email(user_t** users_or_null, size_t id, const char* email)
     if (users_or_null == NULL) {
         return false;
     }
-
     
     char oldemail[LENGTH];
 
 #if defined(RELEASE)
-
-    user_t** tmp_pp = users_or_null;
-
-    while (*users_or_null != NULL) {
-        if ((*users_or_null)->id == id) {
-            FILE* stream;
-
-            stream = fopen("log.txt", "ab");
-
-            strcpy(oldemail, (*users_or_null)->email);
-
-            strcpy((*users_or_null)->email, email);
-            users_or_null = tmp_pp;
-
-            fprintf(stream, "TRACE: User %d updated email from \"%s\" to \"%s\"\n", id, oldemail, email);
-
-            fclose(stream);
-
-            return true;
-        }
-
-        users_or_null++;
-
-    }
-
-#else
 
     while (*users_or_null != NULL) {
         if ((*users_or_null)->id == id) {
@@ -177,6 +150,31 @@ bool update_email(user_t** users_or_null, size_t id, const char* email)
         users_or_null++;
     }
 
+#else
+    user_t** tmp_pp = users_or_null;
+
+    while (*users_or_null != NULL) {
+        if ((*users_or_null)->id == id) {
+            FILE* stream;
+
+            stream = fopen("log.txt", "ab");
+
+            strcpy(oldemail, (*users_or_null)->email);
+
+            strcpy((*users_or_null)->email, email);
+            users_or_null = tmp_pp;
+
+            fprintf(stream, "TRACE: User %d updated email from \"%s\" to \"%s\"\n", id, oldemail, email);
+
+            fclose(stream);
+
+            return true;
+        }
+
+        users_or_null++;
+
+    }
+
 #endif
 
     return false;
@@ -189,32 +187,13 @@ bool update_password(user_t** users_or_null, size_t id, const char* password)
     }
 
 #if defined(RELEASE)
+
     user_t** tmp_pp = users_or_null;
 
     while (*users_or_null != NULL) {
         if ((*users_or_null)->id == id) {
             char old_pw[LENGTH];
-            strcpy(old_pw,(*users_or_null)->password);
-            strcpy((*users_or_null)->password, password);
-
-            FILE* stream;
-            stream = fopen("log.txt", "ab");
-            fprintf(stream, "TRACE: User %d updated password from \"%s\" to \"%s\"\n", id, old_pw, password);
-           
-            fclose(stream);
-            users_or_null = tmp_pp;
-
-            return true;
-        }
-        ++users_or_null;
-    }
-#else
-    user_t** tmp_pp = users_or_null;
-
-    while (*users_or_null != NULL) {
-        if ((*users_or_null)->id == id) {
-            char old_pw[LENGTH];
-            strcpy(old_pw,(*users_or_null)->password);
+            strcpy(old_pw, (*users_or_null)->password);
             strcpy((*users_or_null)->password, password);
 
             size_t old_pw_count = strlen(old_pw);
@@ -226,7 +205,7 @@ bool update_password(user_t** users_or_null, size_t id, const char* password)
 
             if (old_pw_count == 1) {
                 old_pw_log[0] = '*';
-            } else if(old_pw_count == 2) {
+            } else if (old_pw_count == 2) {
                 strcpy(old_pw_log, old_pw);
                 old_pw_log[1] = '*';
             } else {
@@ -240,7 +219,7 @@ bool update_password(user_t** users_or_null, size_t id, const char* password)
 
             if (new_pw_count == 1) {
                 new_pw_log[0] = '*';
-            } else if(new_pw_count == 2) {
+            } else if (new_pw_count == 2) {
                 strcpy(new_pw_log, password);
                 new_pw_log[1] = '*';
             } else {
@@ -266,6 +245,29 @@ bool update_password(user_t** users_or_null, size_t id, const char* password)
         users_or_null++;
 
     }
+
+#else
+
+    user_t** tmp_pp = users_or_null;
+
+    while (*users_or_null != NULL) {
+        if ((*users_or_null)->id == id) {
+            char old_pw[LENGTH];
+            strcpy(old_pw, (*users_or_null)->password);
+            strcpy((*users_or_null)->password, password);
+
+            FILE* stream;
+            stream = fopen("log.txt", "ab");
+            fprintf(stream, "TRACE: User %d updated password from \"%s\" to \"%s\"\n", id, old_pw, password);
+           
+            fclose(stream);
+            users_or_null = tmp_pp;
+
+            return true;
+        }
+        ++users_or_null;
+    }
+
 #endif
 
     
