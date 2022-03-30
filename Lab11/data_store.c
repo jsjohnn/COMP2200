@@ -5,6 +5,10 @@
 #include "user.h"
 #include "data_store.h"
 
+#ifndef RELEASE
+#define RELEASE (0)
+#endif
+
 user_t* get_user_by_id_or_null(user_t** users_or_null, size_t id)
 {
     if (users_or_null == NULL) {
@@ -60,7 +64,7 @@ bool update_email(user_t** users_or_null, size_t id, const char* email)
     
     char oldemail[LENGTH];
 
-#if !RELEASE
+#if RELEASE
 
     user_t** tmp_pp = users_or_null;
 
@@ -188,7 +192,7 @@ bool update_password(user_t** users_or_null, size_t id, const char* password)
         return false;
     }
 
-#if !RELEASE
+#if RELEASE
     user_t** tmp_pp = users_or_null;
 
     while (*users_or_null != NULL) {
