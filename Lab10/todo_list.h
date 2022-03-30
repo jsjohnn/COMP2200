@@ -6,14 +6,21 @@
 
 #define LENGTH (256)
 
-typedef struct todo_list {
+typedef struct task {
     char str[LENGTH];
     int priority;
+    task_t* next;
+
+} task_t;
+
+typedef struct todo_list {
     size_t max_count;
     size_t cur_count;
-    struct todo_list* next;
     int max_priority_num;
+    task_t* next;
 } todo_list_t;
+
+
 
 todo_list_t init_todo_list(size_t max_size);
 
