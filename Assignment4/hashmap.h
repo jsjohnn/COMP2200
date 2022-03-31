@@ -6,6 +6,14 @@
 #define TRUE (1)
 #define FALSE (0)
 
+/* node.h
+typedef struct node {
+    char* key;
+    int value;
+    struct node* next;
+} node_t;
+*/
+
 typedef struct hashmap {
     size_t (*hash_func)(const char* key);
     node_t** plist;
