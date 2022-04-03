@@ -53,7 +53,7 @@ int main(void)
     }
 
     print_hashmap(hashmap);
-
+/*
     for (i = 0; i < 100; i++) {
         char key[100];
         int c;
@@ -77,6 +77,7 @@ int main(void)
     for (i = 0; i < DEFAULT_ARRAY_LENGTH; i++) {
         assert((hashmap->plist)[i] == NULL);
     }
+*/
 
     destroy(hashmap);
 
