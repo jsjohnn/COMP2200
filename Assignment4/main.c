@@ -7,22 +7,76 @@
 
 
 static size_t hash_function(const char* key);
-/* static void print_hashmap(hashmap_t* hashmap); */
+static void print_hashmap(hashmap_t* hashmap);
 
 int main(void)
 {
-    size_t i;
+    
+    size_t i = 0;
+    hashmap_t* hashmap = NULL;
 
-    hashmap_t* hashmap = init_hashmap_malloc(DEFAULT_ARRAY_LENGTH, hash_function);
+    hashmap = init_hashmap_malloc(DEFAULT_ARRAY_LENGTH, hash_function);
 
-    printf("%lu\n", hash_function("str") % 3 );
-    printf("%lu\n", hash_function("is the best") % 3);
-    printf("%lu\n", hash_function("pocu") % 3);
-    printf("%lu\n", hash_function("is") % 3);
-    printf("%lu\n", hash_function("the") % 3);
-    printf("%lu\n", hash_function("best") % 3);
-    printf("%lu\n", hash_function("programming") % 3);
-    printf("%lu\n", hash_function("school") % 3);
+    for (i = 0; i < 100; i++) {
+        char key[100];
+        int value = (int)i;
+        int c;
+        int dummy = 512;
+
+        sprintf(key, "key%u", i);
+
+        assert(add_key(hashmap, key, value) == TRUE);
+
+        c = get_value(hashmap, key);
+        assert(c == value);
+
+        assert(add_key(hashmap, key, dummy) == FALSE);
+
+        c = get_value(hashmap, key);
+        assert(c == value);
+    }
+
+    for (i = 0; i < 100; i++) {
+        char key[100];
+        int value = (int)(i * i * i);
+        int c;
+
+        sprintf(key, "key%u", i);
+
+        assert(update_value(hashmap, key, value) == TRUE);
+        c = get_value(hashmap, key);
+
+        assert(c == value);
+    }
+
+    print_hashmap(hashmap);
+
+    for (i = 0; i < 100; i++) {
+        char key[100];
+        int c;
+
+        sprintf(key, "key%u", i);
+
+printf("%s\n", key);
+
+
+if (strcmp(key, "key10") == 0) {
+    print_hashmap(hashmap);
+
+}
+
+        assert(remove_key(hashmap, key) == TRUE);
+        c = get_value(hashmap, key);
+
+        assert(c == -1);
+
+
+        assert(remove_key(hashmap, key) == FALSE);
+
+
+puts("===========================");
+    }
+
 
     return 0;
 }
@@ -40,7 +94,7 @@ static size_t hash_function(const char* key)
 }
 
 
-/*
+
 static void print_hashmap(hashmap_t* hashmap)
 {
     size_t i;
@@ -51,11 +105,11 @@ static void print_hashmap(hashmap_t* hashmap)
         printf("index:[%d]\n", i);
 
         while (p_node != NULL) {
-            printf("node_count:[%d] key: %s , value: %d\n", j++, p_node->key, p_node->value);
+            printf("node_count:[%d] key: %s , value: %d hash_val: %d\n", j++, p_node->key, p_node->value, hash_function(p_node->key) % DEFAULT_ARRAY_LENGTH);
 
             p_node = p_node->next;
         }
     }
 }
-*/
+
 
