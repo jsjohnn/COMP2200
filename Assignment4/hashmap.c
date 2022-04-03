@@ -231,13 +231,15 @@ void destroy(hashmap_t* hashmap)
 
             tmp_pp = &(tmp_p->next);
             free(tmp_p);
+
             tmp_p = NULL;
             
         }
-        /* free(hashmap->plist[i]); */
+        
 
     }
 
+    free(hashmap->plist);
     free(hashmap);
 }
 
