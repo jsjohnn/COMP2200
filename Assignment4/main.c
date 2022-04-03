@@ -34,8 +34,6 @@ int main(void)
         assert(c == value);
     }
 
-
-
     for (i = 0; i < 100; i++) {
         char key[100];
         int value = (int)(i * i * i);
@@ -67,6 +65,24 @@ int main(void)
         assert((hashmap->plist)[i] == NULL);
     }
 
+    for (i = 0; i < 100; i++) {
+        char key[100];
+        int value = (int)i;
+        int c;
+        int dummy = 512;
+
+        sprintf(key, "dddddddd%u", i);
+
+        assert(add_key(hashmap, key, value) == TRUE);
+
+        c = get_value(hashmap, key);
+        assert(c == value);
+
+        assert(add_key(hashmap, key, dummy) == FALSE);
+
+        c = get_value(hashmap, key);
+        assert(c == value);
+    }
 
     destroy(hashmap);
 

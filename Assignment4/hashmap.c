@@ -174,15 +174,16 @@ int remove_key(hashmap_t* hashmap, const char* key)
         } else {
             node_t** tmp_pp = &(hashmap->plist[hash_value]);
             node_t* tmp_p = hashmap->plist[hash_value];
+            *tmp_pp = tmp_p->next;
 
             free(tmp_p->key);
             tmp_p->key = NULL;
 
             free(tmp_p);
-            *tmp_pp = (*tmp_pp)->next;
+            tmp_p = NULL;
 
             return TRUE;
-          
+             
         }
     } else {
         node_t** tmp_pp = &(hashmap->plist[hash_value]);
@@ -192,12 +193,13 @@ int remove_key(hashmap_t* hashmap, const char* key)
             tmp_p = *tmp_pp;
             if (strcmp(tmp_p->key, key) == 0) {
 
+                (*(--tmp_pp))->next = tmp_p->next;
                 free(tmp_p->key);
                 tmp_p->key = NULL;
-
                 free(tmp_p);
-                *tmp_pp = (*tmp_pp)->next;
+                tmp_p = NULL;
 
+        
                 return TRUE;
             }
 
@@ -232,10 +234,12 @@ void destroy(hashmap_t* hashmap)
             tmp_p = NULL;
             
         }
+
         
     }
 
     free(hashmap->plist);
+
     free(hashmap);
 }
 
