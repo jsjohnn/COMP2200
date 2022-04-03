@@ -121,8 +121,6 @@ bool update_email(user_t** users_or_null, size_t id, const char* email)
 
             email = email_tmp_p;
 
-            //char* tmp_p = new_domain;
-
             if (new_domain_len == 1) {
                 new_domain[0] = '*';
             } else if (new_domain_len == 2) {

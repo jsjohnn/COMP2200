@@ -153,85 +153,93 @@ int update_value(hashmap_t* hashmap, const char* key, const int value)
 
 int remove_key(hashmap_t* hashmap, const char* key)
 {
-    
     size_t hash_value = hashmap->hash_func(key) % hashmap->length;
 
     if (hashmap->plist[hash_value] == NULL) {
-puts("a");
         return FALSE;
 
-    } else if (hashmap->plist[hash_value]->next == NULL) {
-        if (strcmp(hashmap->plist[hash_value]->key, key) == 0) {
-puts("b");
+    } else if (strcmp(hashmap->plist[hash_value]->key, key) == 0) {
+        if (hashmap->plist[hash_value]->next == NULL) {
 
-            free(hashmap->plist[hash_value]->key);
-            hashmap->plist[hash_value] = NULL;
+            node_t** tmp_pp = &(hashmap->plist[hash_value]);
+            node_t* tmp_p = *tmp_pp;
+
+            free(tmp_p->key);
+            tmp_p->key = NULL;
+
+            free(tmp_p);
+            *tmp_pp = NULL;
+
             return TRUE;
 
         } else {
-puts("c");
+            node_t** tmp_pp = &(hashmap->plist[hash_value]);
+            node_t* tmp_p = hashmap->plist[hash_value];
+            *tmp_pp = tmp_p->next;
 
-            return FALSE;
+            free(tmp_p->key);
+            tmp_p->key = NULL;
+
+            free(tmp_p);
+            tmp_p = NULL;
+
+            return TRUE;
+             
         }
-
-    /* next_node 가 NULL이 아니고, 첫 번재 요소가 삭제 대상인 경우 */
-    } else if (strcmp(hashmap->plist[hash_value]->key, key) == 0) {
-        node_t* tmp_node = hashmap->plist[hash_value];
-        free(hashmap->plist[hash_value]->key);
-        hashmap->plist[hash_value] = hashmap->plist[hash_value]->next;
-        free(tmp_node);
-
-puts("d");
-
-
-        return TRUE;
-    /* next_node 가 NULL이 아니고, 첫 번째 요소가 삭제 대상이 아닌 경우 */
     } else {
+        node_t** tmp_pp = &(hashmap->plist[hash_value]);
+        node_t* tmp_p = hashmap->plist[hash_value];
 
-        node_t* pre_node = hashmap->plist[hash_value];
-        /* hashmap->plist[hash_value] = hashmap->plist[hash_value]->next; */
+        while (*tmp_pp != NULL) {
+            tmp_p = *tmp_pp;
+            if (strcmp(tmp_p->key, key) == 0) {
+                (*(--tmp_pp))->next = tmp_p->next;
 
+                free(tmp_p->key);
+                tmp_p->key = NULL;
 
-        while (hashmap->plist[hash_value]->next != NULL) {
-            if (strcmp(hashmap->plist[hash_value]->key, key) == 0) {
-puts("e");
-                free(hashmap->plist[hash_value]->key);
-                pre_node->next = hashmap->plist[hash_value]->next;
-                hashmap->plist[hash_value] = NULL;
+                free(tmp_p);
+                tmp_p = NULL;
+         
                 return TRUE;
             }
 
-            pre_node = hashmap->plist[hash_value];
-            hashmap->plist[hash_value] = hashmap->plist[hash_value]->next;
-
-
-            if (hashmap->plist[hash_value]->next == NULL) {
-                if (strcmp(hashmap->plist[hash_value]->key, key) == 0) {
-puts("f");
-
-                    free(hashmap->plist[hash_value]->key);
-                    pre_node->next = NULL;
-                    return TRUE;
-                    
-                } else {
-puts("g");
-
-                    return FALSE;
-                }
-
-            }
-
-
+            
+            tmp_pp = &(tmp_p->next);
+            
         }
 
     }
-puts("u");
 
+    return FALSE;
+
+    
 }
 
 void destroy(hashmap_t* hashmap)
 {
-    
+    size_t i;
+    size_t length = hashmap->length;
+
+    for (i = 0; i < length; ++i) {
+        node_t** tmp_pp = &(hashmap->plist[i]);
+        node_t* tmp_p;
+
+        while (*tmp_pp != NULL) {
+            tmp_p = *tmp_pp;
+            free(tmp_p->key);
+            tmp_p->key = NULL;
+
+            tmp_pp = &(tmp_p->next);
+            free(tmp_p);
+            tmp_p = NULL;
+            
+        }
+        free(hashmap->plist[i]);
+
+    }
+
+    free(hashmap);
 }
 
 

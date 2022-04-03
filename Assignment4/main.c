@@ -17,6 +17,9 @@ int main(void)
 
     hashmap = init_hashmap_malloc(DEFAULT_ARRAY_LENGTH, hash_function);
 
+    print_hashmap(hashmap);
+
+
     for (i = 0; i < 100; i++) {
         char key[100];
         int value = (int)i;
@@ -57,25 +60,28 @@ int main(void)
 
         sprintf(key, "key%u", i);
 
-printf("%s\n", key);
-
-
-if (strcmp(key, "key10") == 0) {
-    print_hashmap(hashmap);
-
-}
 
         assert(remove_key(hashmap, key) == TRUE);
+
+
         c = get_value(hashmap, key);
 
         assert(c == -1);
 
-
         assert(remove_key(hashmap, key) == FALSE);
 
-
-puts("===========================");
     }
+
+    print_hashmap(hashmap);
+
+    for (i = 0; i < DEFAULT_ARRAY_LENGTH; i++) {
+        assert((hashmap->plist)[i] == NULL);
+    }
+
+    destroy(hashmap);
+
+
+
 
 
     return 0;
