@@ -42,7 +42,6 @@ int add_key(hashmap_t* hashmap, const char* key, const int value)
 
         return TRUE;
 
-    /* 해시 충돌이 있는 경우 */
     } else {
         node_t* temp_node_t = hashmap->plist[hash_value];
 
@@ -99,7 +98,7 @@ int get_value(const hashmap_t* hashmap, const char* key)
     } else {
         node_t* temp_node_t = hashmap->plist[hash_value];
         
-        while(temp_node_t->next != NULL) {
+        while (temp_node_t->next != NULL) {
             if (strcmp(temp_node_t->key, key) == 0) {
                 return temp_node_t->value;
             }

@@ -5,22 +5,17 @@
 
 #define DEFAULT_ARRAY_LENGTH (20)
 
-
 static size_t hash_function(const char* key);
 static void print_hashmap(hashmap_t* hashmap);
 
 int main(void)
 {
-    
     size_t i = 0;
     hashmap_t* hashmap = NULL;
 
     hashmap = init_hashmap_malloc(DEFAULT_ARRAY_LENGTH, hash_function);
 
-    print_hashmap(hashmap);
-
-
-    for (i = 0; i < 100; i++) {
+    for (i = 0; i < 10000; i++) {
         char key[100];
         int value = (int)i;
         int c;
@@ -39,7 +34,8 @@ int main(void)
         assert(c == value);
     }
 
-    for (i = 0; i < 100; i++) {
+
+    for (i = 0; i < 10000; i++) {
         char key[100];
         int value = (int)(i * i * i);
         int c;
@@ -52,38 +48,58 @@ int main(void)
         assert(c == value);
     }
 
-    print_hashmap(hashmap);
-/*
-    for (i = 0; i < 100; i++) {
+    for (i = 0; i < 10000; i++) {
         char key[100];
         int c;
 
         sprintf(key, "key%u", i);
 
-
         assert(remove_key(hashmap, key) == TRUE);
-
-
         c = get_value(hashmap, key);
 
         assert(c == -1);
 
         assert(remove_key(hashmap, key) == FALSE);
-
     }
-
-    print_hashmap(hashmap);
 
     for (i = 0; i < DEFAULT_ARRAY_LENGTH; i++) {
         assert((hashmap->plist)[i] == NULL);
     }
-*/
+
+    for (i = 0; i < 10000; i++) {
+        char key[100];
+        int value = (int)i;
+        int c;
+        int dummy = 512;
+
+        sprintf(key, "key%u", i);
+
+        assert(add_key(hashmap, key, value) == TRUE);
+
+        c = get_value(hashmap, key);
+        assert(c == value);
+
+        assert(add_key(hashmap, key, dummy) == FALSE);
+
+        c = get_value(hashmap, key);
+        assert(c == value);
+    }
+
+
+    for (i = 0; i < 10000; i++) {
+        char key[100];
+        int value = (int)(i * i * i);
+        int c;
+
+        sprintf(key, "key%u", i);
+
+        assert(update_value(hashmap, key, value) == TRUE);
+        c = get_value(hashmap, key);
+
+        assert(c == value);
+    }
 
     destroy(hashmap);
-
-
-
-
 
     return 0;
 }
@@ -100,8 +116,6 @@ static size_t hash_function(const char* key)
     return code;
 }
 
-
-
 static void print_hashmap(hashmap_t* hashmap)
 {
     size_t i;
@@ -112,7 +126,7 @@ static void print_hashmap(hashmap_t* hashmap)
         printf("index:[%d]\n", i);
 
         while (p_node != NULL) {
-            printf("node_count:[%d] key: %s , value: %d hash_val: %d\n", j++, p_node->key, p_node->value, hash_function(p_node->key) % DEFAULT_ARRAY_LENGTH);
+            printf("node_count:[%d] key: %s , value: %d\n", j++, p_node->key, p_node->value);
 
             p_node = p_node->next;
         }
