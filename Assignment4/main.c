@@ -6,6 +6,7 @@
 #define DEFAULT_ARRAY_LENGTH (20)
 
 static size_t hash_function(const char* key);
+static void print_hashmap(hashmap_t* hashmap);
 
 int main(void)
 {
@@ -46,9 +47,6 @@ int main(void)
         assert(c == value);
     }
 
-    destroy(hashmap);
-
-/*
     for (i = 0; i < 100; i++) {
         char key[100];
         int c;
@@ -66,7 +64,8 @@ int main(void)
     for (i = 0; i < DEFAULT_ARRAY_LENGTH; i++) {
         assert((hashmap->plist)[i] == NULL);
     }
-*/
+
+    destroy(hashmap);
 
     return 0;
 }
@@ -82,3 +81,21 @@ static size_t hash_function(const char* key)
 
     return code;
 }
+
+static void print_hashmap(hashmap_t* hashmap)
+{
+    size_t i;
+
+    for (i = 0; i < hashmap->length; ++i) {
+        node_t* p_node = hashmap->plist[i];
+        size_t j = 0;
+        printf("index:[%d]\n", i);
+
+        while (p_node != NULL) {
+            printf("node_count:[%d] key: %s , value: %d , hash_val: %d\n", j++, p_node->key, p_node->value, hash_function(p_node->key) % DEFAULT_ARRAY_LENGTH);
+
+            p_node = p_node->next;
+        }
+    }
+}
+

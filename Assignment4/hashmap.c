@@ -192,6 +192,7 @@ int remove_key(hashmap_t* hashmap, const char* key)
         while (*tmp_pp != NULL) {
             tmp_p = *tmp_pp;
             if (strcmp(tmp_p->key, key) == 0) {
+/*
                 (*(--tmp_pp))->next = tmp_p->next;
 
                 free(tmp_p->key);
@@ -199,7 +200,15 @@ int remove_key(hashmap_t* hashmap, const char* key)
 
                 free(tmp_p);
                 tmp_p = NULL;
-         
+*/
+
+                free(tmp_p->key);
+                tmp_p->key = NULL;
+
+                free(tmp_p);
+                *tmp_pp = (*tmp_pp)->next;
+
+        
                 return TRUE;
             }
 
@@ -231,7 +240,6 @@ void destroy(hashmap_t* hashmap)
 
             tmp_pp = &(tmp_p->next);
             free(tmp_p);
-
             tmp_p = NULL;
             
         }
