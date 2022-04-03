@@ -3,7 +3,7 @@
 #include <string.h>
 #include "hashmap.h"
 
-#define DEFAULT_ARRAY_LENGTH (20)
+#define DEFAULT_ARRAY_LENGTH (6)
 
 static size_t hash_function(const char* key);
 static void print_hashmap(hashmap_t* hashmap);
@@ -33,6 +33,8 @@ int main(void)
         c = get_value(hashmap, key);
         assert(c == value);
     }
+
+
 
     for (i = 0; i < 100; i++) {
         char key[100];
@@ -64,6 +66,7 @@ int main(void)
     for (i = 0; i < DEFAULT_ARRAY_LENGTH; i++) {
         assert((hashmap->plist)[i] == NULL);
     }
+
 
     destroy(hashmap);
 
